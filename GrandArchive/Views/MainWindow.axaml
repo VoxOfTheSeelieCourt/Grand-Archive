@@ -1,0 +1,53 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:GrandArchive.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:GrandArchive.Models"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="GrandArchive.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="GrandArchive">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <SplitView IsPaneOpen="{Binding #MenuToggleButton.IsChecked}"
+               DisplayMode="CompactOverlay"
+               CompactPaneLength="50">
+        <SplitView.Pane>
+            <StackPanel Orientation="Vertical" Spacing="5" Margin="5">
+                <ToggleButton Name="MenuToggleButton" Height="40" Width="40">
+                    <PathIcon Data="{StaticResource LineHorizontal3Regular}"/>
+                </ToggleButton>
+                
+                <ListBox ItemsSource="{Binding NavigableViewModels}"
+                         SelectedItem="{Binding SelectedNavigationBarEntry}"
+                         SelectionChanged="SelectingItemsControl_OnSelectionChanged">
+                    <ListBox.Styles>
+                        <Style Selector="ListBoxItem">
+                            <Setter Property="Padding" Value="10"/>
+                        </Style>
+                    </ListBox.Styles>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:NavigationBarEntry">
+                            <StackPanel Spacing="15" Orientation="Horizontal">
+                                <PathIcon Data="{Binding Icon}"/>
+                                <TextBlock Text="{Binding Name}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </SplitView.Pane>
+        
+        <SplitView.Content>
+            <TransitioningContentControl Content="{Binding ActiveViewModel}"/>
+        </SplitView.Content>
+    </SplitView>
+
+</Window>

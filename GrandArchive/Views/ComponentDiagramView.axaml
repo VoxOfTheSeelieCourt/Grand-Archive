@@ -1,0 +1,71 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
+             xmlns:acg="clr-namespace:AvaloniaGraphControl;assembly=AvaloniaGraphControl"
+             xmlns:componentDiagram="clr-namespace:GrandArchive.Models.ComponentDiagram"
+             xmlns:markupExtensions="clr-namespace:GrandArchive.Helpers.MarkupExtensions"
+             xmlns:views="clr-namespace:GrandArchive.Views"
+             xmlns:helpers="clr-namespace:GrandArchive.Helpers"
+             xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:generic1="clr-namespace:System.Collections.Generic;assembly=System.Runtime"
+             xmlns:avalonia="clr-namespace:LoadingIndicators.Avalonia;assembly=LoadingIndicators.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GrandArchive.Views.ComponentDiagramView"
+             x:DataType="viewModels:ComponentDiagramViewModel">
+    
+    <Design.DataContext>
+        <viewModels:ComponentDiagramViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto *" RowSpacing="5">
+        <Menu Grid.Row="0">
+            <ComboBox SelectedItem="{Binding #GraphPanel.LayoutMethod, Converter={StaticResource EnumerationConverter}}"
+                      ItemsSource="{Binding $parent[views:ComponentDiagramView].LayoutMethods}"/>
+            <MenuItem Header="Import Excel" Command="{Binding LoadGraphCommand}"/>
+            <MenuItem Header="Export Graph Image" Click="ExportImage_OnClick"/>
+        </Menu>
+
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      Background="#333333">
+            <ZoomBorder Stretch="Uniform" ZoomSpeed="1.2"
+                        ClipToBounds="True" Focusable="True" PanButton="Left" EnablePan="True"
+                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <acg:GraphPanel x:Name="GraphPanel" Background="#333333"
+                                Graph="{Binding ComponentGraph}">
+                    <acg:GraphPanel.DataTemplates>
+                        <DataTemplate DataType="{x:Type componentDiagram:ComponentDiagramNode}">
+                            <Border BorderThickness="3"
+                                    BorderBrush="{Binding ComponentTypeEnum, Converter={x:Static views:ComponentDiagramView.ComponentTypeEnumBrushConverter}}"
+                                    CornerRadius="5">
+                                <Grid RowDefinitions="Auto Auto Auto Auto Auto Auto Auto" RowSpacing="2">
+                                    <TextBlock Grid.Row="0"
+                                               Text="{Binding ComponentTypeEnum, StringFormat={}[{0}]}"
+                                               FontSize="8" HorizontalAlignment="Center" />
+                                    <TextBlock Grid.Row="1" Text="{Binding RawName}" FontSize="16"
+                                               FontWeight="Bold" />
+                                    <Border Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                            BorderBrush="White" BorderThickness="1" />
+                                    <TextBlock Grid.Row="3" x:Name="Components" Text="{Binding RawComponents}" />
+                                    <TextBlock Grid.Row="4" Margin="0 3 0 0" Text="{Binding RawTotalCost}"
+                                               FontWeight="Medium" HorizontalAlignment="Right" />
+                                    <Border Grid.Row="5" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                            BorderBrush="White" BorderThickness="1" />
+                                    <TextBlock Grid.Row="6" Text="{Binding RawDescription}" MaxWidth="300"
+                                               TextWrapping="Wrap" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type acg:Edge}">
+                            <acg:Connection Brush="White" />
+                        </DataTemplate>
+                    </acg:GraphPanel.DataTemplates>
+                </acg:GraphPanel>
+            </ZoomBorder>
+        </ScrollViewer>
+
+        <avalonia:LoadingIndicator Grid.Row="1" IsActive="{Binding IsBusy}" Mode="Arcs"/>
+    </Grid>
+</UserControl>

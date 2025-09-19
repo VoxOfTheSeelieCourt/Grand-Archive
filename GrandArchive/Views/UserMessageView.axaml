@@ -1,0 +1,106 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GrandArchive.Views.UserMessageView"
+             x:DataType="viewModels:UserMessageViewModel">
+    <Design.DataContext>
+        <viewModels:UserMessageViewModel/>
+    </Design.DataContext>
+    
+    <UserControl.Resources>
+        <!--#region Colours-->
+        <Color x:Key="SuccessBackground">#d4edda</Color>
+        <Color x:Key="SuccessForeground">#155724</Color>
+
+        <Color x:Key="InformationBackground">#d1ecf1</Color>
+        <Color x:Key="InformationForeground">#0c5460</Color>
+
+        <Color x:Key="WarningBackground">#fff3cd</Color>
+        <Color x:Key="WarningForeground">#856404</Color>
+
+        <Color x:Key="ErrorBackground">#f8d7da</Color>
+        <Color x:Key="ErrorForeground">#721c24</Color>
+        <!--#endregion-->
+
+        <!--#region Brushes-->
+        <SolidColorBrush x:Key="SuccessBackgroundBrush" Color="{StaticResource SuccessBackground}" />
+        <SolidColorBrush x:Key="SuccessForegroundBrush" Color="{StaticResource SuccessForeground}" />
+
+        <SolidColorBrush x:Key="InformationBackgroundBrush" Color="{StaticResource InformationBackground}" />
+        <SolidColorBrush x:Key="InformationForegroundBrush" Color="{StaticResource InformationForeground}" />
+
+        <SolidColorBrush x:Key="WarningBackgroundBrush" Color="{StaticResource WarningBackground}" />
+        <SolidColorBrush x:Key="WarningForegroundBrush" Color="{StaticResource WarningForeground}" />
+
+        <SolidColorBrush x:Key="ErrorBackgroundBrush" Color="{StaticResource ErrorBackground}" />
+        <SolidColorBrush x:Key="ErrorForegroundBrush" Color="{StaticResource ErrorForeground}" />
+        <!--#endregion-->
+    </UserControl.Resources>
+
+    <Interaction.Behaviors>
+        <EventTriggerBehavior EventName="PointerEntered">
+            <InvokeCommandAction Command="{Binding PauseTimerCommand}"/>
+        </EventTriggerBehavior>
+        <EventTriggerBehavior EventName="PointerExited">
+            <InvokeCommandAction Command="{Binding UnpauseTimerCommand}"/>
+        </EventTriggerBehavior>
+    </Interaction.Behaviors>
+    
+    <UserControl.Theme>
+        <ControlTheme TargetType="UserControl">
+            <Style Selector="^[Tag=Error]">
+                <Setter Property="Foreground" Value="{StaticResource ErrorForegroundBrush}"/>
+            </Style>
+            <Style Selector="^[Tag=Warning]">
+                <Setter Property="Foreground" Value="{StaticResource WarningForegroundBrush}"/>
+            </Style>
+            <Style Selector="^[Tag=Success]">
+                <Setter Property="Foreground" Value="{StaticResource SuccessForegroundBrush}"/>
+            </Style>
+            <Style Selector="^[Tag=Information]">
+                <Setter Property="Foreground" Value="{StaticResource InformationForegroundBrush}"/>
+            </Style>
+        </ControlTheme>
+    </UserControl.Theme>
+    
+    <Border Margin="5" BorderThickness="5 2 2 2" CornerRadius="2" Tag="{Binding InformationType}">
+        <Border.Theme>
+            <ControlTheme TargetType="Border">
+                <Style Selector="^[Tag=Error]">
+                    <Setter Property="BorderBrush" Value="{StaticResource ErrorForegroundBrush}"/>
+                </Style>
+                <Style Selector="^[Tag=Warning]">
+                    <Setter Property="BorderBrush" Value="{StaticResource WarningForeground}"/>
+                </Style>
+                <Style Selector="^[Tag=Success]">
+                    <Setter Property="BorderBrush" Value="{StaticResource SuccessForeground}"/>
+                </Style>
+                <Style Selector="^[Tag=Information]">
+                    <Setter Property="BorderBrush" Value="{StaticResource InformationForeground}"/>
+                </Style>
+            </ControlTheme>
+        </Border.Theme>
+        
+        <Grid Margin="2" Width="300" RowDefinitions="Auto Auto Auto">
+            <Grid ColumnDefinitions="Auto * Auto">
+                <TextBlock Grid.Column="1" Text="{Binding MessageHeader}" Margin="2" 
+                           VerticalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                <Button Grid.Column="2" Command="{Binding RemoveMessageCommand}"
+                        Margin="2" FontSize="12" VerticalAlignment="Center" Content="🗙"/>
+            </Grid>
+            
+            <StackPanel Grid.Row="1" IsVisible="{Binding MessageContent, Converter={StaticResource NullToFalseConverter}}">
+                <Expander Header="Show Details" HorizontalAlignment="Stretch" Margin="2" FontSize="12">
+                    <TextBlock Text="{Binding MessageContent}"/>
+                </Expander>
+            </StackPanel>
+            
+            <ProgressBar Grid.Row="2" Minimum="0" FlowDirection="RightToLeft" Foreground="{Binding $parent[UserControl].Foreground}"
+                         Maximum="{Binding DeleteAfter}"
+                         Value="{Binding TimeRemaining, Mode=OneWay}"/>
+        </Grid>
+    </Border>
+</UserControl>

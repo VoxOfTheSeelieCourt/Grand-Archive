@@ -1,0 +1,53 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
+             xmlns:helpers="clr-namespace:GrandArchive.Helpers"
+             mc:Ignorable="d"
+             x:Class="GrandArchive.Views.SpellCardRenderView"
+             x:DataType="viewModels:SpellCardMainViewModel">
+    <UserControl.Resources>
+        <helpers:SpellSchoolToBrushConverter x:Key="SpellSchoolToBrushConverter"
+                                             AbjurationBackground="{StaticResource SpellSchoolAbjurationBackground}"
+                                             ConjurationBackground="{StaticResource SpellSchoolConjurationBackground}"
+                                             DivinationBackground="{StaticResource SpellSchoolDivinationBackground}"
+                                             EnchantmentBackground="{StaticResource SpellSchoolEnchantmentBackground}"
+                                             EvocationBackground="{StaticResource SpellSchoolEvocationBackground}"
+                                             IllusionBackground="{StaticResource SpellSchoolIllusionBackground}"
+                                             NecromancyBackground="{StaticResource SpellSchoolNecromancyBackground}"
+                                             TransmutationBackground="{StaticResource SpellSchoolTransmutationBackground}"
+                                             UniversalBackground="{StaticResource SpellSchoolUnivevrsalBackground}"/>
+    </UserControl.Resources>
+    
+    <Design.DataContext>
+        <viewModels:SpellCardMainViewModel/>
+    </Design.DataContext>
+
+    <Grid ColumnDefinitions="Auto Auto" ColumnSpacing="5">
+        <Border Grid.Column="0" BorderThickness="2" Width="330" Height="462">
+            <Grid RowDefinitions="66 46 46 46 46 * 46" ColumnDefinitions="* * * * * *"
+                  ColumnSpacing="5" RowSpacing="5" Margin="8">
+                <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Watermark="Name"/>
+                
+                <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Watermark="Level"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Watermark="Components"/>
+                <TextBox Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Watermark="Casting Time"/>
+                
+                <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Watermark="Range"/>
+                <TextBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Grid.RowSpan="2" Watermark="Target / Area / Effect" AcceptsReturn="True" TextWrapping="Wrap"/>
+                
+                <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Watermark="Duration"/>
+                
+                <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Watermark="Saving Throw"/>
+                <TextBox Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" Watermark="Source"/>
+                
+                <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6" Watermark="Description" AcceptsReturn="True" TextWrapping="Wrap"/>
+                
+                <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Watermark="Spell Cost"/>
+                <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" Watermark="Spell Resistance"/>
+                <TextBox Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" Watermark="Save DC"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
