@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GrandArchive.Helpers.Attributes;
-using GrandArchive.Models;
 using GrandArchive.Models.Database;
 using GrandArchive.Services.UserInformationService;
 using GrandArchive.ViewModels.Abstract;
@@ -69,11 +63,5 @@ public partial class SpellCardMainViewModel : NavigableViewModel
         {
             _userInformationMessageService.AddDisplayMessage("Encountered an error during saving", InformationType.Error, TimeSpan.FromSeconds(30), e.Message);
         }
-    }
-
-    [RelayCommand]
-    private async Task ExportSpellCards()
-    {
-        throw new NotImplementedException();
     }
 }

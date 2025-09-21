@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -11,7 +10,6 @@ using Avalonia.Threading;
 using AvaloniaGraphControl;
 using GrandArchive.Helpers;
 using GrandArchive.Helpers.MarkupExtensions;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GrandArchive.Views;
 

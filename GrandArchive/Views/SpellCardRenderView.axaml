@@ -21,7 +21,7 @@
             CastingTime="1 hour"
             Range="Custom"
             CustomRangeText="Something between 5 and 200 ft."
-            Duration="Indefinite"
+            Duration="Unlimited"
             SavingThrow="-"
             SpellResistance="No"
             Target="One unwilling creature"
@@ -69,97 +69,112 @@
     
     <Grid x:Name="MainGrid" ColumnDefinitions="Auto Auto">
         <Grid Grid.Column="0" x:Name="BleedingEdgeFront" Height="1110" Width="816" Background="Transparent">
-            <Border Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    CornerRadius="30" Background="{Binding School, Converter={StaticResource SpellSchoolToBrushConverter}}">
-                <Grid x:Name="CutAreaFront" Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Border x:Name="SafeAreaFront" Height="976" Width="679" CornerRadius="15"
-                            HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent">
-                        <Grid ColumnDefinitions="* * * * * *" RowDefinitions="Auto Auto Auto Auto Auto * Auto Auto"
-                              ColumnSpacing="10" RowSpacing="10" Height="{Binding $parent[Border].Height}" Width="{Binding $parent[Border].Width}">
-                            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6">
-                                <Grid RowDefinitions="* Auto">
-                                    <TextBlock Grid.Row="0" Text="{Binding Name}" TextAlignment="Center" FontWeight="Bold" FontSize="35"/>
-                                    <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock FontWeight="Bold" Text="{Binding School}"/>
-                                        <TextBlock FontWeight="Bold" Text="{Binding SubSchool, StringFormat={}({0})}" IsVisible="{Binding DisplaySubschool}"/>
-                                        <TextBlock FontWeight="Bold" Text="{Binding Descriptor, StringFormat={}[{0}]}" IsVisible="{Binding DisplayDescriptor}"/>
-                                    </WrapPanel>
-                                </Grid>
-                            </Border>
-                            
-                            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                                <!-- Class Levels -->
-                            </Border>
-                            <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
-                                <TextBlock Text="{Binding AllComponents}"/>
-                            </Border>
-                            <Border Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2">
-                                <TextBlock Text="{Binding CastingTime}"/>
-                            </Border>
-
-                            <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
-                                <TextBlock Text="{Binding RangeDisplayText}"/>
-                            </Border>
-                            <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">
-                                <TextBlock Text="{Binding Duration}"/>
-                            </Border>
-                            <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3">
-                                <TextBlock Text="{Binding SavingThrow}"/>
-                            </Border>
-                            <Border Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3">
-                                <TextBlock Text="{Binding SpellResistance}"/>
-                            </Border>
-                            
-                            <Border Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" Grid.ColumnSpan="3">
-                                <Grid RowDefinitions="Auto Auto Auto">
-                                    <TextBlock Grid.Row="0" Text="{Binding Target, StringFormat={}T: {0}}" IsVisible="{Binding Target, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-                                    <TextBlock Grid.Row="1" Text="{Binding Area, StringFormat={}A: {0}}" IsVisible="{Binding Area, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-                                    <TextBlock Grid.Row="2" Text="{Binding Effect, StringFormat={}E: {0}}" IsVisible="{Binding Effect, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-                                </Grid>
-                            </Border>
-
-                            <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6">
-                                <TextBlock Text="{Binding DescriptionShort}" VerticalAlignment="Top"/>
-                            </Border>
-
-                            <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6">
-                                <Border IsVisible="{Binding HasMaterialComponent}">
-                                    <TextBlock Text="{Binding MaterialComponent, StringFormat={}Material Component: {0}}"/>
+            <!-- go see the comment below -->
+            <Grid Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border x:Name="CutAreaFront" CornerRadius="30" Background="{Binding School, Converter={StaticResource SpellSchoolToBrushConverter}}">
+                    <Grid Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Border x:Name="SafeAreaFront" Height="976" Width="679" CornerRadius="15"
+                                HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent">
+                            <Grid ColumnDefinitions="* * * * * *" RowDefinitions="Auto Auto Auto Auto Auto * Auto Auto"
+                                  ColumnSpacing="10" RowSpacing="10" Height="{Binding $parent[Border].Height}"
+                                  Width="{Binding $parent[Border].Width}">
+                                <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6">
+                                    <Grid RowDefinitions="* Auto">
+                                        <TextBlock Grid.Row="0" Text="{Binding Name}" TextAlignment="Center"
+                                                   FontWeight="Bold" FontSize="35" />
+                                        <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock FontWeight="Bold" Text="{Binding School}" />
+                                            <TextBlock FontWeight="Bold"
+                                                       Text="{Binding SubSchool, StringFormat={}({0})}"
+                                                       IsVisible="{Binding DisplaySubschool}" />
+                                            <TextBlock FontWeight="Bold"
+                                                       Text="{Binding Descriptor, StringFormat={}[{0}]}"
+                                                       IsVisible="{Binding DisplayDescriptor}" />
+                                        </WrapPanel>
+                                    </Grid>
                                 </Border>
-                                <Border IsVisible="{Binding HasExperienceComponent}">
-                                    <TextBlock Text="{Binding ExperienceComponent, StringFormat={}XP Cost: {0}}"/>
+
+                                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                                    <!-- Class Levels -->
                                 </Border>
-                                <Border IsVisible="{Binding HasCorruptionComponent}">
-                                    <TextBlock Text="{Binding CorruptionComponent, StringFormat={}Corruption: {0}}"/>
+                                <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                                    <TextBlock Text="{Binding AllComponents}" />
                                 </Border>
-                            </StackPanel>
-                            
-                            <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="6">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Rulebook.Name}"/>
-                                    <TextBlock Text="{Binding RulebookPage, StringFormat={} p.{0}}" IsVisible="{Binding RulebookPage, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                                <Border Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2">
+                                    <TextBlock Text="{Binding CastingTime}" />
+                                </Border>
+
+                                <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                                    <TextBlock Text="{Binding RangeDisplayText}" />
+                                </Border>
+                                <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">
+                                    <TextBlock Text="{Binding Duration}" />
+                                </Border>
+                                <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3">
+                                    <TextBlock Text="{Binding SavingThrow}" />
+                                </Border>
+                                <Border Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3">
+                                    <TextBlock Text="{Binding SpellResistance}" />
+                                </Border>
+
+                                <Border Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" Grid.ColumnSpan="3">
+                                    <Grid RowDefinitions="Auto Auto Auto">
+                                        <TextBlock Grid.Row="0" Text="{Binding Target, StringFormat={}T: {0}}"
+                                                   IsVisible="{Binding Target, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                        <TextBlock Grid.Row="1" Text="{Binding Area, StringFormat={}A: {0}}"
+                                                   IsVisible="{Binding Area, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                        <TextBlock Grid.Row="2" Text="{Binding Effect, StringFormat={}E: {0}}"
+                                                   IsVisible="{Binding Effect, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6">
+                                    <TextBlock Text="{Binding DescriptionShort}" VerticalAlignment="Top" />
+                                </Border>
+
+                                <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6">
+                                    <Border IsVisible="{Binding HasMaterialComponent}">
+                                        <TextBlock
+                                            Text="{Binding MaterialComponent, StringFormat={}Material Component: {0}}" />
+                                    </Border>
+                                    <Border IsVisible="{Binding HasExperienceComponent}">
+                                        <TextBlock Text="{Binding ExperienceComponent, StringFormat={}XP Cost: {0}}" />
+                                    </Border>
+                                    <Border IsVisible="{Binding HasCorruptionComponent}">
+                                        <TextBlock Text="{Binding CorruptionComponent, StringFormat={}Corruption: {0}}" />
+                                    </Border>
                                 </StackPanel>
-                            </Border>
-                        </Grid>
-                    </Border>
-                </Grid>
-            </Border>
+
+                                <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="6">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Rulebook.Name}" />
+                                        <TextBlock Text="{Binding RulebookPage, StringFormat={} p.{0}}"
+                                                   IsVisible="{Binding RulebookPage, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border></Grid>
         </Grid>
         
         <Grid Grid.Column="1" x:Name="BleedingEdgeBack" Height="1110" Width="816" Background="Transparent">
-            <Border Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    CornerRadius="30" Background="{Binding School, Converter={StaticResource SpellSchoolToBrushConverter}}">
-                <Grid x:Name="CutAreaBack" Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Border x:Name="SafeAreaBack" Height="976" Width="679" Background="Transparent" CornerRadius="15"
-                            HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Grid Height="{Binding $parent[Border].Height}" Width="{Binding $parent[Border].Width}">
-                            <Border>
-                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                            </Border>
-                        </Grid>
-                    </Border>
-                </Grid>
-            </Border>
+            <!-- Surround Border with a grid for rendering purposes, so that the border has an effective margin of 0. -->
+            <!-- When in doubt, git blame and check the commit this was introduced in -->
+            <Grid Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border x:Name="CutAreaBack" CornerRadius="30" Background="{Binding School, Converter={StaticResource SpellSchoolToBrushConverter}}">
+                    <Grid Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Border x:Name="SafeAreaBack" Height="976" Width="679" Background="Transparent" CornerRadius="15"
+                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid Height="{Binding $parent[Border].Height}" Width="{Binding $parent[Border].Width}">
+                                <Border>
+                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

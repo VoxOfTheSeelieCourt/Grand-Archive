@@ -15,7 +15,8 @@
         <Menu Grid.Row="0">
             <MenuItem Header="Load Spells" Command="{Binding LoadSpellsCommand}"/>
             <MenuItem Header="Save Spells" Command="{Binding SaveSpellsCommand}"/>
-            <MenuItem Header="Export Spell Cards" Command="{Binding ExportSpellCardsCommand}"/>
+            <MenuItem Header="Export Selected Spell Card" Click="ExportSelectedSpellCard"/>
+            <MenuItem Header="Export All Spell Cards" Click="ExportAllSpellCards"/>
         </Menu>
         
         <Grid Grid.Row="1" ColumnDefinitions="Auto *">
@@ -28,7 +29,7 @@
             </Grid>
             
             <DataGrid Grid.Column="1" ItemsSource="{Binding Spells}" IsReadOnly="True"
-                      x:Name="SpellDataGrid" AutoGenerateColumns="True">
+                      x:Name="SpellDataGrid" AutoGenerateColumns="True" SelectedIndex="0">
                 <!-- <DataGrid.Columns> -->
                 <!--     <DataGridTextColumn Header="Name" Binding="{Binding Name}"/> -->
                 <!--     <DataGridTextColumn Header="Schools" Binding="{Binding SpellSchools}"/> -->

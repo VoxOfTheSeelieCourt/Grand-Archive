@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace GrandArchive.Models.DnDTools;
+﻿namespace GrandArchive.Models.DnDTools;
 
 public partial class DndRulesCondition
 {

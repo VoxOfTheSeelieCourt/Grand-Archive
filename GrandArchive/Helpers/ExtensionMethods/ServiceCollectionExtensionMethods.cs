@@ -1,23 +1,20 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Platform;
-using Avalonia.Platform.Storage;
 using GrandArchive.Models.Database;
 using GrandArchive.Models.DnDTools;
 using GrandArchive.Services;
 using GrandArchive.Services.Navigation;
 using GrandArchive.Services.UserInformationService;
 using GrandArchive.ViewModels;
-using GrandArchive.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GrandArchive.Helpers.ExtensionMethods;
+public delegate TopLevel GetTopLevel();
 
 public static class ServiceCollectionExtensionMethods
 {
@@ -42,6 +39,15 @@ public static class ServiceCollectionExtensionMethods
         s.AddSingleton<CreateUserMessageViewModel>(provider =>
             (message, type, after, details) =>
                 new UserMessageViewModel(message, type, after, details, provider.GetRequiredService<IUserInformationMessageService>()));
+        s.AddSingleton<GetTopLevel>(x => () =>
+        {
+            return Application.Current?.ApplicationLifetime switch
+            {
+                IClassicDesktopStyleApplicationLifetime desk => desk.Windows.FirstOrDefault(w => w.IsActive) ?? desk.MainWindow,
+                ISingleViewApplicationLifetime single => TopLevel.GetTopLevel(single.MainView),
+                _ => null
+            };
+        });
     }
 
     public static IServiceProvider InitDatabase<T>(this IServiceProvider serviceProvider) where T : DbContext

@@ -16,43 +16,44 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <SplitView IsPaneOpen="{Binding #MenuToggleButton.IsChecked}"
-               DisplayMode="CompactOverlay"
-               CompactPaneLength="50">
-        <SplitView.Pane>
-            <StackPanel Orientation="Vertical" Spacing="5" Margin="5">
-                <ToggleButton Name="MenuToggleButton" Height="40" Width="40">
-                    <PathIcon Data="{StaticResource LineHorizontal3Regular}"/>
-                </ToggleButton>
+    <Grid>
+        <SplitView IsPaneOpen="{Binding #MenuToggleButton.IsChecked}"
+                   DisplayMode="CompactOverlay"
+                   CompactPaneLength="50">
+            <SplitView.Pane>
+                <StackPanel Orientation="Vertical" Spacing="5" Margin="5">
+                    <ToggleButton Name="MenuToggleButton" Height="40" Width="40">
+                        <PathIcon Data="{StaticResource LineHorizontal3Regular}"/>
+                    </ToggleButton>
                 
-                <ListBox ItemsSource="{Binding NavigableViewModels}"
-                         SelectedItem="{Binding SelectedNavigationBarEntry}"
-                         SelectionChanged="SelectingItemsControl_OnSelectionChanged">
-                    <ListBox.Styles>
-                        <Style Selector="ListBoxItem">
-                            <Setter Property="Padding" Value="10"/>
-                        </Style>
-                    </ListBox.Styles>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate DataType="models:NavigationBarEntry">
-                            <StackPanel Spacing="15" Orientation="Horizontal">
-                                <PathIcon Data="{Binding Icon}"/>
-                                <TextBlock Text="{Binding Name}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
-        </SplitView.Pane>
+                    <ListBox ItemsSource="{Binding NavigableViewModels}"
+                             SelectedItem="{Binding SelectedNavigationBarEntry}"
+                             SelectionChanged="SelectingItemsControl_OnSelectionChanged">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="Padding" Value="10"/>
+                            </Style>
+                        </ListBox.Styles>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="models:NavigationBarEntry">
+                                <StackPanel Spacing="15" Orientation="Horizontal">
+                                    <PathIcon Data="{Binding Icon}"/>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </SplitView.Pane>
         
-        <SplitView.Content>
-            <Grid>
-                <TransitioningContentControl Content="{Binding ActiveViewModel}" />
+            <SplitView.Content>
+                <Grid>
+                    <TransitioningContentControl Content="{Binding ActiveViewModel}" />
         
-                <ItemsControl Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                              Background="Transparent" ItemsSource="{Binding UserMessageViewModels}"/>
-            </Grid>
-        </SplitView.Content>
-    </SplitView>
-
+                    <ItemsControl HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                  Background="Transparent" ItemsSource="{Binding UserMessageViewModels}"/>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+    </Grid>
 </Window>

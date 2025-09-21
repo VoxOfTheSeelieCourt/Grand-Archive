@@ -12,7 +12,6 @@ using GrandArchive.Models.DnDTools;
 using GrandArchive.Services.UserInformationService;
 using GrandArchive.ViewModels.Abstract;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using DndRulebook = GrandArchive.Models.Database.DndRulebook;
 using DndSpell = GrandArchive.Models.Database.DndSpell;
 using DndSpellDescriptor = GrandArchive.Models.Database.DndSpellDescriptor;
