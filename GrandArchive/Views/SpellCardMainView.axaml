@@ -4,14 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
              xmlns:views="clr-namespace:GrandArchive.Views"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardMainView"
              x:DataType="viewModels:SpellCardMainViewModel">
     <Design.DataContext>
         <viewModels:SpellCardMainViewModel/>
     </Design.DataContext>
     
-    <Grid>
-        <views:SpellCardRenderView VerticalAlignment="Top"/>
+    <Grid RowDefinitions="Auto *">
+        <Menu Grid.Row="0">
+            <MenuItem Header="Load Spells" Command="{Binding LoadSpellsCommand}"/>
+            <MenuItem Header="Save Spells" Command="{Binding SaveSpellsCommand}"/>
+            <MenuItem Header="Export Spell Cards" Command="{Binding ExportSpellCardsCommand}"/>
+        </Menu>
+        
+        <Grid Grid.Row="1" ColumnDefinitions="Auto *">
+            <Grid Grid.Column="0" RowDefinitions="Auto *" DataContext="{Binding #SpellDataGrid.SelectedItem}">
+                <Viewbox Grid.Row="0" Stretch="Uniform" Height="400" Width="600">
+                    <views:SpellCardRenderView/>
+                </Viewbox>
+
+                <views:SpellCardEditView Grid.Row="1"/>
+            </Grid>
+            
+            <DataGrid Grid.Column="1" ItemsSource="{Binding Spells}" IsReadOnly="True"
+                      x:Name="SpellDataGrid" AutoGenerateColumns="True">
+                <!-- <DataGrid.Columns> -->
+                <!--     <DataGridTextColumn Header="Name" Binding="{Binding Name}"/> -->
+                <!--     <DataGridTextColumn Header="Schools" Binding="{Binding SpellSchools}"/> -->
+                <!--     <DataGridTextColumn Header="Subschools" Binding="{Binding SpellSubSchools}"/> -->
+                <!--     <DataGridTextColumn Header="Descriptor" Binding="{Binding SpellDescriptors}"/> -->
+                <!--     <DataGridTextColumn Header="Components" Binding="{Binding SpellComponents}"/> -->
+                <!-- </DataGrid.Columns> -->
+            </DataGrid>
+        </Grid>
     </Grid>
 </UserControl>

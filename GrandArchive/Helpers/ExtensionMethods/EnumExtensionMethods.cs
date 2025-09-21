@@ -8,6 +8,6 @@ public static class EnumExtensionMethods
 {
     public static IEnumerable<Enum> GetFlags(this Enum e)
     {
-        return Enum.GetValues(e.GetType()).Cast<Enum>().Where(e.HasFlag);
+        return Enum.GetValues(e.GetType()).Cast<Enum>().Where(x => e.HasFlag(x));
     }
 }

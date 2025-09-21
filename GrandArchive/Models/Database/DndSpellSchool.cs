@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace GrandArchive.Models;
+namespace GrandArchive.Models.Database;
 
 [Flags]
-public enum SpellSchool
+public enum DndSpellSchool
 {
     None = 0,
     Abjuration = 1 << 0,

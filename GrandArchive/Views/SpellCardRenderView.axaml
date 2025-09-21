@@ -2,13 +2,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
              xmlns:helpers="clr-namespace:GrandArchive.Helpers"
+             xmlns:database="clr-namespace:GrandArchive.Models.Database"
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardRenderView"
-             x:DataType="viewModels:SpellCardMainViewModel">
+             x:DataType="database:DndSpell">
+    
+    <Design.DataContext>
+        <database:DndSpell
+            Name="Test Spell of Testus Maximus"
+            School="Abjuration,Enchantment"
+            SubSchool="Compulsion"
+            Descriptor="LanguageDependent,MindAffecting"
+            HasVerbalComponent="True"
+            HasArcaneFocus="True"
+            HasCorruptionComponent="True"
+            CorruptionComponent="10d20 Gold"
+            CastingTime="1 hour"
+            Range="Custom"
+            CustomRangeText="Something between 5 and 200 ft."
+            Duration="Indefinite"
+            SavingThrow="-"
+            SpellResistance="No"
+            Target="One unwilling creature"
+            Area=""
+            Effect="Instant willingness"
+            RulebookPage="69"
+            DescriptionShort="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit"
+            Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse semper nibh vel nisl consequat iaculis. Cras eu dolor ut erat bibendum sagittis ac vel nulla. Nulla ultrices vitae neque vitae consectetur. Nullam a odio quis dui iaculis volutpat a id mauris. Nam nec nunc a tellus mollis condimentum. Integer cursus justo mollis metus commodo dapibus. Proin at pellentesque leo, eget cursus velit. Suspendisse potenti. Morbi placerat felis ut tortor pharetra, ut vestibulum eros laoreet. Ut non gravida tellus. Nulla nulla ante, dignissim et fermentum eu, tristique sed metus. Duis cursus nulla vel tortor malesuada auctor. Aliquam lacinia mi vitae vehicula commodo. Curabitur posuere imperdiet tellus, in malesuada metus finibus mattis. Curabitur id maximus neque, id dignissim nunc. Vivamus id maximus augue.&#x0a;&#x0a;Sed dolor massa, elementum eu viverra et, viverra vel lacus. Integer euismod nulla tellus. Integer mattis, nisi vitae gravida sagittis, lacus metus rhoncus dui, vitae scelerisque mauris arcu non magna. Duis vel egestas risus. Aenean malesuada ultrices vestibulum. Aenean at nisi urna. Proin luctus turpis vel augue convallis, ut tincidunt quam varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam ut faucibus libero, quis egestas risus.&#x0a;&#x0a;Donec et lacus vestibulum, tempor velit a, tincidunt sem. Sed egestas at ante sed rutrum. Vivamus sit amet magna quis felis malesuada tempus nec eu mi. Quisque sed enim egestas, scelerisque magna eget, ornare arcu. Ut nec semper nulla, sit amet mollis sem. In hac habitasse platea dictumst. Praesent ullamcorper eu magna quis placerat. Nunc eget mauris sed ligula mattis luctus. Nam dapibus massa at purus euismod pulvinar.">
+            <database:DndSpell.Rulebook>
+                <database:DndRulebook Name="Player's Handbook III"/>
+            </database:DndSpell.Rulebook>
+        </database:DndSpell>
+    </Design.DataContext>
+
     <UserControl.Resources>
         <helpers:SpellSchoolToBrushConverter x:Key="SpellSchoolToBrushConverter"
+                                             NoneBackground="{StaticResource SpellSchoolNoneBackground}"
                                              AbjurationBackground="{StaticResource SpellSchoolAbjurationBackground}"
                                              ConjurationBackground="{StaticResource SpellSchoolConjurationBackground}"
                                              DivinationBackground="{StaticResource SpellSchoolDivinationBackground}"
@@ -17,37 +47,119 @@
                                              IllusionBackground="{StaticResource SpellSchoolIllusionBackground}"
                                              NecromancyBackground="{StaticResource SpellSchoolNecromancyBackground}"
                                              TransmutationBackground="{StaticResource SpellSchoolTransmutationBackground}"
-                                             UniversalBackground="{StaticResource SpellSchoolUnivevrsalBackground}"/>
+                                             UniversalBackground="{StaticResource SpellSchoolUniversalBackground}"/>
     </UserControl.Resources>
     
-    <Design.DataContext>
-        <viewModels:SpellCardMainViewModel/>
-    </Design.DataContext>
+    <UserControl.Styles>
+        <Style Selector="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="MinHeight" Value="70"/>
+        </Style>
+        
+        <Style Selector="TextBlock">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+    </UserControl.Styles>
+    
+    <Grid x:Name="MainGrid" ColumnDefinitions="Auto Auto">
+        <Grid Grid.Column="0" x:Name="BleedingEdgeFront" Height="1110" Width="816" Background="Transparent">
+            <Border Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    CornerRadius="30" Background="{Binding School, Converter={StaticResource SpellSchoolToBrushConverter}}">
+                <Grid x:Name="CutAreaFront" Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Border x:Name="SafeAreaFront" Height="976" Width="679" CornerRadius="15"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent">
+                        <Grid ColumnDefinitions="* * * * * *" RowDefinitions="Auto Auto Auto Auto Auto * Auto Auto"
+                              ColumnSpacing="10" RowSpacing="10" Height="{Binding $parent[Border].Height}" Width="{Binding $parent[Border].Width}">
+                            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6">
+                                <Grid RowDefinitions="* Auto">
+                                    <TextBlock Grid.Row="0" Text="{Binding Name}" TextAlignment="Center" FontWeight="Bold" FontSize="35"/>
+                                    <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <TextBlock FontWeight="Bold" Text="{Binding School}"/>
+                                        <TextBlock FontWeight="Bold" Text="{Binding SubSchool, StringFormat={}({0})}" IsVisible="{Binding DisplaySubschool}"/>
+                                        <TextBlock FontWeight="Bold" Text="{Binding Descriptor, StringFormat={}[{0}]}" IsVisible="{Binding DisplayDescriptor}"/>
+                                    </WrapPanel>
+                                </Grid>
+                            </Border>
+                            
+                            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                                <!-- Class Levels -->
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                                <TextBlock Text="{Binding AllComponents}"/>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2">
+                                <TextBlock Text="{Binding CastingTime}"/>
+                            </Border>
 
-    <Grid ColumnDefinitions="Auto Auto" ColumnSpacing="5">
-        <Border Grid.Column="0" BorderThickness="2" Width="330" Height="462">
-            <Grid RowDefinitions="66 46 46 46 46 * 46" ColumnDefinitions="* * * * * *"
-                  ColumnSpacing="5" RowSpacing="5" Margin="8">
-                <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Watermark="Name"/>
-                
-                <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Watermark="Level"/>
-                <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Watermark="Components"/>
-                <TextBox Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Watermark="Casting Time"/>
-                
-                <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Watermark="Range"/>
-                <TextBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Grid.RowSpan="2" Watermark="Target / Area / Effect" AcceptsReturn="True" TextWrapping="Wrap"/>
-                
-                <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Watermark="Duration"/>
-                
-                <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Watermark="Saving Throw"/>
-                <TextBox Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" Watermark="Source"/>
-                
-                <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6" Watermark="Description" AcceptsReturn="True" TextWrapping="Wrap"/>
-                
-                <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Watermark="Spell Cost"/>
-                <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" Watermark="Spell Resistance"/>
-                <TextBox Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" Watermark="Save DC"/>
-            </Grid>
-        </Border>
+                            <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                                <TextBlock Text="{Binding RangeDisplayText}"/>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">
+                                <TextBlock Text="{Binding Duration}"/>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3">
+                                <TextBlock Text="{Binding SavingThrow}"/>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3">
+                                <TextBlock Text="{Binding SpellResistance}"/>
+                            </Border>
+                            
+                            <Border Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" Grid.ColumnSpan="3">
+                                <Grid RowDefinitions="Auto Auto Auto">
+                                    <TextBlock Grid.Row="0" Text="{Binding Target, StringFormat={}T: {0}}" IsVisible="{Binding Target, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding Area, StringFormat={}A: {0}}" IsVisible="{Binding Area, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                    <TextBlock Grid.Row="2" Text="{Binding Effect, StringFormat={}E: {0}}" IsVisible="{Binding Effect, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6">
+                                <TextBlock Text="{Binding DescriptionShort}" VerticalAlignment="Top"/>
+                            </Border>
+
+                            <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6">
+                                <Border IsVisible="{Binding HasMaterialComponent}">
+                                    <TextBlock Text="{Binding MaterialComponent, StringFormat={}Material Component: {0}}"/>
+                                </Border>
+                                <Border IsVisible="{Binding HasExperienceComponent}">
+                                    <TextBlock Text="{Binding ExperienceComponent, StringFormat={}XP Cost: {0}}"/>
+                                </Border>
+                                <Border IsVisible="{Binding HasCorruptionComponent}">
+                                    <TextBlock Text="{Binding CorruptionComponent, StringFormat={}Corruption: {0}}"/>
+                                </Border>
+                            </StackPanel>
+                            
+                            <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="6">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Rulebook.Name}"/>
+                                    <TextBlock Text="{Binding RulebookPage, StringFormat={} p.{0}}" IsVisible="{Binding RulebookPage, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+        
+        <Grid Grid.Column="1" x:Name="BleedingEdgeBack" Height="1110" Width="816" Background="Transparent">
+            <Border Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    CornerRadius="30" Background="{Binding School, Converter={StaticResource SpellSchoolToBrushConverter}}">
+                <Grid x:Name="CutAreaBack" Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Border x:Name="SafeAreaBack" Height="976" Width="679" Background="Transparent" CornerRadius="15"
+                            HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid Height="{Binding $parent[Border].Height}" Width="{Binding $parent[Border].Width}">
+                            <Border>
+                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

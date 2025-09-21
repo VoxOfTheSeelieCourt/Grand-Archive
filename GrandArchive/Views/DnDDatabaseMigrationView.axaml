@@ -1,0 +1,23 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GrandArchive.Views.DnDDatabaseMigrationView"
+             x:DataType="viewModels:DnDDatabaseMigrationViewModel">
+    <Design.DataContext>
+        <viewModels:DnDDatabaseMigrationViewModel/>
+    </Design.DataContext>
+    
+    <Grid RowDefinitions="Auto *">
+        <ProgressBar Grid.Row="0" Maximum="{Binding Maximum}" Value="{Binding Value}"/>
+
+        <WrapPanel Grid.Row="1" Orientation="Horizontal" ItemSpacing="5" Margin="5">
+            <Button Content="Migrate Everything" Command="{Binding MigrateAllCommand}"/>
+            <Button Content="Migrate Editions" Command="{Binding MigrateEditionsCommand}"/>
+            <Button Content="Migrate Rulebooks" Command="{Binding MigrateRulebooksCommand}"/>
+            <Button Content="Migrate Spells" Command="{Binding MigrateSpellsCommand}"/>
+        </WrapPanel>
+    </Grid>
+</UserControl>

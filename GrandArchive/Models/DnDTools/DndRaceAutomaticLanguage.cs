@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace GrandArchive.Models.DnDTools;
+
+public partial class DndRaceAutomaticLanguage
+{
+    public int Id { get; set; }
+
+    public int RaceId { get; set; }
+
+    public int LanguageId { get; set; }
+
+    public virtual DndLanguage Language { get; set; }
+
+    public virtual DndRace Race { get; set; }
+}

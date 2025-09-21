@@ -46,7 +46,12 @@
         </SplitView.Pane>
         
         <SplitView.Content>
-            <TransitioningContentControl Content="{Binding ActiveViewModel}"/>
+            <Grid>
+                <TransitioningContentControl Content="{Binding ActiveViewModel}" />
+        
+                <ItemsControl Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                              Background="Transparent" ItemsSource="{Binding UserMessageViewModels}"/>
+            </Grid>
         </SplitView.Content>
     </SplitView>
 

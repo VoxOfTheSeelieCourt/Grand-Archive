@@ -11,6 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using GrandArchive.Helpers.Attributes;
 using GrandArchive.Models;
 using GrandArchive.Services.Navigation;
+using GrandArchive.Services.UserInformationService;
 using GrandArchive.ViewModels.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,15 +24,18 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private readonly IServiceProvider _serviceProvider;
     private readonly INavigationService _navigationService;
+    private readonly IUserInformationMessageService _userInformationMessageService;
 
     public ViewModelBase ActiveViewModel => _navigationService.ActiveViewModel;
+    public ObservableCollection<UserMessageViewModel> UserMessageViewModels => _userInformationMessageService.UserMessageViewModels;
 
     public ObservableCollection<NavigationBarEntry> NavigableViewModels { get; }
 
-    public MainWindowViewModel(INavigationService navigationService, IServiceProvider serviceProvider)
+    public MainWindowViewModel(INavigationService navigationService, IServiceProvider serviceProvider, IUserInformationMessageService userInformationMessageService)
     {
         _navigationService = navigationService;
         _serviceProvider = serviceProvider;
+        _userInformationMessageService = userInformationMessageService;
 
         _navigationService.PropertyChanged += (_, args) =>
         {
@@ -42,6 +46,7 @@ public partial class MainWindowViewModel : ViewModelBase
         NavigableViewModels = BuildNavigationBarEntries([
             typeof(SpellCardMainViewModel),
             typeof(ComponentDiagramViewModel),
+            typeof(DnDDatabaseMigrationViewModel)
         ]);
 
         SelectedNavigationBarEntry = NavigableViewModels.First();

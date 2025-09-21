@@ -4,6 +4,8 @@ using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using Avalonia.Markup.Xaml;
 using GrandArchive.Helpers.ExtensionMethods;
+using GrandArchive.Models.Database;
+using GrandArchive.Models.DnDTools;
 using GrandArchive.ViewModels;
 using GrandArchive.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,10 @@ public partial class App : Application
         collection.Configure();
 
         var services = collection.BuildServiceProvider();
+
+        services.InitDatabase<DndContext>()
+            .InitDatabase<DatabaseContext>();
+        
         var vm = services.GetRequiredService<MainWindowViewModel>();
 
         switch (ApplicationLifetime)
