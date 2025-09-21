@@ -6,7 +6,8 @@
              xmlns:views="clr-namespace:GrandArchive.Views"
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardMainView"
-             x:DataType="viewModels:SpellCardMainViewModel">
+             x:DataType="viewModels:SpellCardMainViewModel"
+             Loaded="OnLoaded">
     <Design.DataContext>
         <viewModels:SpellCardMainViewModel/>
     </Design.DataContext>
@@ -29,14 +30,37 @@
             </Grid>
             
             <DataGrid Grid.Column="1" ItemsSource="{Binding Spells}" IsReadOnly="True"
-                      x:Name="SpellDataGrid" AutoGenerateColumns="True" SelectedIndex="0">
-                <!-- <DataGrid.Columns> -->
-                <!--     <DataGridTextColumn Header="Name" Binding="{Binding Name}"/> -->
-                <!--     <DataGridTextColumn Header="Schools" Binding="{Binding SpellSchools}"/> -->
-                <!--     <DataGridTextColumn Header="Subschools" Binding="{Binding SpellSubSchools}"/> -->
-                <!--     <DataGridTextColumn Header="Descriptor" Binding="{Binding SpellDescriptors}"/> -->
-                <!--     <DataGridTextColumn Header="Components" Binding="{Binding SpellComponents}"/> -->
-                <!-- </DataGrid.Columns> -->
+                      x:Name="SpellDataGrid" AutoGenerateColumns="False" SelectedIndex="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Schools" Binding="{Binding School}"/>
+                    <DataGridTextColumn Header="Subschools" Binding="{Binding SubSchool}"/>
+                    <DataGridTextColumn Header="Descriptor" Binding="{Binding Descriptor}"/>
+                    <DataGridTextColumn Header="Source" Binding="{Binding Rulebook.Name}"/>
+                    <DataGridTextColumn Header="Page" Binding="{Binding RulebookPage}"/>
+                    <DataGridTextColumn Header="Casting Time" Binding="{Binding CastingTime}"/>
+                    <DataGridTextColumn Header="Range" Binding="{Binding RangeDisplayText}"/>
+                    <DataGridTextColumn Header="Target" Binding="{Binding Target}"/>
+                    <DataGridTextColumn Header="Area" Binding="{Binding Area}"/>
+                    <DataGridTextColumn Header="Effect" Binding="{Binding Effect}"/>
+                    <DataGridTextColumn Header="Duration" Binding="{Binding Duration}"/>
+                    <DataGridTextColumn Header="Saving Throw" Binding="{Binding SavingThrow}"/>
+                    <DataGridTextColumn Header="Spell Resistance" Binding="{Binding SpellResistance}"/>
+                    <DataGridTextColumn Header="Summary" Binding="{Binding DescriptionShort}"/>
+                    <DataGridCheckBoxColumn Header="V" Binding="{Binding HasVerbalComponent}"/>
+                    <DataGridCheckBoxColumn Header="S" Binding="{Binding HasSomaticComponent}"/>
+                    <DataGridCheckBoxColumn Header="M" Binding="{Binding MaterialComponent}"/>
+                    <DataGridCheckBoxColumn Header="AF" Binding="{Binding HasArcaneFocus}"/>
+                    <DataGridCheckBoxColumn Header="DF" Binding="{Binding HasDivineFocus}"/>
+                    <DataGridCheckBoxColumn Header="XP" Binding="{Binding HasExperienceComponent}"/>
+                    <DataGridCheckBoxColumn Header="BR" Binding="{Binding HasBreathComponent}"/>
+                    <DataGridCheckBoxColumn Header="TN" Binding="{Binding HasTruenameComponent}"/>
+                    <DataGridCheckBoxColumn Header="CR" Binding="{Binding HasCorruptionComponent}"/>
+                    <DataGridTextColumn Header="Material Components" Binding="{Binding MaterialComponent}"/>
+                    <DataGridTextColumn Header="XP Cost" Binding="{Binding ExperienceComponent}"/>
+                    <DataGridTextColumn Header="Corruption" Binding="{Binding CorruptionComponent}"/>
+                    <DataGridTextColumn Header="Extra Components" Binding="{Binding ExtraComponent}"/>
+                </DataGrid.Columns>
             </DataGrid>
         </Grid>
     </Grid>

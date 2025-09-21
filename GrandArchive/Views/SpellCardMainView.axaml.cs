@@ -10,6 +10,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using GrandArchive.Models.Database;
+using GrandArchive.ViewModels;
 
 namespace GrandArchive.Views;
 
@@ -59,17 +60,19 @@ public partial class SpellCardMainView : UserControl
             var parent = top.Content as Panel ?? throw new InvalidOperationException("No usable panel to attach to.");
             parent.Children.Add(host);
 
+            SpellCardRenderView view = new SpellCardRenderView(){DataContext = spells.First()};
+            Canvas.SetLeft(view, -10000000);
+            Canvas.SetTop(view, -10000000);
+            host.Children.Add(view);
+
+            Dispatcher.UIThread.Invoke(() => { }, DispatcherPriority.Loaded);
+
             foreach (var spell in spells)
             {
-                SpellCardRenderView view = new SpellCardRenderView() { DataContext = spell };
-                Canvas.SetLeft(view, -10000000);
-                Canvas.SetTop(view, -10000000);
-                host.Children.Add(view);
+                view.DataContext = spell;
 
-                // Let styles/templates load
                 Dispatcher.UIThread.Invoke(() => { }, DispatcherPriority.Loaded);
-
-                // Force full-content layout
+                view.InvalidateMeasure();
                 view.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 view.Arrange(new Rect(view.DesiredSize));
                 Dispatcher.UIThread.Invoke(() => { }, DispatcherPriority.Render);
@@ -77,10 +80,10 @@ public partial class SpellCardMainView : UserControl
                 SaveControl(view.CutAreaFront, Path.Combine(dir[0].Path.AbsolutePath, $"{spell.Name} Front.png"));
                 SaveControl(view.CutAreaBack, Path.Combine(dir[0].Path.AbsolutePath, $"{spell.Name} Back.png"));
 
-                // Cleanup
-                host.Children.Remove(view);
+                Dispatcher.UIThread.Invoke(() => { }, DispatcherPriority.Background);
             }
 
+            host.Children.Clear();
             parent.Children.Remove(host);
         });
     }
@@ -106,5 +109,18 @@ public partial class SpellCardMainView : UserControl
 
         rtb.Render(control);
         rtb.Save(filePath);
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not SpellCardMainViewModel vm) return;
+
+        vm.PropertyChanged += (o, args) =>
+        {
+            if (args.PropertyName == nameof(vm.Spells))
+                SpellDataGrid.SelectedItem = vm.Spells.First();
+        };
+
+        SpellDataGrid.SelectedItem = vm.Spells.First();
     }
 }
