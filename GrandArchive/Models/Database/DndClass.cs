@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace GrandArchive.Models.Database;
 

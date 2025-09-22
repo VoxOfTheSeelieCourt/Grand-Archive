@@ -81,6 +81,6 @@ public partial class ComponentDiagramViewModel : NavigableViewModel
 
     public ComponentDiagramViewModel()
     {
-        LoadGraph();
+        Task.Run(LoadGraph);
     }
 }

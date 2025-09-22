@@ -93,9 +93,9 @@ public partial class ComponentDiagramView : UserControl
         var heightPx = (int)Math.Ceiling(finalSize.Height * scale);
 
         // Safety cap: enormous graphs can create huge bitmaps
-        const int MaxPixels = 16384; // adjust to your needs
-        widthPx  = Math.Min(widthPx,  MaxPixels);
-        heightPx = Math.Min(heightPx, MaxPixels);
+        const int maxPixels = 16384; // adjust to your needs
+        widthPx  = Math.Min(widthPx,  maxPixels);
+        heightPx = Math.Min(heightPx, maxPixels);
 
         using var rtb = new RenderTargetBitmap(new PixelSize(widthPx, heightPx),
             new Vector(96 * scale, 96 * scale));

@@ -39,7 +39,7 @@ public static class ServiceCollectionExtensionMethods
         s.AddSingleton<CreateUserMessageViewModel>(provider =>
             (message, type, after, details) =>
                 new UserMessageViewModel(message, type, after, details, provider.GetRequiredService<IUserInformationMessageService>()));
-        s.AddSingleton<GetTopLevel>(x => () =>
+        s.AddSingleton<GetTopLevel>(_ => () =>
         {
             return Application.Current?.ApplicationLifetime switch
             {

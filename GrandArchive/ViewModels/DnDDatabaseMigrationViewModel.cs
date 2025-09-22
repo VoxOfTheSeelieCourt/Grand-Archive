@@ -37,6 +37,7 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
         FixData();
     }
 
+    // ReSharper disable once CognitiveComplexity
     private void FixData()
     {
         using var context = _dndContextFactory.CreateDbContext();
@@ -69,11 +70,11 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
 
         context.SaveChanges();
 
-        var a = string.Join("\n", context.DndSpells.Where(x => x.XpComponent == 1).ToList().SelectMany(x =>
-        {
-            var lines = x.Description.Split("\n");
-            return lines.Where(l => l.Contains("XP")).ToList();
-        }).Distinct().OrderBy(x => x).ToList());
+        // var a = string.Join("\n", context.DndSpells.Where(x => x.XpComponent == 1).ToList().SelectMany(x =>
+        // {
+        //     var lines = x.Description.Split("\n");
+        //     return lines.Where(l => l.Contains("XP")).ToList();
+        // }).Distinct().OrderBy(x => x).ToList());
     }
 
     [RelayCommand]
@@ -131,15 +132,12 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
     private void MigrateClasses()
     {
         Task.Run(() => MigrateTable(x => x.DndCharacterclasses.ToList(),
-            (x, db) =>
+            (x, _) => new DndClass()
             {
-                return new DndClass()
-                {
-                    CreatedAt = DateTime.Now,
-                    MigrationId = x.Id,
-                    Name = x.Name,
-                    IsPrestige = x.Prestige == 1,
-                };
+                CreatedAt = DateTime.Now,
+                MigrationId = x.Id,
+                Name = x.Name,
+                IsPrestige = x.Prestige == 1,
             },
             x => x.DndClasses));
     }
@@ -162,9 +160,9 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
                 var school = x.School
                     .Name
                     .Split('/')
-                    .Select(y => Enum.TryParse(typeof(DndSpellSchool), y, true, out var result)
-                                 && result is DndSpellSchool s
-                        ? s
+                    .Select(y => Enum.TryParse(typeof(DndSpellSchool), y, true, out var r)
+                                 && r is DndSpellSchool dndSpellSchool
+                        ? dndSpellSchool
                         : throw new ArgumentOutOfRangeException())
                     .Aggregate((z, y) => z | y);
 
@@ -172,9 +170,9 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
                     .Name
                     .Split(' ')
                     .Where(y => y != "and" && y != "or")
-                    .Select(y => Enum.TryParse(typeof(DndSpellSubSchool), y, true, out var result)
-                                 && result is DndSpellSubSchool s
-                        ? s
+                    .Select(y => Enum.TryParse(typeof(DndSpellSubSchool), y, true, out var r)
+                                 && r is DndSpellSubSchool dndSpellSubSchool
+                        ? dndSpellSubSchool
                         : throw new ArgumentOutOfRangeException())
                     .Aggregate((z, y) => z | y);
                 
@@ -185,9 +183,9 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
                         .Replace("see text", "Various")
                         .Split(' ')
                         .Where(z => z != "and" && z != "or")
-                        .Select(z => Enum.TryParse(typeof(DndSpellDescriptor), z.Replace("-", ""), true, out var result)
-                                     && result is DndSpellDescriptor s
-                            ? s
+                        .Select(z => Enum.TryParse(typeof(DndSpellDescriptor), z.Replace("-", ""), true, out var r)
+                                     && r is DndSpellDescriptor dndSpellDescriptor
+                            ? dndSpellDescriptor
                             : throw new ArgumentOutOfRangeException()))
                         .Aggregate((z, y) => z | y);
 

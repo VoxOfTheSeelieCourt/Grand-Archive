@@ -19,7 +19,7 @@ public static class GoogleSheetsDownloader
     /// Optional: a specific sheet/tab gid (string or number). If omitted, all tabs are included.
     /// You can see gid in the sheet URL as "...#gid=123456789".
     /// </param>
-    public static async Task DownloadXlsxAsync(string shareUrlOrId, string outputPath, string? gid = null)
+    public static async Task DownloadXlsxAsync(string shareUrlOrId, string outputPath, string gid = null)
     {
         if (string.IsNullOrWhiteSpace(shareUrlOrId))
             throw new ArgumentException("shareUrlOrId is required.");
