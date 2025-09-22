@@ -18,6 +18,7 @@
             HasArcaneFocus="True"
             HasCorruptionComponent="True"
             CorruptionComponent="10d20 Gold"
+            ExtraComponent="Firm Handshake"
             CastingTime="1 hour"
             Range="Custom"
             CustomRangeText="Something between 5 and 200 ft."
@@ -103,7 +104,7 @@
                                 </Border>
 
                                 <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                                    <!-- Class Levels -->
+                                    <!-- ToDo: Class Levels -->
                                 </Border>
                                 <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
                                     <Grid ColumnDefinitions="Auto *" ColumnSpacing="5">
@@ -167,7 +168,7 @@
                                     <TextBlock Text="{Binding DescriptionShort}" VerticalAlignment="Top" />
                                 </Border>
 
-                                <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6">
+                                <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6" Spacing="10">
                                     <Border IsVisible="{Binding HasMaterialComponent}">
                                         <TextBlock
                                             Text="{Binding MaterialComponent, StringFormat={}Material Component: {0}}" />
@@ -177,6 +178,9 @@
                                     </Border>
                                     <Border IsVisible="{Binding HasCorruptionComponent}">
                                         <TextBlock Text="{Binding CorruptionComponent, StringFormat={}Corruption: {0}}" />
+                                    </Border>
+                                    <Border IsVisible="{Binding ExtraComponent, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                        <TextBlock Text="{Binding ExtraComponent, StringFormat={}Extra: {0}}" />
                                     </Border>
                                 </StackPanel>
 

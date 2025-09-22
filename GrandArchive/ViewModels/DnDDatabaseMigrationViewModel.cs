@@ -81,7 +81,9 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
     {
         MigrateEditions();
         MigrateRulebooks();
+        MigrateClasses();
         MigrateSpells();
+        MigrateClassSpells();
     }
 
     [RelayCommand]
@@ -126,6 +128,23 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
     }
 
     [RelayCommand]
+    private void MigrateClasses()
+    {
+        Task.Run(() => MigrateTable(x => x.DndCharacterclasses.ToList(),
+            (x, db) =>
+            {
+                return new DndClass()
+                {
+                    CreatedAt = DateTime.Now,
+                    MigrationId = x.Id,
+                    Name = x.Name,
+                    IsPrestige = x.Prestige == 1,
+                };
+            },
+            x => x.DndClasses));
+    }
+
+    [RelayCommand]
     private void MigrateSpells()
     {
         Task.Run(() => MigrateTable(x => x.DndSpells
@@ -133,6 +152,7 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
                 .Include(y => y.SubSchool)
                 .Include(y => y.Rulebook)
                 .Include(y => y.DndSpellDescriptors).ThenInclude(y => y.Spelldescriptor)
+                .Include(y => y.DndSpellclasslevels).ThenInclude(y => y.CharacterClass)
                 .Where(y => y.SchoolId < 17)
                 .ToList(),
             (x, db) =>
@@ -210,7 +230,7 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
                     Effect = x.Effect ?? "",
                     Area = x.Area ?? "",
                     Duration = x.Duration ?? "",
-                    SavingThrow = x.SavingThrow ?? "-",
+                    SavingThrow = x.SavingThrow ?? "",
                     SpellResistance = x.SpellResistance ?? "No",
                     Description = x.Description,
                     DescriptionShort = ""
@@ -219,6 +239,31 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
             x => x.DndSpells));
     }
 
+    [RelayCommand]
+    private void MigrateClassSpells()
+    {
+        Task.Run(() => MigrateTable(x => x.DndSpellclasslevels
+                .Include(y => y.Spell)
+                .Include(y => y.CharacterClass)
+                .Where(y => y.Spell.SchoolId < 17)
+                .ToList(),
+            (x, db) =>
+            {
+                var spell = db.DndSpells.First(y => y.MigrationId == x.SpellId);
+                var cls = db.DndClasses.First(y => y.MigrationId == x.CharacterClassId);
+
+                return new DndClassSpell()
+                {
+                    CreatedAt = DateTime.Now,
+                    MigrationId = x.Id,
+                    Class = cls,
+                    Spell = spell,
+                    Level = x.Level,
+                };
+            },
+            x => x.DndClassSpells));
+    }
+    
     /// <summary>
     /// Migrates a database table in the new database by fetching data from the old database with <paramref name="sourceData"/>, converting it with <paramref name="convert"/> and writing it to <paramref name="set"/> after clearing all items with a set <see cref="DatabaseObject.MigrationId"/>.
     /// </summary>

@@ -17,7 +17,9 @@
             <Button Content="Migrate Everything" Command="{Binding MigrateAllCommand}"/>
             <Button Content="Migrate Editions" Command="{Binding MigrateEditionsCommand}"/>
             <Button Content="Migrate Rulebooks" Command="{Binding MigrateRulebooksCommand}"/>
+            <Button Content="Migrate Classes" Command="{Binding MigrateClassesCommand}"/>
             <Button Content="Migrate Spells" Command="{Binding MigrateSpellsCommand}"/>
+            <Button Content="Migrate Class Spells" Command="{Binding MigrateClassSpellsCommand}"/>
         </WrapPanel>
     </Grid>
 </UserControl>

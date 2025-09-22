@@ -92,7 +92,7 @@
                         Margin="2" FontSize="12" VerticalAlignment="Center" Content="🗙"/>
             </Grid>
             
-            <StackPanel Grid.Row="1" IsVisible="{Binding MessageContent, Converter={StaticResource NullToFalseConverter}}">
+            <StackPanel Grid.Row="1" IsVisible="{Binding MessageContent, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
                 <Expander Header="Show Details" HorizontalAlignment="Stretch" Margin="2" FontSize="12">
                     <TextBlock Text="{Binding MessageContent}"/>
                 </Expander>

@@ -39,6 +39,7 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] private bool _isVerified;
     
     [ObservableProperty] private DndRulebook _rulebook;
+    [ObservableProperty] private ICollection<DndClassSpell> _classSpells;
 
     [NotMapped]
     public string AllComponents
@@ -56,6 +57,7 @@ public partial class DndSpell : DatabaseObject
             if (HasBreathComponent) components.Add("BR");
             if (HasTruenameComponent) components.Add("TN");
             if (HasCorruptionComponent) components.Add("CR");
+            if (!string.IsNullOrEmpty(ExtraComponent)) components.Add("E");
             
             return string.Join(",", components);
         }

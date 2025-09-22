@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace GrandArchive.Models.Database;
@@ -14,4 +15,5 @@ public partial class DndRulebook : DatabaseObject
     [ObservableProperty] private int? _publishingYear;
     
     [ObservableProperty] private DndEdition _dndEdition;
+    [ObservableProperty] private ICollection<DndSpell> _spells;
 }

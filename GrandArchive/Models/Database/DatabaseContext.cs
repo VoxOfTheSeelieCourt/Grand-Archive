@@ -34,6 +34,8 @@ public class DatabaseContext : DbContext
     public DbSet<DndEdition> DndEditions { get; set; }
     public DbSet<DndRulebook> DndRulebooks { get; set; }
     public DbSet<DndSpell> DndSpells { get; set; }
+    public DbSet<DndClass> DndClasses { get; set; }
+    public DbSet<DndClassSpell> DndClassSpells { get; set; }
     
     #endregion
 }
