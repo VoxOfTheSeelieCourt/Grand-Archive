@@ -10,13 +10,14 @@
 
     <Design.DataContext>
         <database:DndSpell
-            Name="Test Spell of Testus Maximus"
+            Name="Hyper-Employment Spell of Testus Maximus"
             School="Abjuration,Enchantment"
             SubSchool="Compulsion"
             Descriptor="LanguageDependent,MindAffecting"
             HasVerbalComponent="True"
             HasArcaneFocus="True"
             HasCorruptionComponent="True"
+            ArcaneFocus="A pen and a handwritten contract"
             CorruptionComponent="10d20 Gold"
             ExtraComponent="Firm Handshake"
             CastingTime="1 hour"
@@ -32,8 +33,20 @@
             DescriptionShort="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit"
             Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse semper nibh vel nisl consequat iaculis. Cras eu dolor ut erat bibendum sagittis ac vel nulla. Nulla ultrices vitae neque vitae consectetur. Nullam a odio quis dui iaculis volutpat a id mauris. Nam nec nunc a tellus mollis condimentum. Integer cursus justo mollis metus commodo dapibus. Proin at pellentesque leo, eget cursus velit. Suspendisse potenti. Morbi placerat felis ut tortor pharetra, ut vestibulum eros laoreet. Ut non gravida tellus. Nulla nulla ante, dignissim et fermentum eu, tristique sed metus. Duis cursus nulla vel tortor malesuada auctor. Aliquam lacinia mi vitae vehicula commodo. Curabitur posuere imperdiet tellus, in malesuada metus finibus mattis. Curabitur id maximus neque, id dignissim nunc. Vivamus id maximus augue.&#x0a;&#x0a;Sed dolor massa, elementum eu viverra et, viverra vel lacus. Integer euismod nulla tellus. Integer mattis, nisi vitae gravida sagittis, lacus metus rhoncus dui, vitae scelerisque mauris arcu non magna. Duis vel egestas risus. Aenean malesuada ultrices vestibulum. Aenean at nisi urna. Proin luctus turpis vel augue convallis, ut tincidunt quam varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam ut faucibus libero, quis egestas risus.&#x0a;&#x0a;Donec et lacus vestibulum, tempor velit a, tincidunt sem. Sed egestas at ante sed rutrum. Vivamus sit amet magna quis felis malesuada tempus nec eu mi. Quisque sed enim egestas, scelerisque magna eget, ornare arcu. Ut nec semper nulla, sit amet mollis sem. In hac habitasse platea dictumst. Praesent ullamcorper eu magna quis placerat. Nunc eget mauris sed ligula mattis luctus. Nam dapibus massa at purus euismod pulvinar.">
             <database:DndSpell.Rulebook>
-                <database:DndRulebook Name="Player's Handbook III" />
+                <database:DndRulebook Name="Player's Handbook III" Abbreviation="PHB III"/>
             </database:DndSpell.Rulebook>
+            <database:DndSpell.ClassSpells>
+                <database:DndClassSpell Level="2">
+                    <database:DndClassSpell.Class>
+                        <database:DndClass Name="Bard"/>
+                    </database:DndClassSpell.Class>
+                </database:DndClassSpell>
+                <database:DndClassSpell Level="1">
+                    <database:DndClassSpell.Class>
+                        <database:DndClass Name="Apostle of Mammon"/>
+                    </database:DndClassSpell.Class>
+                </database:DndClassSpell>
+            </database:DndSpell.ClassSpells>
         </database:DndSpell>
     </Design.DataContext>
 
@@ -104,7 +117,12 @@
                                 </Border>
 
                                 <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                                    <!-- ToDo: Class Levels -->
+                                    <StackPanel Orientation="Horizontal">
+                                        <PathIcon Data="{StaticResource Rulebook}" />
+                                        <TextBlock Text="{Binding Rulebook.Abbreviation}" />
+                                        <TextBlock Text="{Binding RulebookPage, StringFormat={} p.{0}}"
+                                                   IsVisible="{Binding RulebookPage, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                    </StackPanel>
                                 </Border>
                                 <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
                                     <Grid ColumnDefinitions="Auto *" ColumnSpacing="5">
@@ -170,8 +188,10 @@
 
                                 <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6" Spacing="10">
                                     <Border IsVisible="{Binding HasMaterialComponent}">
-                                        <TextBlock
-                                            Text="{Binding MaterialComponent, StringFormat={}Material Component: {0}}" />
+                                        <TextBlock Text="{Binding MaterialComponent, StringFormat={}Material Component: {0}}" />
+                                    </Border>
+                                    <Border IsVisible="{Binding HasArcaneFocus}">
+                                        <TextBlock Text="{Binding ArcaneFocus, StringFormat={}Arcane Focus: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasExperienceComponent}">
                                         <TextBlock Text="{Binding ExperienceComponent, StringFormat={}XP Cost: {0}}" />
@@ -185,11 +205,9 @@
                                 </StackPanel>
 
                                 <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="6">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Rulebook.Name}" />
-                                        <TextBlock Text="{Binding RulebookPage, StringFormat={} p.{0}}"
-                                                   IsVisible="{Binding RulebookPage, Converter={x:Static ObjectConverters.IsNotNull}}" />
-                                    </StackPanel>
+                                    <Grid ColumnDefinitions="Auto *" ColumnSpacing="5">
+                                        <TextBlock Grid.Column="1" Text="{Binding ClassDisplayTextSingleLine}" FontWeight="Bold"/>
+                                    </Grid>
                                 </Border>
                             </Grid>
                         </Border>

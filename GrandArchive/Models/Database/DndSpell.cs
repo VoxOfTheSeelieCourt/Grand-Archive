@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace GrandArchive.Models.Database;
@@ -17,6 +18,7 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] private bool _hasMaterialComponent;
     [ObservableProperty] private string _materialComponent;
     [ObservableProperty] private bool _hasArcaneFocus;
+    [ObservableProperty] private string _arcaneFocus;
     [ObservableProperty] private bool _hasDivineFocus;
     [ObservableProperty] private bool _hasExperienceComponent;
     [ObservableProperty] private string _experienceComponent;
@@ -39,7 +41,7 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] private bool _isVerified;
     
     [ObservableProperty] private DndRulebook _rulebook;
-    [ObservableProperty] private ICollection<DndClassSpell> _classSpells;
+    [ObservableProperty] private ICollection<DndClassSpell> _classSpells =  new List<DndClassSpell>();
 
     [NotMapped]
     public string AllComponents
@@ -64,6 +66,8 @@ public partial class DndSpell : DatabaseObject
     }
 
     [NotMapped] public string RangeDisplayText => Range == DndSpellRange.Custom ? CustomRangeText : Range.ToString();
+    [NotMapped] public string ClassDisplayTextMultiLine => ClassSpells.Any() ? string.Join("\n", ClassSpells.Select(x => $"{x.Class.Name} {x.Level}")) : "";
+    [NotMapped] public string ClassDisplayTextSingleLine => ClassSpells.Any() ? string.Join(",", ClassSpells.Select(x => $"{x.Class.Name} {x.Level}")) : "";
     [NotMapped] public bool DisplaySubschool => SubSchool != DndSpellSubSchool.None;
     [NotMapped] public bool DisplayDescriptor => Descriptor != DndSpellDescriptor.None;
     [NotMapped] public bool HasChanges { get; private set; }

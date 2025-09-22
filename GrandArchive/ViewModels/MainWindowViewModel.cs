@@ -45,8 +45,10 @@ public partial class MainWindowViewModel : ViewModelBase
 
         NavigableViewModels = BuildNavigationBarEntries([
             typeof(SpellCardMainViewModel),
+#if DEBUG
             typeof(ComponentDiagramViewModel),
-            typeof(DnDDatabaseMigrationViewModel)
+            typeof(DnDDatabaseMigrationViewModel),
+#endif
         ]);
 
         SelectedNavigationBarEntry = NavigableViewModels.First();

@@ -31,9 +31,19 @@ public partial class SpellCardMainViewModel : NavigableViewModel
     [RelayCommand]
     private async Task LoadSpells()
     {
-        await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
+        try
+        {
+            await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-        Spells = new ObservableCollection<DndSpell>(dbContext.DndSpells.Include(x => x.Rulebook).ToList());
+            Spells = new ObservableCollection<DndSpell>(dbContext.DndSpells
+                .Include(x => x.Rulebook)
+                .Include(x => x.ClassSpells).ThenInclude(x => x.Class)
+                .ToList());
+        }
+        catch (Exception e)
+        {
+            _userInformationMessageService.AddDisplayMessage("Error when loading spells", InformationType.Error, TimeSpan.FromMinutes(1), e.ToString());
+        }
     }
 
     [RelayCommand]

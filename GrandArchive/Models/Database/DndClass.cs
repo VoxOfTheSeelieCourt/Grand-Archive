@@ -8,5 +8,5 @@ public partial class DndClass : DatabaseObject
     [ObservableProperty] private string _name;
     [ObservableProperty] private bool _isPrestige;
 
-    [ObservableProperty] private ICollection<DndClassSpell> _classSpells;
+    [ObservableProperty] private ICollection<DndClassSpell> _classSpells = new List<DndClassSpell>();
 }

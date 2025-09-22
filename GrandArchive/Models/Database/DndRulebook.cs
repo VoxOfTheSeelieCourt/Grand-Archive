@@ -15,5 +15,5 @@ public partial class DndRulebook : DatabaseObject
     [ObservableProperty] private int? _publishingYear;
     
     [ObservableProperty] private DndEdition _dndEdition;
-    [ObservableProperty] private ICollection<DndSpell> _spells;
+    [ObservableProperty] private ICollection<DndSpell> _spells = new List<DndSpell>();
 }

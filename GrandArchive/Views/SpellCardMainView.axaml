@@ -34,6 +34,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding ClassDisplayTextMultiLine}"/>
                     <DataGridTextColumn Header="Schools" Binding="{Binding School}"/>
                     <DataGridTextColumn Header="Subschools" Binding="{Binding SubSchool}"/>
                     <DataGridTextColumn Header="Descriptor" Binding="{Binding Descriptor}"/>
