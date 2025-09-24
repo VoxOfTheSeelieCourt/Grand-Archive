@@ -12,9 +12,4 @@ public abstract partial class DatabaseObject : ObservableObject
     [ObservableProperty] private int? _migrationId;
     [ObservableProperty] private DateTime _createdAt;
     [ObservableProperty] private DateTime? _updatedAt;
-
-    public override bool Equals(object obj)
-    {
-        return obj is DndRulebook rulebook && rulebook.Id == Id;
-    }
 }

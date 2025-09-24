@@ -16,4 +16,9 @@ public partial class DndRulebook : DatabaseObject
     
     [ObservableProperty] private DndEdition _dndEdition;
     [ObservableProperty] private ICollection<DndSpell> _spells = new List<DndSpell>();
+
+    public override bool Equals(object obj)
+    {
+        return obj is DndRulebook rulebook && rulebook.Id == Id;
+    }
 }
