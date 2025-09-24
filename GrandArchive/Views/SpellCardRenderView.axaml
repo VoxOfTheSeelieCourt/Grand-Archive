@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:helpers="clr-namespace:GrandArchive.Helpers"
              xmlns:database="clr-namespace:GrandArchive.Models.Database"
+             xmlns:mdxaml="https://github.com/whistyun/Markdown.Avalonia"
+             xmlns:avalonia="clr-namespace:ColorTextBlock.Avalonia;assembly=ColorTextBlock.Avalonia"
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardRenderView"
              x:DataType="database:DndSpell">
@@ -24,16 +26,20 @@
             Range="Custom"
             CustomRangeText="Something between 5 and 200 ft."
             Duration="Unlimited"
-            SavingThrow="-"
+            SavingThrow="Will negates (harmless; see text)"
             SpellResistance="No"
             Target="One unwilling creature"
             Area=""
             Effect="Instant willingness"
             RulebookPage="69"
-            DescriptionShort="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit"
-            Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse semper nibh vel nisl consequat iaculis. Cras eu dolor ut erat bibendum sagittis ac vel nulla. Nulla ultrices vitae neque vitae consectetur. Nullam a odio quis dui iaculis volutpat a id mauris. Nam nec nunc a tellus mollis condimentum. Integer cursus justo mollis metus commodo dapibus. Proin at pellentesque leo, eget cursus velit. Suspendisse potenti. Morbi placerat felis ut tortor pharetra, ut vestibulum eros laoreet. Ut non gravida tellus. Nulla nulla ante, dignissim et fermentum eu, tristique sed metus. Duis cursus nulla vel tortor malesuada auctor. Aliquam lacinia mi vitae vehicula commodo. Curabitur posuere imperdiet tellus, in malesuada metus finibus mattis. Curabitur id maximus neque, id dignissim nunc. Vivamus id maximus augue.&#x0a;&#x0a;Sed dolor massa, elementum eu viverra et, viverra vel lacus. Integer euismod nulla tellus. Integer mattis, nisi vitae gravida sagittis, lacus metus rhoncus dui, vitae scelerisque mauris arcu non magna. Duis vel egestas risus. Aenean malesuada ultrices vestibulum. Aenean at nisi urna. Proin luctus turpis vel augue convallis, ut tincidunt quam varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam ut faucibus libero, quis egestas risus.&#x0a;&#x0a;Donec et lacus vestibulum, tempor velit a, tincidunt sem. Sed egestas at ante sed rutrum. Vivamus sit amet magna quis felis malesuada tempus nec eu mi. Quisque sed enim egestas, scelerisque magna eget, ornare arcu. Ut nec semper nulla, sit amet mollis sem. In hac habitasse platea dictumst. Praesent ullamcorper eu magna quis placerat. Nunc eget mauris sed ligula mattis luctus. Nam dapibus massa at purus euismod pulvinar.">
+            DescriptionShort="What, are you really gonna read the full description? Do you not trust me? Is our company's reputation not enough for you? We are not a black company, unlike Cover Corp! You are such a heartless person."
+            Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu dolor ut erat bibendum sagittis ac vel nulla. Nulla ultrices vitae neque vitae consectetur. Nullam a odio quis dui iaculis volutpat a id mauris. Nam nec nunc a tellus mollis condimentum. Integer cursus justo mollis metus commodo dapibus. Proin at pellentesque leo, eget cursus velit. Suspendisse potenti. Morbi placerat felis ut tortor pharetra, ut vestibulum eros laoreet. Ut non gravida tellus. Nulla nulla ante, dignissim et fermentum eu, tristique sed metus. Duis cursus nulla vel tortor malesuada auctor. Aliquam lacinia mi vitae vehicula commodo. Curabitur posuere imperdiet tellus, in malesuada metus finibus mattis. Curabitur id maximus neque, id dignissim nunc. Vivamus id maximus augue.&#x0a;&#x0a;Sed dolor massa, elementum eu viverra et, viverra vel lacus. Integer euismod nulla tellus. Integer mattis, nisi vitae gravida sagittis, lacus metus rhoncus dui, vitae scelerisque mauris arcu non magna. Duis vel egestas risus. Aenean malesuada ultrices vestibulum. Aenean at nisi urna. Proin luctus turpis vel augue convallis, ut tincidunt quam varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam ut faucibus libero, quis egestas risus.&#x0a;&#x0a;Donec et lacus vestibulum, tempor velit a, tincidunt sem. Sed egestas at ante sed rutrum. Vivamus sit amet magna quis felis malesuada tempus nec eu mi. Quisque sed enim egestas, scelerisque magna eget, ornare arcu. Ut nec semper nulla, sit amet mollis sem. In hac habitasse platea dictumst. Praesent ullamcorper eu magna quis placerat.">
             <database:DndSpell.Rulebook>
-                <database:DndRulebook Name="Player's Handbook III" Abbreviation="PHB III"/>
+                <database:DndRulebook Name="Player's Handbook III" Abbreviation="PHB III">
+                    <database:DndRulebook.DndEdition>
+                        <database:DndEdition Name="CORE 3.5"/>
+                    </database:DndRulebook.DndEdition>
+                </database:DndRulebook>
             </database:DndSpell.Rulebook>
             <database:DndSpell.ClassSpells>
                 <database:DndClassSpell Level="2">
@@ -78,6 +84,18 @@
             <Setter Property="Foreground" Value="Black" />
             <Setter Property="TextWrapping" Value="Wrap" />
             <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="avalonia|CTextBlock">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="avalonia|CRun">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Foreground" Value="Black" />
         </Style>
 
         <Style Selector="PathIcon">
@@ -199,6 +217,27 @@
                                     <Border IsVisible="{Binding HasCorruptionComponent}">
                                         <TextBlock Text="{Binding CorruptionComponent, StringFormat={}Corruption: {0}}" />
                                     </Border>
+                                    <Border IsVisible="{Binding HasSacrificeComponent}">
+                                        <TextBlock Text="{Binding SacrificeComponent, StringFormat={}Mindset: {0}}" />
+                                    </Border>
+                                    <Border IsVisible="{Binding HasAbstinenceComponent}">
+                                        <TextBlock Text="{Binding AbstinenceComponent, StringFormat={}Abstinence: {0}}" />
+                                    </Border>
+                                    <Border IsVisible="{Binding HasMindsetComponent}">
+                                        <TextBlock Text="{Binding MindsetComponent, StringFormat={}Mindset: {0}}" />
+                                    </Border>
+                                    <Border IsVisible="{Binding HasLocationComponent}">
+                                        <TextBlock Text="{Binding LocationComponent, StringFormat={}Location: {0}}" />
+                                    </Border>
+                                    <Border IsVisible="{Binding HasDragonmarkComponent}">
+                                        <TextBlock Text="{Binding DragonmarkComponent, StringFormat={}Dragonmark: {0}}" />
+                                    </Border>
+                                    <Border IsVisible="{Binding HasDiseaseComponent}">
+                                        <TextBlock Text="{Binding DiseaseComponent, StringFormat={}Disease: {0}}" />
+                                    </Border>
+                                    <Border IsVisible="{Binding HasColdfireComponent}">
+                                        <TextBlock Text="{Binding ColdfireComponent, StringFormat={}Coldfire: {0}}" />
+                                    </Border>
                                     <Border IsVisible="{Binding ExtraComponent, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
                                         <TextBlock Text="{Binding ExtraComponent, StringFormat={}Extra: {0}}" />
                                     </Border>
@@ -227,9 +266,29 @@
                                 CornerRadius="15"
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Grid Height="{Binding $parent[Border].Height}" Width="{Binding $parent[Border].Width}">
-                                <Border>
-                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" VerticalAlignment="Top" />
-                                </Border>
+                                <Grid RowDefinitions="* Auto" RowSpacing="10">
+                                    <Border Grid.Row="0">
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding Description}"
+                                                                     VerticalAlignment="Top">
+                                            <mdxaml:MarkdownScrollViewer.Styles>
+                                                <Style Selector="ScrollViewer">
+                                                    <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+                                                </Style>
+                                            </mdxaml:MarkdownScrollViewer.Styles>
+                                        </mdxaml:MarkdownScrollViewer>
+                                    </Border>
+                                    
+                                    <Border Grid.Row="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <PathIcon Data="{StaticResource Rulebook}" />
+                                            <TextBlock Text="{Binding Rulebook.DndEdition.Name, StringFormat={}[{0}] - }" />
+                                            <TextBlock Text="{Binding Rulebook.Name}" />
+                                            <TextBlock Text="{Binding RulebookPage, StringFormat={} p.{0}}"
+                                                       IsVisible="{Binding RulebookPage, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                            
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
                             </Grid>
                         </Border>
                     </Grid>

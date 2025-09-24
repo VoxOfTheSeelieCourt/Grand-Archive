@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,12 +21,24 @@ public partial class SpellCardMainViewModel : NavigableViewModel
 
     [ObservableProperty] private ObservableCollection<DndSpell> _spells;
 
+    public List<DndRulebook> RuleBooks { get; set; }
+    public List<DndClass> Classes { get; set; }
+
     public SpellCardMainViewModel(IDbContextFactory<DatabaseContext> dbContextFactory, IUserInformationMessageService userInformationMessageService)
     {
         _dbContextFactory = dbContextFactory;
         _userInformationMessageService = userInformationMessageService;
 
+        LoadBaseData();
         Task.Run(LoadSpells);
+    }
+
+    private void LoadBaseData()
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+        
+        RuleBooks = dbContext.DndRulebooks.Include(x => x.DndEdition).ToList();
+        Classes = dbContext.DndClasses.ToList();
     }
 
     [RelayCommand]
@@ -36,9 +49,15 @@ public partial class SpellCardMainViewModel : NavigableViewModel
             await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Spells = new ObservableCollection<DndSpell>(dbContext.DndSpells
-                .Include(x => x.Rulebook)
+                .Include(x => x.Rulebook).ThenInclude(x => x.DndEdition)
                 .Include(x => x.ClassSpells).ThenInclude(x => x.Class)
                 .ToList());
+            
+            foreach (var dndSpell in Spells)
+            {
+                if (dndSpell.CastingTime == "1 standard action")
+                    dndSpell.CastingTime = "1 standard";
+            }
         }
         catch (Exception e)
         {
@@ -59,7 +78,11 @@ public partial class SpellCardMainViewModel : NavigableViewModel
                 return;
             }
         
-            updated.ForEach(x => x.UpdatedAt = DateTime.Now);
+            updated.ForEach(x =>
+            {
+                x.UpdatedAt = DateTime.Now;
+                x.HasChanges = false;
+            });
 
             await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
         

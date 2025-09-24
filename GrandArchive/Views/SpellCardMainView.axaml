@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
              xmlns:views="clr-namespace:GrandArchive.Views"
+             xmlns:database="clr-namespace:GrandArchive.Models.Database"
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardMainView"
              x:DataType="viewModels:SpellCardMainViewModel"
@@ -21,20 +22,31 @@
         </Menu>
         
         <Grid Grid.Row="1" ColumnDefinitions="Auto *">
-            <Grid Grid.Column="0" RowDefinitions="Auto *" DataContext="{Binding #SpellDataGrid.SelectedItem}">
+            <Grid Grid.Column="0" RowDefinitions="Auto * Auto" RowSpacing="5"
+                  DataContext="{Binding #SpellDataGrid.((database:DndSpell)SelectedItem)}">
                 <Viewbox Grid.Row="0" Stretch="Uniform" Height="400" Width="600">
                     <views:SpellCardRenderView/>
                 </Viewbox>
 
-                <views:SpellCardEditView Grid.Row="1"/>
+                <ScrollViewer Grid.Row="1">
+                    <!-- ReSharper disable Xaml.PossibleNullReferenceException -->
+                    <views:SpellCardEditView VerticalAlignment="Top" MaxWidth="600" Margin="5"
+                                             DndRuleBooks="{Binding $parent[views:SpellCardMainView].((viewModels:SpellCardMainViewModel)DataContext).RuleBooks}"
+                                             DndClasses="{Binding $parent[views:SpellCardMainView].((viewModels:SpellCardMainViewModel)DataContext).Classes}" />
+                    <!-- ReSharper restore Xaml.PossibleNullReferenceException -->
+                </ScrollViewer>
+                
+                <ToggleButton Grid.Row="2" Content="Spell Verified" IsChecked="{Binding IsVerified}"
+                              HorizontalAlignment="Stretch" FontSize="20"/>
             </Grid>
             
             <DataGrid Grid.Column="1" ItemsSource="{Binding Spells}" IsReadOnly="True"
                       x:Name="SpellDataGrid" AutoGenerateColumns="False" SelectedIndex="0">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                    <DataGridCheckBoxColumn Header="Verified" Binding="{Binding IsVerified}"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding ClassDisplayTextMultiLine}"/>
+                    <DataGridTextColumn Header="Class Levels" Binding="{Binding ClassDisplayTextMultiLine}"/>
                     <DataGridTextColumn Header="Schools" Binding="{Binding School}"/>
                     <DataGridTextColumn Header="Subschools" Binding="{Binding SubSchool}"/>
                     <DataGridTextColumn Header="Descriptor" Binding="{Binding Descriptor}"/>

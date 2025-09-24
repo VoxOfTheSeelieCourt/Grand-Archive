@@ -121,6 +121,6 @@ public partial class SpellCardMainView : UserControl
                 SpellDataGrid.SelectedItem = vm.Spells.First();
         };
 
-        SpellDataGrid.SelectedItem = vm.Spells?.First();
+        SpellDataGrid.SelectedItem = vm.Spells?.FirstOrDefault();
     }
 }

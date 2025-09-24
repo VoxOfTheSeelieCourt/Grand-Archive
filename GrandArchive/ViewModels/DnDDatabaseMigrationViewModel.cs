@@ -231,7 +231,17 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
                     SavingThrow = x.SavingThrow ?? "",
                     SpellResistance = x.SpellResistance ?? "No",
                     Description = x.Description,
-                    DescriptionShort = ""
+                    DescriptionShort = "",
+                    AbstinenceComponent = "",
+                    ArcaneFocus = "",
+                    ColdfireComponent = "",
+                    DiseaseComponent = "",
+                    DragonmarkComponent = "",
+                    DrugComponent = "",
+                    LocationComponent = "",
+                    MindsetComponent = "",
+                    SacrificeComponent = "",
+                    TruenameComponent = ""
                 };
             },
             x => x.DndSpells));

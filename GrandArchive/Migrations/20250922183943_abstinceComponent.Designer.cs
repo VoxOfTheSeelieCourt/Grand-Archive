@@ -3,6 +3,7 @@ using System;
 using GrandArchive.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GrandArchive.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250922183943_abstinceComponent")]
+    partial class abstinceComponent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.20");
@@ -174,10 +177,6 @@ namespace GrandArchive.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ColdfireComponent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("CorruptionComponent")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -199,18 +198,6 @@ namespace GrandArchive.Migrations
 
                     b.Property<long>("Descriptor")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("DiseaseComponent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DragonmarkComponent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DrugComponent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Duration")
                         .IsRequired()
@@ -237,37 +224,16 @@ namespace GrandArchive.Migrations
                     b.Property<bool>("HasBreathComponent")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("HasColdfireComponent")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("HasCorruptionComponent")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("HasDiseaseComponent")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("HasDivineFocus")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("HasDragonmarkComponent")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("HasDrugComponent")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("HasExperienceComponent")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("HasLocationComponent")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("HasMaterialComponent")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("HasMindsetComponent")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("HasSacrificeComponent")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("HasSomaticComponent")
@@ -282,20 +248,12 @@ namespace GrandArchive.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("LocationComponent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("MaterialComponent")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("MigrationId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("MindsetComponent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -309,10 +267,6 @@ namespace GrandArchive.Migrations
 
                     b.Property<int?>("RulebookPage")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("SacrificeComponent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("SavingThrow")
                         .IsRequired()

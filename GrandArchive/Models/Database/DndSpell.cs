@@ -13,20 +13,37 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] private DndSpellSchool _school;
     [ObservableProperty] private DndSpellSubSchool _subSchool;
     [ObservableProperty] private DndSpellDescriptor _descriptor;
-    [ObservableProperty] private bool _hasVerbalComponent;
-    [ObservableProperty] private bool _hasSomaticComponent;
-    [ObservableProperty] private bool _hasMaterialComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasVerbalComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasSomaticComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasMaterialComponent;
     [ObservableProperty] private string _materialComponent;
-    [ObservableProperty] private bool _hasArcaneFocus;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasArcaneFocus;
     [ObservableProperty] private string _arcaneFocus;
-    [ObservableProperty] private bool _hasDivineFocus;
-    [ObservableProperty] private bool _hasExperienceComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDivineFocus;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasExperienceComponent;
     [ObservableProperty] private string _experienceComponent;
-    [ObservableProperty] private bool _hasBreathComponent;
-    [ObservableProperty] private bool _hasTruenameComponent;
-    [ObservableProperty] private bool _hasCorruptionComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasBreathComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasTruenameComponent;
+    [ObservableProperty] private string _truenameComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasCorruptionComponent;
     [ObservableProperty] private string _corruptionComponent;
-    [ObservableProperty] private string _extraComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasSacrificeComponent;
+    [ObservableProperty] private string _sacrificeComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasAbstinenceComponent;
+    [ObservableProperty] private string _abstinenceComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasMindsetComponent;
+    [ObservableProperty] private string _mindsetComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDrugComponent;
+    [ObservableProperty] private string _drugComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasLocationComponent;
+    [ObservableProperty] private string _locationComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDragonmarkComponent;
+    [ObservableProperty] private string _dragonmarkComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDiseaseComponent;
+    [ObservableProperty] private string _diseaseComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasColdfireComponent;
+    [ObservableProperty] private string _coldfireComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private string _extraComponent;
     [ObservableProperty] private string _castingTime;
     [ObservableProperty] private DndSpellRange _range;
     [ObservableProperty] private string _customRangeText;
@@ -58,7 +75,15 @@ public partial class DndSpell : DatabaseObject
             if (HasExperienceComponent) components.Add("XP");
             if (HasBreathComponent) components.Add("BR");
             if (HasTruenameComponent) components.Add("TN");
-            if (HasCorruptionComponent) components.Add("CR");
+            if (HasCorruptionComponent) components.Add("Cor");
+            if (HasSacrificeComponent) components.Add("Sac");
+            if (HasAbstinenceComponent) components.Add("AB");
+            if (HasMindsetComponent) components.Add("Mind");
+            if (HasDrugComponent) components.Add("Drug");
+            if (HasLocationComponent) components.Add("Loc");
+            if (HasDragonmarkComponent) components.Add("DM");
+            if (HasDiseaseComponent) components.Add("DS");
+            if (HasColdfireComponent) components.Add("CF");
             if (!string.IsNullOrEmpty(ExtraComponent)) components.Add("E");
             
             return string.Join(",", components);
@@ -70,7 +95,7 @@ public partial class DndSpell : DatabaseObject
     [NotMapped] public string ClassDisplayTextSingleLine => ClassSpells.Any() ? string.Join(",", ClassSpells.Select(x => $"{x.Class.Name} {x.Level}")) : "";
     [NotMapped] public bool DisplaySubschool => SubSchool != DndSpellSubSchool.None;
     [NotMapped] public bool DisplayDescriptor => Descriptor != DndSpellDescriptor.None;
-    [NotMapped] public bool HasChanges { get; private set; }
+    [NotMapped] public bool HasChanges { get; set; }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

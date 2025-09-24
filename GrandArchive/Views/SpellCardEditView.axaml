@@ -2,42 +2,119 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
-             xmlns:helpers="clr-namespace:GrandArchive.Helpers"
-             xmlns:models="clr-namespace:GrandArchive.Models"
              xmlns:database="clr-namespace:GrandArchive.Models.Database"
+             xmlns:views="clr-namespace:GrandArchive.Views"
+             xmlns:helpers="clr-namespace:GrandArchive.Helpers"
+             d:DesignWidth="1000"
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardEditView"
              x:DataType="database:DndSpell">
-    
+
     <Design.DataContext>
-        <database:DndSpell/>
+        <database:DndSpell
+            Name="Hyper-Employment Spell of Testus Maximus"
+            School="Abjuration,Enchantment"
+            SubSchool="Compulsion"
+            Descriptor="LanguageDependent,MindAffecting"
+            HasVerbalComponent="True"
+            HasArcaneFocus="True"
+            HasCorruptionComponent="True"
+            ArcaneFocus="A pen and a handwritten contract"
+            CorruptionComponent="10d20 Gold"
+            ExtraComponent="Firm Handshake"
+            CastingTime="1 hour"
+            Range="Custom"
+            CustomRangeText="Something between 5 and 200 ft."
+            Duration="Unlimited"
+            SavingThrow="-"
+            SpellResistance="No"
+            Target="One unwilling creature"
+            Area=""
+            Effect="Instant willingness"
+            RulebookPage="69"
+            DescriptionShort="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit"
+            Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse semper nibh vel nisl consequat iaculis. Cras eu dolor ut erat bibendum sagittis ac vel nulla. Nulla ultrices vitae neque vitae consectetur. Nullam a odio quis dui iaculis volutpat a id mauris. Nam nec nunc a tellus mollis condimentum. Integer cursus justo mollis metus commodo dapibus. Proin at pellentesque leo, eget cursus velit. Suspendisse potenti. Morbi placerat felis ut tortor pharetra, ut vestibulum eros laoreet. Ut non gravida tellus. Nulla nulla ante, dignissim et fermentum eu, tristique sed metus. Duis cursus nulla vel tortor malesuada auctor. Aliquam lacinia mi vitae vehicula commodo. Curabitur posuere imperdiet tellus, in malesuada metus finibus mattis. Curabitur id maximus neque, id dignissim nunc. Vivamus id maximus augue.&#x0a;&#x0a;Sed dolor massa, elementum eu viverra et, viverra vel lacus. Integer euismod nulla tellus. Integer mattis, nisi vitae gravida sagittis, lacus metus rhoncus dui, vitae scelerisque mauris arcu non magna. Duis vel egestas risus. Aenean malesuada ultrices vestibulum. Aenean at nisi urna. Proin luctus turpis vel augue convallis, ut tincidunt quam varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam ut faucibus libero, quis egestas risus.&#x0a;&#x0a;Donec et lacus vestibulum, tempor velit a, tincidunt sem. Sed egestas at ante sed rutrum. Vivamus sit amet magna quis felis malesuada tempus nec eu mi. Quisque sed enim egestas, scelerisque magna eget, ornare arcu. Ut nec semper nulla, sit amet mollis sem. In hac habitasse platea dictumst. Praesent ullamcorper eu magna quis placerat. Nunc eget mauris sed ligula mattis luctus. Nam dapibus massa at purus euismod pulvinar.">
+            <database:DndSpell.Rulebook>
+                <database:DndRulebook Name="Player's Handbook III" Abbreviation="PHB III"/>
+            </database:DndSpell.Rulebook>
+            <database:DndSpell.ClassSpells>
+                <database:DndClassSpell Level="2">
+                    <database:DndClassSpell.Class>
+                        <database:DndClass Name="Bard"/>
+                    </database:DndClassSpell.Class>
+                </database:DndClassSpell>
+                <database:DndClassSpell Level="1">
+                    <database:DndClassSpell.Class>
+                        <database:DndClass Name="Apostle of Mammon"/>
+                    </database:DndClassSpell.Class>
+                </database:DndClassSpell>
+            </database:DndSpell.ClassSpells>
+        </database:DndSpell>
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="Auto Auto" ColumnSpacing="5">
-        <Border Grid.Column="0" BorderThickness="2" Width="330" Height="462">
-            <Grid RowDefinitions="66 46 46 46 46 * 46" ColumnDefinitions="* * * * * *"
-                  ColumnSpacing="5" RowSpacing="5" Margin="8">
-                <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Watermark="Name" Text="{Binding Name}"/>
-                
-                <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Watermark="Level"/>
-                <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Watermark="Components"/>
-                <TextBox Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Watermark="Casting Time"/>
-                
-                <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Watermark="Range"/>
-                <TextBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Grid.RowSpan="2" Watermark="Target / Area / Effect" AcceptsReturn="True" TextWrapping="Wrap"/>
-                
-                <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Watermark="Duration"/>
-                
-                <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Watermark="Saving Throw"/>
-                <TextBox Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" Watermark="Source"/>
-                
-                <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6" Watermark="Description" AcceptsReturn="True" TextWrapping="Wrap"/>
-                
-                <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Watermark="Spell Cost"/>
-                <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" Watermark="Spell Resistance"/>
-                <TextBox Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" Watermark="Save DC"/>
-            </Grid>
-        </Border>
-    </Grid>
+    <StackPanel Spacing="5">
+        <TextBox Watermark="Name" Text="{Binding Name}"/>
+        <Grid ColumnDefinitions="* 50" ColumnSpacing="10">
+            <ComboBox Grid.Column="0" HorizontalAlignment="Stretch"
+                      SelectedItem="{Binding Rulebook}" ItemsSource="{Binding $parent[views:SpellCardEditView].DndRuleBooks}"
+                      DisplayMemberBinding="{Binding Name}"/>
+            <TextBox Grid.Column="1" Text="{Binding RulebookPage}" Watermark="Page"/>
+        </Grid>
+        
+        <!-- Components -->
+        <Grid RowDefinitions="Auto Auto Auto Auto Auto Auto Auto Auto Auto Auto Auto Auto Auto Auto Auto Auto Auto Auto"
+              ColumnDefinitions="Auto *" RowSpacing="5" ColumnSpacing="5" Margin="0 10">
+            <CheckBox Grid.Row="0" Grid.Column="0" Content="Verbal" IsChecked="{Binding HasVerbalComponent}"/>
+            <CheckBox Grid.Row="1" Grid.Column="0" Content="Somatic" IsChecked="{Binding HasSomaticComponent}"/>
+            <CheckBox Grid.Row="2" Grid.Column="0" Content="Material" IsChecked="{Binding HasMaterialComponent}"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Watermark="Material Component" Text="{Binding MaterialComponent}"/>
+            <CheckBox Grid.Row="3" Grid.Column="0" Content="Arcane Focus" IsChecked="{Binding HasArcaneFocus}"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Watermark="Arcane Focus" Text="{Binding ArcaneFocus}"/>
+            <CheckBox Grid.Row="4" Grid.Column="0" Content="Divine Focus" IsChecked="{Binding HasDivineFocus}"/>
+            <CheckBox Grid.Row="5" Grid.Column="0" Content="XP" IsChecked="{Binding HasExperienceComponent}"/>
+            <TextBox Grid.Row="5" Grid.Column="1" Watermark="XP Cost" Text="{Binding ExperienceComponent}"/>
+            <CheckBox Grid.Row="6" Grid.Column="0" Content="Breath" IsChecked="{Binding HasBreathComponent}"/>
+            <CheckBox Grid.Row="7" Grid.Column="0" Content="Truename" IsChecked="{Binding HasTruenameComponent}"/>
+            <TextBox Grid.Row="7" Grid.Column="1" Watermark="Truename Component" Text="{Binding TruenameComponent}"/>
+            <CheckBox Grid.Row="8" Grid.Column="0" Content="Corruption" IsChecked="{Binding HasCorruptionComponent}"/>
+            <TextBox Grid.Row="8" Grid.Column="1" Watermark="Corruption Component" Text="{Binding CorruptionComponent}"/>
+            <CheckBox Grid.Row="9" Grid.Column="0" Content="Sacrifice" IsChecked="{Binding HasSacrificeComponent}"/>
+            <TextBox Grid.Row="9" Grid.Column="1" Watermark="Sacrifice Component" Text="{Binding SacrificeComponent}"/>
+            <CheckBox Grid.Row="10" Grid.Column="0" Content="Abstinence" IsChecked="{Binding HasAbstinenceComponent}"/>
+            <TextBox Grid.Row="10" Grid.Column="1" Watermark="Abstinence Component" Text="{Binding AbstinenceComponent}"/>
+            <CheckBox Grid.Row="11" Grid.Column="0" Content="Mindset" IsChecked="{Binding HasMindsetComponent}"/>
+            <TextBox Grid.Row="11" Grid.Column="1" Watermark="Mindset Component" Text="{Binding MindsetComponent}"/>
+            <CheckBox Grid.Row="12" Grid.Column="0" Content="Drug" IsChecked="{Binding HasDrugComponent}"/>
+            <TextBox Grid.Row="12" Grid.Column="1" Watermark="Drug Component" Text="{Binding DrugComponent}"/>
+            <CheckBox Grid.Row="13" Grid.Column="0" Content="Location" IsChecked="{Binding HasLocationComponent}"/>
+            <TextBox Grid.Row="13" Grid.Column="1" Watermark="Location Component" Text="{Binding LocationComponent}"/>
+            <CheckBox Grid.Row="14" Grid.Column="0" Content="Dragonmark" IsChecked="{Binding HasDragonmarkComponent}"/>
+            <TextBox Grid.Row="14" Grid.Column="1" Watermark="Dragonmark Component" Text="{Binding DragonmarkComponent}"/>
+            <CheckBox Grid.Row="15" Grid.Column="0" Content="Disease" IsChecked="{Binding HasDiseaseComponent}"/>
+            <TextBox Grid.Row="15" Grid.Column="1" Watermark="Disease Component" Text="{Binding DiseaseComponent}"/>
+            <CheckBox Grid.Row="16" Grid.Column="0" Content="Coldfire" IsChecked="{Binding HasColdfireComponent}"/>
+            <TextBox Grid.Row="16" Grid.Column="1" Watermark="Coldfire Component" Text="{Binding ColdfireComponent}"/>
+
+            <TextBlock Grid.Row="17" Grid.Column="0" Text="Extra Components" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="17" Grid.Column="1" Watermark="Extra Component" Text="{Binding ExtraComponent}"/>
+        </Grid>
+        
+        <TextBox Watermark="Casting Time" Text="{Binding CastingTime}"/>
+
+        <TextBox Watermark="Duration" Text="{Binding Duration}"/>
+
+        <Grid ColumnDefinitions="100 *" ColumnSpacing="10">
+            <ComboBox Grid.Column="0" HorizontalAlignment="Stretch" SelectedItem="{Binding Range}"
+                      ItemsSource="{Binding Source={helpers:EnumBindingSource EnumType=database:DndSpellRange}}"/>
+            <TextBox Grid.Column="1" Text="{Binding CustomRangeText}" Watermark="Custom Range"/>
+        </Grid>
+
+        <TextBox Watermark="Saving Throw" Text="{Binding SavingThrow}"/>
+        <TextBox Watermark="Spell Resistance" Text="{Binding SpellResistance}"/>
+        <TextBox Watermark="Target" Text="{Binding Target}"/>
+        <TextBox Watermark="Area" Text="{Binding Area}"/>
+        <TextBox Watermark="Effect" Text="{Binding Effect}"/>
+        <TextBox Watermark="Summary" Text="{Binding DescriptionShort}" TextWrapping="Wrap" AcceptsReturn="True"/>
+        <TextBox Watermark="Description" Text="{Binding Description}" TextWrapping="Wrap" AcceptsReturn="True"/>
+    </StackPanel>
 </UserControl>
