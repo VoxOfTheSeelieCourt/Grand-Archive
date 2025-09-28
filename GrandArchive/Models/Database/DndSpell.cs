@@ -56,7 +56,7 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] private string _descriptionShort;
     [ObservableProperty] private string _description;
     [ObservableProperty] private bool _isVerified;
-    
+
     [ObservableProperty] private DndRulebook _rulebook;
     [ObservableProperty] private ICollection<DndClassSpell> _classSpells =  new List<DndClassSpell>();
 
@@ -66,7 +66,7 @@ public partial class DndSpell : DatabaseObject
         get
         {
             var components = new List<string>();
-            
+
             if (HasVerbalComponent) components.Add("V");
             if (HasSomaticComponent) components.Add("S");
             if (HasMaterialComponent) components.Add("M");
@@ -85,7 +85,7 @@ public partial class DndSpell : DatabaseObject
             if (HasDiseaseComponent) components.Add("DS");
             if (HasColdfireComponent) components.Add("CF");
             if (!string.IsNullOrEmpty(ExtraComponent)) components.Add("E");
-            
+
             return string.Join(",", components);
         }
     }
