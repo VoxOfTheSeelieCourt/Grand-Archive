@@ -41,7 +41,7 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
     private void FixData()
     {
         using var context = _dndContextFactory.CreateDbContext();
-        
+
         context.DndSpells.First(x => x.Id == 3980).SubSchoolId = null;
         context.DndSpells.First(x => x.Id == 2987).Range = "Personal (see text)";
         context.DndSpells.First(x => x.Id == 754 || x.Id == 755 || x.Id == 3220 || x.Id == 2002).Range = "Touch";
@@ -122,7 +122,7 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
                     DndEdition = edition,
                     PublishingDay = x.Published?.Day,
                     PublishingMonth = x.Published?.Month,
-                    PublishingYear = x.Published?.Year ?? (int.TryParse(x.Year, out int year) ? year : null),
+                    PublishingYear = x.Published?.Year ?? (int.TryParse(x.Year, out var year) ? year : null),
                 };
             },
             x => x.DndRulebooks));
@@ -175,7 +175,7 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
                         ? dndSpellSubSchool
                         : throw new ArgumentOutOfRangeException())
                     .Aggregate((z, y) => z | y);
-                
+
                 var descriptor = x.DndSpellDescriptors.Count == 0
                     ? DndSpellDescriptor.None
                     : x.DndSpellDescriptors.SelectMany(y => y.Spelldescriptor
@@ -271,7 +271,7 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
             },
             x => x.DndClassSpells));
     }
-    
+
     /// <summary>
     /// Migrates a database table in the new database by fetching data from the old database with <paramref name="sourceData"/>, converting it with <paramref name="convert"/> and writing it to <paramref name="set"/> after clearing all items with a set <see cref="DatabaseObject.MigrationId"/>.
     /// </summary>
@@ -284,7 +284,7 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
         {
             await using var oldModel = await _dndContextFactory.CreateDbContextAsync();
             await using var newModel = await _databaseContextFactory.CreateDbContextAsync();
-        
+
             var old = sourceData(oldModel);
             Maximum = old.Count;
             Value = 0;
@@ -295,12 +295,12 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
                 newData.Add(convert(source, newModel));
                 Value++;
             }
-        
+
             set(newModel).RemoveRange(set(newModel).Where(x => x.MigrationId.HasValue));
             await set(newModel).AddRangeAsync(newData);
-        
+
             await newModel.SaveChangesAsync();
-        
+
             _userInformationMessageService.AddDisplayMessage($"Added {newData.Count} items", InformationType.Success, TimeSpan.FromSeconds(30));
         }
         catch (Exception e)

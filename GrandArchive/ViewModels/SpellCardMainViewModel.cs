@@ -36,7 +36,7 @@ public partial class SpellCardMainViewModel : NavigableViewModel
     private void LoadBaseData()
     {
         using var dbContext = _dbContextFactory.CreateDbContext();
-        
+
         RuleBooks = dbContext.DndRulebooks.Include(x => x.DndEdition).ToList();
         Classes = dbContext.DndClasses.ToList();
     }
@@ -52,7 +52,7 @@ public partial class SpellCardMainViewModel : NavigableViewModel
                 .Include(x => x.Rulebook).ThenInclude(x => x.DndEdition)
                 .Include(x => x.ClassSpells).ThenInclude(x => x.Class)
                 .ToList());
-            
+
             foreach (var dndSpell in Spells)
             {
                 if (dndSpell.CastingTime == "1 standard action")
@@ -74,23 +74,27 @@ public partial class SpellCardMainViewModel : NavigableViewModel
 
             if (updated.Count == 0)
             {
-                _userInformationMessageService.AddDisplayMessage("No changes were made.", InformationType.Information, TimeSpan.FromSeconds(30));
+                _userInformationMessageService.AddDisplayMessage("No changes were made.", InformationType.Information, TimeSpan.FromSeconds(1));
                 return;
             }
-        
+
             updated.ForEach(x =>
             {
                 x.UpdatedAt = DateTime.Now;
-                x.HasChanges = false;
             });
 
             await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
-        
+
             dbContext.DndSpells.UpdateRange(updated);
-        
+
             await dbContext.SaveChangesAsync();
-            
-            _userInformationMessageService.AddDisplayMessage($"Saved {updated.Count} spells.", InformationType.Success, TimeSpan.FromSeconds(30));
+
+            updated.ForEach(x =>
+            {
+                x.HasChanges = false;
+            });
+
+            _userInformationMessageService.AddDisplayMessage($"Saved {updated.Count} spells.", InformationType.Success, TimeSpan.FromSeconds(1));
         }
         catch (Exception e)
         {

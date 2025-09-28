@@ -57,7 +57,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private ObservableCollection<NavigationBarEntry> BuildNavigationBarEntries(List<Type> types)
     {
         var output = new ObservableCollection<NavigationBarEntry>();
-        Application.Current!.TryFindResource("DocumentErrorRegular", out object error);
+        Application.Current!.TryFindResource("DocumentErrorRegular", out var error);
 
         foreach (var type in types)
         {

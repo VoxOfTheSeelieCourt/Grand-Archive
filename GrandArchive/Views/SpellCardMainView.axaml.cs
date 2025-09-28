@@ -31,11 +31,11 @@ public partial class SpellCardMainView : UserControl
     private void ExportAllSpellCards(object sender, RoutedEventArgs e)
     {
         var spells = SpellDataGrid.ItemsSource.Cast<DndSpell>().ToList();
-        if (!spells.Any()) return;
-        
+        if (spells.Count == 0) return;
+
         Task.Run(() => ExportSpells(spells));
     }
-    
+
     private async Task ExportSpells(List<DndSpell> spells)
     {
         var top = TopLevel.GetTopLevel(this);
@@ -60,7 +60,7 @@ public partial class SpellCardMainView : UserControl
             var parent = top.Content as Panel ?? throw new InvalidOperationException("No usable panel to attach to.");
             parent.Children.Add(host);
 
-            SpellCardRenderView view = new SpellCardRenderView(){DataContext = spells.First()};
+            var view = new SpellCardRenderView(){DataContext = spells.First()};
             Canvas.SetLeft(view, -10000000);
             Canvas.SetTop(view, -10000000);
             host.Children.Add(view);

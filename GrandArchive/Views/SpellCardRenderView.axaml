@@ -104,6 +104,10 @@
             <Setter Property="Width" Value="35" />
             <Setter Property="VerticalAlignment" Value="Stretch" />
         </Style>
+        
+        <Style Selector="mdxaml|MarkdownScrollViewer Border">
+            <Setter Property="MinHeight" Value="30"/>
+        </Style>
     </UserControl.Styles>
 
     <Grid x:Name="MainGrid" ColumnDefinitions="Auto Auto">
@@ -213,6 +217,9 @@
                                     </Border>
                                     <Border IsVisible="{Binding HasExperienceComponent}">
                                         <TextBlock Text="{Binding ExperienceComponent, StringFormat={}XP Cost: {0}}" />
+                                    </Border>
+                                    <Border IsVisible="{Binding HasTruenameComponent}">
+                                        <TextBlock Text="{Binding TruenameComponent, StringFormat={}Truename: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasCorruptionComponent}">
                                         <TextBlock Text="{Binding CorruptionComponent, StringFormat={}Corruption: {0}}" />

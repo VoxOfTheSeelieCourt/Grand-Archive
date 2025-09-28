@@ -24,7 +24,7 @@ public partial class SpellCardEditView : UserControl
         get => GetValue(DndRuleBooksProperty);
         set => SetValue(DndRuleBooksProperty, value);
     }
-    
+
     public SpellCardEditView()
     {
         InitializeComponent();

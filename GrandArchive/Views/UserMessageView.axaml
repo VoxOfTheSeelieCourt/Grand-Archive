@@ -5,7 +5,8 @@
              xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GrandArchive.Views.UserMessageView"
-             x:DataType="viewModels:UserMessageViewModel">
+             x:DataType="viewModels:UserMessageViewModel"
+             Background="Black">
     <Design.DataContext>
         <viewModels:UserMessageViewModel/>
     </Design.DataContext>
