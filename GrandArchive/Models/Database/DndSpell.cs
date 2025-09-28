@@ -1,14 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using GrandArchive.Helpers.Attributes;
 
 namespace GrandArchive.Models.Database;
 
+[DebuggerDisplay("{Name}")]
 public partial class DndSpell : DatabaseObject
 {
-    [ObservableProperty] private string _name;
+    // TODO: Component Validation
+    [ObservableProperty] [property:Required] private string _name;
     [ObservableProperty] private int? _rulebookPage;
     [ObservableProperty] private DndSpellSchool _school;
     [ObservableProperty] private DndSpellSubSchool _subSchool;
@@ -24,7 +29,7 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] private string _experienceComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasBreathComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasTruenameComponent;
-    [ObservableProperty] private string _truenameComponent;
+    [ObservableProperty] [property:RequiredIfAttribute(nameof(HasTruenameComponent), true)] private string _truenameComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasCorruptionComponent;
     [ObservableProperty] private string _corruptionComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasSacrificeComponent;
@@ -50,19 +55,21 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] private string _target;
     [ObservableProperty] private string _effect;
     [ObservableProperty] private string _area;
-    [ObservableProperty] private string _duration;
-    [ObservableProperty] private string _savingThrow;
-    [ObservableProperty] private string _spellResistance;
-    [ObservableProperty] private string _descriptionShort;
+    [ObservableProperty] [property:Required] private string _duration;
+    [ObservableProperty] [property:Required] private string _savingThrow;
+    [ObservableProperty] [property:Required] private string _spellResistance;
+    [ObservableProperty] [property:Required] private string _descriptionShort;
     [ObservableProperty] private string _description;
     [ObservableProperty] private bool _isVerified;
 
-    [ObservableProperty] private DndRulebook _rulebook;
+    [ObservableProperty] [property:Required] private DndRulebook _rulebook;
     [ObservableProperty] private ICollection<DndClassSpell> _classSpells =  new List<DndClassSpell>();
+    [ObservableProperty] private ICollection<DndDomainSpell> _domainSpells =  new List<DndDomainSpell>();
 
     [NotMapped]
     public string AllComponents
     {
+        // ReSharper disable once CognitiveComplexity
         get
         {
             var components = new List<string>();
@@ -74,7 +81,7 @@ public partial class DndSpell : DatabaseObject
             if (HasDivineFocus) components.Add("DF");
             if (HasExperienceComponent) components.Add("XP");
             if (HasBreathComponent) components.Add("BR");
-            if (HasTruenameComponent) components.Add("TN");
+            if (HasTruenameComponent) components.Add("T");
             if (HasCorruptionComponent) components.Add("Cor");
             if (HasSacrificeComponent) components.Add("Sac");
             if (HasAbstinenceComponent) components.Add("AB");
@@ -91,10 +98,25 @@ public partial class DndSpell : DatabaseObject
     }
 
     [NotMapped] public string RangeDisplayText => Range == DndSpellRange.Custom ? CustomRangeText : Range.ToString();
-    [NotMapped] public string ClassDisplayTextMultiLine => ClassSpells.Any() ? string.Join("\n", ClassSpells.Select(x => $"{x.Class.Name} {x.Level}")) : "";
-    [NotMapped] public string ClassDisplayTextSingleLine => ClassSpells.Any() ? string.Join(",", ClassSpells.Select(x => $"{x.Class.Name} {x.Level}")) : "";
+    [NotMapped] public string ClassDisplayTextMultiLine => ClassSpells.Count + DomainSpells.Count != 0 ? string.Join("\n", GetClassesAndDomains()) : "";
+    [NotMapped] public string ClassDisplayTextSingleLine => ClassSpells.Count + DomainSpells.Count != 0 ? string.Join(",", GetClassesAndDomains()) : "";
     [NotMapped] public bool DisplaySubschool => SubSchool != DndSpellSubSchool.None;
     [NotMapped] public bool DisplayDescriptor => Descriptor != DndSpellDescriptor.None;
+
+    private List<string> GetClassesAndDomains()
+    {
+        var output = new List<string>();
+
+        if (ClassSpells.Count != 0)
+            output.AddRange(ClassSpells.Select(x => $"{x.Class.Name} {x.Level}"));
+        if (DomainSpells.Count != 0)
+            output.AddRange(DomainSpells.Select(x => $"{x.Domain.Name} {x.Level}"));
+
+        return output;
+    }
+
+    #region Change Tracking
+
     [NotMapped] public bool HasChanges { get; set; }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -102,8 +124,11 @@ public partial class DndSpell : DatabaseObject
         if (e.PropertyName != nameof(HasChanges))
         {
             HasChanges = true;
+            ValidateAllProperties();
         }
 
         base.OnPropertyChanged(e);
     }
+
+    #endregion
 }

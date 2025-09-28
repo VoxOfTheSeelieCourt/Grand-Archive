@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensionMethods
         // Database
         s.AddDbContextFactory<DndContext>();
         s.AddDbContextFactory<DatabaseContext>();
-        
+
         // View Models
         s.AddSingleton<MainWindowViewModel>();
         s.AddSingleton<SpellCardMainViewModel>();

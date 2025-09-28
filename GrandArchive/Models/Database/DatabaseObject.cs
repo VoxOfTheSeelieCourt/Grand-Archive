@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace GrandArchive.Models.Database;
 
-public abstract partial class DatabaseObject : ObservableObject
+public abstract partial class DatabaseObject : ObservableValidator
 {
 #pragma warning disable CS0657 // Not a valid attribute location for this declaration
     [ObservableProperty] [property: Key] private int _id;

@@ -9,6 +9,6 @@ public partial class DndEdition : DatabaseObject
 {
     [ObservableProperty]  private string _name;
     [ObservableProperty]  private string _system;
-    
+
     [ObservableProperty]  private ICollection<DndRulebook> _rulebooks = new List<DndRulebook>();
 }

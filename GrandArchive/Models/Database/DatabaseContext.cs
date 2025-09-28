@@ -23,19 +23,21 @@ public class DatabaseContext : DbContext
             Mode = SqliteOpenMode.ReadWriteCreate,
             // Cache = SqliteCacheMode.Shared,
         };
-        
+
         optionsBuilder.UseSqlite(connectionStringBuilder.ConnectionString);
     }
 
     #endregion
-    
+
     #region Tables
-    
+
     public DbSet<DndEdition> DndEditions { get; set; }
     public DbSet<DndRulebook> DndRulebooks { get; set; }
     public DbSet<DndSpell> DndSpells { get; set; }
     public DbSet<DndClass> DndClasses { get; set; }
+    public DbSet<DndDomain> DndDomains { get; set; }
     public DbSet<DndClassSpell> DndClassSpells { get; set; }
-    
+    public DbSet<DndDomainSpell> DndDomainSpells { get; set; }
+
     #endregion
 }

@@ -13,7 +13,7 @@ public partial class DndRulebook : DatabaseObject
     [ObservableProperty] private int? _publishingDay;
     [ObservableProperty] private int? _publishingMonth;
     [ObservableProperty] private int? _publishingYear;
-    
+
     [ObservableProperty] private DndEdition _dndEdition;
     [ObservableProperty] private ICollection<DndSpell> _spells = new List<DndSpell>();
 

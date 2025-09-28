@@ -63,7 +63,7 @@
                     <DataGridTextColumn Header="Summary" Binding="{Binding DescriptionShort}"/>
                     <DataGridCheckBoxColumn Header="V" Binding="{Binding HasVerbalComponent}"/>
                     <DataGridCheckBoxColumn Header="S" Binding="{Binding HasSomaticComponent}"/>
-                    <DataGridCheckBoxColumn Header="M" Binding="{Binding MaterialComponent}"/>
+                    <DataGridCheckBoxColumn Header="M" Binding="{Binding HasMaterialComponent}"/>
                     <DataGridCheckBoxColumn Header="AF" Binding="{Binding HasArcaneFocus}"/>
                     <DataGridCheckBoxColumn Header="DF" Binding="{Binding HasDivineFocus}"/>
                     <DataGridCheckBoxColumn Header="XP" Binding="{Binding HasExperienceComponent}"/>

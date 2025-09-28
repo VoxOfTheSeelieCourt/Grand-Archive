@@ -5,10 +5,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace GrandArchive.Models.Database;
 
 [DebuggerDisplay("{Name}")]
-public partial class DndClass : DatabaseObject
+public partial class DndDomain : DatabaseObject
 {
     [ObservableProperty] private string _name;
-    [ObservableProperty] private bool _isPrestige;
 
-    [ObservableProperty] private ICollection<DndClassSpell> _classSpells = new List<DndClassSpell>();
+    [ObservableProperty] private ICollection<DndDomainSpell> _domainSpells = new List<DndDomainSpell>();
 }

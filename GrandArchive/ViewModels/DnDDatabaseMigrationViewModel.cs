@@ -12,6 +12,7 @@ using GrandArchive.Models.DnDTools;
 using GrandArchive.Services.UserInformationService;
 using GrandArchive.ViewModels.Abstract;
 using Microsoft.EntityFrameworkCore;
+using DndDomain = GrandArchive.Models.Database.DndDomain;
 using DndRulebook = GrandArchive.Models.Database.DndRulebook;
 using DndSpell = GrandArchive.Models.Database.DndSpell;
 using DndSpellDescriptor = GrandArchive.Models.Database.DndSpellDescriptor;
@@ -143,6 +144,19 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
     }
 
     [RelayCommand]
+    private void MigrateDomains()
+    {
+        Task.Run(() => MigrateTable(x => x.DndDomains.ToList(),
+            (x, _) => new DndDomain()
+            {
+                CreatedAt = DateTime.Now,
+                MigrationId = x.Id,
+                Name = x.Name
+            },
+            x => x.DndDomains));
+    }
+
+    [RelayCommand]
     private void MigrateSpells()
     {
         Task.Run(() => MigrateTable(x => x.DndSpells
@@ -270,6 +284,31 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
                 };
             },
             x => x.DndClassSpells));
+    }
+
+    [RelayCommand]
+    private void MigrateDomainSpells()
+    {
+        Task.Run(() => MigrateTable(x => x.DndSpelldomainlevels
+                .Include(y => y.Spell)
+                .Include(y => y.Domain)
+                .Where(y => y.Spell.SchoolId < 17)
+                .ToList(),
+            (x, db) =>
+            {
+                var spell = db.DndSpells.First(y => y.MigrationId == x.SpellId);
+                var domain = db.DndDomains.First(y => y.MigrationId == x.DomainId);
+
+                return new DndDomainSpell()
+                {
+                    CreatedAt = DateTime.Now,
+                    MigrationId = x.Id,
+                    Domain = domain,
+                    Spell = spell,
+                    Level = x.Level,
+                };
+            },
+            x => x.DndDomainSpells));
     }
 
     /// <summary>
