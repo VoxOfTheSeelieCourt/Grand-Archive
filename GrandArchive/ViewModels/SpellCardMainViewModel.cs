@@ -52,9 +52,9 @@ public partial class SpellCardMainViewModel : NavigableViewModel
                 .Include(x => x.Rulebook).ThenInclude(x => x.DndEdition)
                 .Include(x => x.ClassSpells).ThenInclude(x => x.Class)
                 .Include(x => x.DomainSpells).ThenInclude(x => x.Domain)
-                // .Where(x => x.HasTruenameComponent || x.Rulebook.Id == 84)
-                .Where(x => !x.IsVerified)
-                .Where(x => x.Rulebook.Id == 34)
+                .Where(x => x.HasTruenameComponent || x.Rulebook.Id == 84)
+                // .Where(x => !x.IsVerified)
+                // .Where(x => x.Rulebook.Id == 34)
                 .ToList());
 
             foreach (var dndSpell in Spells)

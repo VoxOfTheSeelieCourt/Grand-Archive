@@ -6,6 +6,7 @@
              xmlns:database="clr-namespace:GrandArchive.Models.Database"
              xmlns:mdxaml="https://github.com/whistyun/Markdown.Avalonia"
              xmlns:avalonia="clr-namespace:ColorTextBlock.Avalonia;assembly=ColorTextBlock.Avalonia"
+             xmlns:views="clr-namespace:GrandArchive.Views"
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardRenderView"
              x:DataType="database:DndSpell">
@@ -108,10 +109,14 @@
         <Style Selector="mdxaml|MarkdownScrollViewer Border">
             <Setter Property="MinHeight" Value="30"/>
         </Style>
+        
+        <Style Selector="Grid.bleedingEdge">
+            <Setter Property="Background" Value="{Binding School, Converter={StaticResource SpellSchoolToBrushConverter}}"/>
+        </Style>
     </UserControl.Styles>
 
     <Grid x:Name="MainGrid" ColumnDefinitions="Auto Auto">
-        <Grid Grid.Column="0" x:Name="BleedingEdgeFront" Height="1110" Width="816" Background="Transparent">
+        <Grid Grid.Column="0" x:Name="BleedingEdgeFront" Height="1110" Width="816" Classes.bleedingEdge="{Binding $parent[views:SpellCardRenderView].IsBleedingEdgeVisible}">
             <!-- go see the comment below -->
             <Grid Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Border x:Name="CutAreaFront" CornerRadius="30"
@@ -262,7 +267,7 @@
             </Grid>
         </Grid>
 
-        <Grid Grid.Column="1" x:Name="BleedingEdgeBack" Height="1110" Width="816" Background="Transparent">
+        <Grid Grid.Column="1" x:Name="BleedingEdgeBack" Height="1110" Width="816" Classes.bleedingEdge="{Binding $parent[views:SpellCardRenderView].IsBleedingEdgeVisible}">
             <!-- Surround Border with a grid for rendering purposes, so that the border has an effective margin of 0. -->
             <!-- When in doubt, git blame and check the commit this was introduced in -->
             <Grid Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
