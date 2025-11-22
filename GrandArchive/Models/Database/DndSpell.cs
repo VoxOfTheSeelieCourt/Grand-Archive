@@ -38,7 +38,6 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(DragonmarkComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDragonmarkComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(DiseaseComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDiseaseComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(ColdfireComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasColdfireComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private string _extraComponent;
 
     [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasMaterialComponent), true)] private string _materialComponent;
     [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasArcaneFocus), true)] private string _arcaneFocus;
@@ -53,6 +52,8 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasDragonmarkComponent), true)] private string _dragonmarkComponent;
     [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasDiseaseComponent), true)] private string _diseaseComponent;
     [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasColdfireComponent), true)] private string _coldfireComponent;
+
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private string _extraComponent;
 
     #endregion
 

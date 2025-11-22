@@ -129,10 +129,10 @@ public partial class SpellCardMainView : UserControl
         vm.PropertyChanged += (o, args) =>
         {
             if (args.PropertyName == nameof(vm.Spells))
-                SpellDataGrid.SelectedItem = vm.Spells.First();
+                SpellDataGrid.SelectedItem = vm.Spells.FirstOrDefault();
         };
 
-        SpellDataGrid.SelectedItem = vm.Spells?.FirstOrDefault();
+        SpellDataGrid.SelectedItem = vm.Spells.FirstOrDefault();
     }
 
     private void ToggleBleedingEdge(object sender, RoutedEventArgs e)
