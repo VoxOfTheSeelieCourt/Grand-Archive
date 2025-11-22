@@ -100,7 +100,7 @@ public partial class SpellCardMainView : UserControl
     {
         if (!Directory.Exists(Path.GetDirectoryName(filePath)))
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-        
+
         // If a template hasn’t created the visual yet, ensure layout now.
         if (control.Bounds.Width <= 0 || control.Bounds.Height <= 0)
         {

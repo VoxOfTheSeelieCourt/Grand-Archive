@@ -13,7 +13,6 @@ namespace GrandArchive.Models.Database;
 [DebuggerDisplay("{Name}")]
 public partial class DndSpell : DatabaseObject
 {
-    // TODO: Component Validation
     [ObservableProperty] [property:Required] private string _name;
     [ObservableProperty] private int? _rulebookPage;
     [ObservableProperty] private DndSpellSchool _school;
@@ -24,21 +23,21 @@ public partial class DndSpell : DatabaseObject
 
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasVerbalComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasSomaticComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasMaterialComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasArcaneFocus;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(MaterialComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasMaterialComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(ArcaneFocus))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasArcaneFocus;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDivineFocus;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasExperienceComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(ExperienceComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasExperienceComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasBreathComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasTruenameComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasCorruptionComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasSacrificeComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasAbstinenceComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasMindsetComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDrugComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasLocationComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDragonmarkComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDiseaseComponent;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasColdfireComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(TruenameComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasTruenameComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CorruptionComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasCorruptionComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(SacrificeComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasSacrificeComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(AbstinenceComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasAbstinenceComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(MindsetComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasMindsetComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(DrugComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDrugComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(LocationComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasLocationComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(DragonmarkComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDragonmarkComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(DiseaseComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDiseaseComponent;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(ColdfireComponent))] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasColdfireComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private string _extraComponent;
 
     [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasMaterialComponent), true)] private string _materialComponent;
@@ -58,11 +57,27 @@ public partial class DndSpell : DatabaseObject
     #endregion
 
     [ObservableProperty] [property:Required] private string _castingTime;
-    [ObservableProperty] [property:Required] private DndSpellRange _range;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CustomRangeText))] [property:Required] private DndSpellRange _range;
     [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(Range), DndSpellRange.Custom)] private string _customRangeText;
-    [ObservableProperty] private string _target;
-    [ObservableProperty] private string _effect;
-    [ObservableProperty] private string _area;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [RequireOneOfList("Spell Effect", nameof(Target), nameof(Effect), nameof(Area))]
+    [NotifyPropertyChangedFor(nameof(Effect), nameof(Area))]
+    private string _target;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [RequireOneOfList("Spell Effect", nameof(Target), nameof(Effect), nameof(Area))]
+    [NotifyPropertyChangedFor(nameof(Target), nameof(Area))]
+    private string _effect;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [RequireOneOfList("Spell Effect", nameof(Target), nameof(Effect), nameof(Area))]
+    [NotifyPropertyChangedFor(nameof(Target), nameof(Effect))]
+    private string _area;
+
     [ObservableProperty] [property:Required] private string _duration;
     [ObservableProperty] [property:Required] private string _savingThrow;
     [ObservableProperty] [property:Required] private string _spellResistance;
@@ -183,6 +198,13 @@ public partial class DndSpell : DatabaseObject
                 break;
             case nameof(Range):
                 ValidateProperty(CustomRangeText, nameof(CustomRangeText));
+                break;
+            case nameof(Target):
+            case nameof(Effect):
+            case nameof(Area):
+                ValidateProperty(Target, nameof(Target));
+                ValidateProperty(Effect, nameof(Effect));
+                ValidateProperty(Area, nameof(Area));
                 break;
         }
 
