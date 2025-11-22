@@ -19,40 +19,47 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] private DndSpellSchool _school;
     [ObservableProperty] private DndSpellSubSchool _subSchool;
     [ObservableProperty] private DndSpellDescriptor _descriptor;
+
+    #region Components
+
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasVerbalComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasSomaticComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasMaterialComponent;
-    [ObservableProperty] private string _materialComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasArcaneFocus;
-    [ObservableProperty] private string _arcaneFocus;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDivineFocus;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasExperienceComponent;
-    [ObservableProperty] private string _experienceComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasBreathComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasTruenameComponent;
-    [ObservableProperty] [property:RequiredIf(nameof(HasTruenameComponent), true)] private string _truenameComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasCorruptionComponent;
-    [ObservableProperty] private string _corruptionComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasSacrificeComponent;
-    [ObservableProperty] private string _sacrificeComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasAbstinenceComponent;
-    [ObservableProperty] private string _abstinenceComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasMindsetComponent;
-    [ObservableProperty] private string _mindsetComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDrugComponent;
-    [ObservableProperty] private string _drugComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasLocationComponent;
-    [ObservableProperty] private string _locationComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDragonmarkComponent;
-    [ObservableProperty] private string _dragonmarkComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasDiseaseComponent;
-    [ObservableProperty] private string _diseaseComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasColdfireComponent;
-    [ObservableProperty] private string _coldfireComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private string _extraComponent;
+
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasMaterialComponent), true)] private string _materialComponent;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasArcaneFocus), true)] private string _arcaneFocus;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasExperienceComponent), true)] private string _experienceComponent;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasTruenameComponent), true)] private string _truenameComponent;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasCorruptionComponent), true)] private string _corruptionComponent;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasSacrificeComponent), true)] private string _sacrificeComponent;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasAbstinenceComponent), true)] private string _abstinenceComponent;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasMindsetComponent), true)] private string _mindsetComponent;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasDrugComponent), true)] private string _drugComponent;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasLocationComponent), true)] private string _locationComponent;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasDragonmarkComponent), true)] private string _dragonmarkComponent;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasDiseaseComponent), true)] private string _diseaseComponent;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(HasColdfireComponent), true)] private string _coldfireComponent;
+
+    #endregion
+
     [ObservableProperty] [property:Required] private string _castingTime;
-    [ObservableProperty] private DndSpellRange _range;
-    [ObservableProperty] private string _customRangeText;
+    [ObservableProperty] [property:Required] private DndSpellRange _range;
+    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(Range), DndSpellRange.Custom)] private string _customRangeText;
     [ObservableProperty] private string _target;
     [ObservableProperty] private string _effect;
     [ObservableProperty] private string _area;
@@ -124,12 +131,59 @@ public partial class DndSpell : DatabaseObject
 
     [NotMapped] public bool HasChanges { get; set; }
 
+    // ReSharper disable once CognitiveComplexity
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         if (e.PropertyName != nameof(HasChanges))
         {
             HasChanges = true;
-            ValidateAllProperties();
+        }
+
+        // update validation rules
+        switch (e.PropertyName)
+        {
+            case nameof(HasMaterialComponent):
+                ValidateProperty(MaterialComponent, nameof(MaterialComponent));
+                break;
+            case nameof(HasArcaneFocus):
+                ValidateProperty(ArcaneFocus, nameof(ArcaneFocus));
+                break;
+            case nameof(HasExperienceComponent):
+                ValidateProperty(ExperienceComponent, nameof(ExperienceComponent));
+                break;
+            case nameof(HasTruenameComponent):
+                ValidateProperty(TruenameComponent, nameof(TruenameComponent));
+                break;
+            case nameof(HasCorruptionComponent):
+                ValidateProperty(CorruptionComponent, nameof(CorruptionComponent));
+                break;
+            case nameof(HasSacrificeComponent):
+                ValidateProperty(SacrificeComponent, nameof(SacrificeComponent));
+                break;
+            case nameof(HasAbstinenceComponent):
+                ValidateProperty(AbstinenceComponent, nameof(AbstinenceComponent));
+                break;
+            case nameof(HasMindsetComponent):
+                ValidateProperty(MindsetComponent, nameof(MindsetComponent));
+                break;
+            case nameof(HasDrugComponent):
+                ValidateProperty(DrugComponent, nameof(DrugComponent));
+                break;
+            case nameof(HasLocationComponent):
+                ValidateProperty(LocationComponent, nameof(LocationComponent));
+                break;
+            case nameof(HasDragonmarkComponent):
+                ValidateProperty(DragonmarkComponent, nameof(DragonmarkComponent));
+                break;
+            case nameof(HasDiseaseComponent):
+                ValidateProperty(DiseaseComponent, nameof(DiseaseComponent));
+                break;
+            case nameof(HasColdfireComponent):
+                ValidateProperty(ColdfireComponent, nameof(ColdfireComponent));
+                break;
+            case nameof(Range):
+                ValidateProperty(CustomRangeText, nameof(CustomRangeText));
+                break;
         }
 
         base.OnPropertyChanged(e);
