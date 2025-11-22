@@ -21,6 +21,7 @@
             HasCorruptionComponent="True"
             ArcaneFocus="A pen and a handwritten contract"
             CorruptionComponent="10d20 Gold"
+            HasMindsetComponent="True"
             ExtraComponent="Firm Handshake"
             CastingTime="1 hour"
             Range="Custom"

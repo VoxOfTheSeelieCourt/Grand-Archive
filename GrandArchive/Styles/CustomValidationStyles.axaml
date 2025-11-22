@@ -1,0 +1,48 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="DataValidationErrors">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DockPanel LastChildFill="True">
+                    <ContentControl DockPanel.Dock="Right"
+                                    ContentTemplate="{TemplateBinding ErrorTemplate}"
+                                    DataContext="{TemplateBinding Owner}"
+                                    Content="{Binding (DataValidationErrors.Errors)}"
+                                    IsVisible="{Binding (DataValidationErrors.HasErrors)}"
+                                    Margin="4,0,0,0"/>
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"/>
+                </DockPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="DataValidationErrors">
+        <Setter Property="ErrorTemplate">
+            <DataTemplate>
+                <Canvas Width="14" Height="14"
+                        Margin="0,0,1,0"
+                        VerticalAlignment="Center"
+                        Background="Transparent">
+                    <Ellipse Width="14" Height="14"
+                             Fill="DeepPink"
+                             StrokeThickness="0"/>
+                    <Path Data="M 7,3 L 7,8 M 7,10 L 7,11"
+                          Stroke="White"
+                          StrokeThickness="2"
+                          StrokeLineCap="Round"/>
+                    <ToolTip.Tip>
+                        <ToolTip IsOpen="True">
+                            <ItemsControl x:DataType="DataValidationErrors" ItemsSource="{Binding}"/>
+                        </ToolTip>
+                    </ToolTip.Tip>
+                </Canvas>
+            </DataTemplate>
+        </Setter>
+    </Style>
+</Styles>
