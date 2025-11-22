@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using Avalonia.Media;
 
-namespace GrandArchive.Helpers;
+namespace GrandArchive.Helpers.Converter;
 
-public class EnumBrushConverter : IValueConverter
+public class EnumObjectConverter : IValueConverter
 {
-    public Dictionary<string, Brush> Brushes { get; set; }
+    public Dictionary<string, object> ObjectMap { get; set; }
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value != null ? Brushes.GetValueOrDefault(value.ToString()) : null;
+        return value != null ? ObjectMap.GetValueOrDefault(value.ToString()) : null;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

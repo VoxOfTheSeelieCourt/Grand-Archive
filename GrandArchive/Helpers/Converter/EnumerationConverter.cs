@@ -4,7 +4,7 @@ using Avalonia.Data.Converters;
 using GrandArchive.Helpers.MarkupExtensions;
 using GrandArchive.Models;
 
-namespace GrandArchive.Helpers;
+namespace GrandArchive.Helpers.Converter;
 
 public class EnumerationConverter : IValueConverter
 {

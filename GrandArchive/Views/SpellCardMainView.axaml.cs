@@ -9,7 +9,9 @@ using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using GrandArchive.Helpers.ExtensionMethods;
 using GrandArchive.Models.Database;
+using GrandArchive.Services.UserInformationService;
 using GrandArchive.ViewModels;
 
 namespace GrandArchive.Views;
@@ -59,11 +61,16 @@ public partial class SpellCardMainView : UserControl
             var host = new Canvas { IsHitTestVisible = false, Opacity = 0 };
             var parent = top.Content as Panel ?? throw new InvalidOperationException("No usable panel to attach to.");
             parent.Children.Add(host);
+            var path = dir[0].Path.AbsolutePath.Replace("%20", " ");
 
             var view = new SpellCardRenderView(){DataContext = spells.First()};
             Canvas.SetLeft(view, -10000000);
             Canvas.SetTop(view, -10000000);
             host.Children.Add(view);
+            view.IsBleedingEdgeVisible = SpellCardRenderView.IsBleedingEdgeVisible;
+
+            Grid.SetColumn(view.BleedingEdgeFront, 0);
+            Grid.SetColumn(view.BleedingEdgeBack, 0);
 
             Dispatcher.UIThread.Invoke(() => { }, DispatcherPriority.Loaded);
 
@@ -76,20 +83,24 @@ public partial class SpellCardMainView : UserControl
                 view.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 view.Arrange(new Rect(view.DesiredSize));
                 Dispatcher.UIThread.Invoke(() => { }, DispatcherPriority.Render);
-
-                SaveControl(view.CutAreaFront, Path.Combine(dir[0].Path.AbsolutePath, $"{spell.Name} Front.png"));
-                SaveControl(view.CutAreaBack, Path.Combine(dir[0].Path.AbsolutePath, $"{spell.Name} Back.png"));
+                SaveControl(view.IsBleedingEdgeVisible ? view.BleedingEdgeFront : view.CutAreaFront, Path.Combine(path, spell.Rulebook.Name, "Front", $"{spell.Name}.png".SanitizeFileName()));
+                SaveControl(view.IsBleedingEdgeVisible ? view.BleedingEdgeBack : view.CutAreaBack, Path.Combine(path, spell.Rulebook.Name, "Back", $"{spell.Name}.png".SanitizeFileName()));
 
                 Dispatcher.UIThread.Invoke(() => { }, DispatcherPriority.Background);
             }
 
             host.Children.Clear();
             parent.Children.Remove(host);
+
+            App.UserInformationMessageService.AddDisplayMessage($"Exported {spells.Count} spells", InformationType.Success, TimeSpan.FromMinutes(1), $"Export located at {path}.");
         });
     }
 
     private static void SaveControl(Control control, string filePath)
     {
+        if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+        
         // If a template hasn’t created the visual yet, ensure layout now.
         if (control.Bounds.Width <= 0 || control.Bounds.Height <= 0)
         {
@@ -122,5 +133,10 @@ public partial class SpellCardMainView : UserControl
         };
 
         SpellDataGrid.SelectedItem = vm.Spells?.FirstOrDefault();
+    }
+
+    private void ToggleBleedingEdge(object sender, RoutedEventArgs e)
+    {
+        SpellCardRenderView.IsBleedingEdgeVisible = !SpellCardRenderView.IsBleedingEdgeVisible;
     }
 }

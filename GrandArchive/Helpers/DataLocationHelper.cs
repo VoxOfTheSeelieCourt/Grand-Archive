@@ -13,7 +13,7 @@ public static class DataLocationHelper
         {
             Directory.CreateDirectory(path);
         }
-        
+
         return path;
     }
 }

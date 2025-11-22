@@ -24,6 +24,8 @@ public partial class SpellCardMainViewModel : NavigableViewModel
     public List<DndRulebook> RuleBooks { get; set; }
     public List<DndClass> Classes { get; set; }
 
+    public int VerifiedSpellsCount => Spells.Count(x => x.IsVerified);
+
     public SpellCardMainViewModel(IDbContextFactory<DatabaseContext> dbContextFactory, IUserInformationMessageService userInformationMessageService)
     {
         _dbContextFactory = dbContextFactory;
@@ -39,6 +41,12 @@ public partial class SpellCardMainViewModel : NavigableViewModel
 
         RuleBooks = dbContext.DndRulebooks.Include(x => x.DndEdition).ToList();
         Classes = dbContext.DndClasses.ToList();
+    }
+
+    [RelayCommand]
+    private void UpdateCountVerified()
+    {
+        OnPropertyChanged(nameof(VerifiedSpellsCount));
     }
 
     [RelayCommand]
@@ -62,6 +70,8 @@ public partial class SpellCardMainViewModel : NavigableViewModel
                 if (dndSpell.CastingTime == "1 standard action")
                     dndSpell.CastingTime = "1 standard";
             }
+
+            OnPropertyChanged(nameof(VerifiedSpellsCount));
         }
         catch (Exception e)
         {

@@ -2,7 +2,7 @@
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace GrandArchive.Helpers;
+namespace GrandArchive.Helpers.Converter;
 
 public class NullToBoolConverter : IValueConverter
 {

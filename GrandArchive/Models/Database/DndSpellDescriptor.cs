@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace GrandArchive.Models.Database;
 
@@ -21,9 +22,11 @@ public enum DndSpellDescriptor : long
     Force = 1L << 12,
     Good = 1L << 13,
     Incarnum = 1L << 14,
+    [Description("Language-Dependant")]
     LanguageDependent = 1L << 15,
     Lawful = 1L << 16,
     Light = 1L << 17,
+    [Description("Mind-Affecting")]
     MindAffecting = 1L << 18,
     Negative = 1L << 19,
     Positive = 1L << 20,

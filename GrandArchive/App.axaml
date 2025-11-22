@@ -3,6 +3,7 @@
              x:Class="GrandArchive.App"
              xmlns:local="using:GrandArchive"
              xmlns:helpers="clr-namespace:GrandArchive.Helpers"
+             xmlns:converter="clr-namespace:GrandArchive.Helpers.Converter"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -19,6 +20,24 @@
         </FluentTheme>
 
         <StyleInclude Source="Assets/Icons.axaml"/>
+
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Classes="data-grid-column-header">
+                        <StackPanel Margin="4" Spacing="4">
+                            <!-- Original header content -->
+                            <ContentPresenter Content="{TemplateBinding Content}"/>
+                            <!-- Filter box bound to the owning column's attached FilterText -->
+                            <TextBox
+                                Watermark="Filter…"
+                                FontSize="12"
+                                TextChanged="TextBox_OnTextChanged"/>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
     </Application.Styles>
 
     <Application.Resources>
@@ -29,7 +48,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
-        <helpers:NullToBoolConverter x:Key="NullToFalseConverter"/>
-        <helpers:EnumerationConverter x:Key="EnumerationConverter"/>
+        <converter:NullToBoolConverter x:Key="NullToFalseConverter"/>
+        <converter:EnumerationConverter x:Key="EnumerationConverter"/>
     </Application.Resources>
 </Application>

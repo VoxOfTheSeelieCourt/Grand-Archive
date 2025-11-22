@@ -9,6 +9,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using AvaloniaGraphControl;
 using GrandArchive.Helpers;
+using GrandArchive.Helpers.Converter;
 using GrandArchive.Helpers.MarkupExtensions;
 
 namespace GrandArchive.Views;
@@ -22,9 +23,9 @@ public partial class ComponentDiagramView : UserControl
 
     public Array LayoutMethods => new EnumerationExtension(typeof(GraphPanel.LayoutMethods)).ProvideValue(null);
 
-    public static EnumBrushConverter ComponentTypeEnumBrushConverter => new EnumBrushConverter()
+    public static EnumObjectConverter ComponentTypeEnumBrushConverter => new()
     {
-        Brushes = new Dictionary<string, Brush>()
+        ObjectMap = new Dictionary<string, object>()
         {
             { "Module", new SolidColorBrush(Color.Parse("#ff1d1d1d")) }, // dark gray
             { "Component", new SolidColorBrush(Color.Parse("#ffa5a5a5")) }, // gray

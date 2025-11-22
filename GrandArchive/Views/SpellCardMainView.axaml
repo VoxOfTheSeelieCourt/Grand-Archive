@@ -5,6 +5,8 @@
              xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
              xmlns:views="clr-namespace:GrandArchive.Views"
              xmlns:database="clr-namespace:GrandArchive.Models.Database"
+             xmlns:helpers="clr-namespace:GrandArchive.Helpers"
+             xmlns:collections="clr-namespace:Avalonia.Collections;assembly=Avalonia.Controls.DataGrid"
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardMainView"
              x:DataType="viewModels:SpellCardMainViewModel"
@@ -14,34 +16,47 @@
     </Design.DataContext>
     
     <Grid RowDefinitions="Auto *">
-        <Menu Grid.Row="0">
-            <MenuItem Header="Load Spells" Command="{Binding LoadSpellsCommand}"/>
-            <MenuItem Header="Save Spells" Command="{Binding SaveSpellsCommand}"/>
-            <MenuItem Header="Export Selected Spell Card" Click="ExportSelectedSpellCard"/>
-            <MenuItem Header="Export All Spell Cards" Click="ExportAllSpellCards"/>
-        </Menu>
+        <Grid Grid.Row="0" ColumnDefinitions="* Auto">
+            <Menu Grid.Column="0">
+                <MenuItem Header="Load Spells" Command="{Binding LoadSpellsCommand}"/>
+                <MenuItem Header="Save Spells" Command="{Binding SaveSpellsCommand}"/>
+                <MenuItem Header="Export Selected Spell Card" Click="ExportSelectedSpellCard"/>
+                <MenuItem Header="Export All Spell Cards" Click="ExportAllSpellCards"/>
+                <MenuItem Header="Bleeding Edge" Click="ToggleBleedingEdge" IsChecked="{Binding #SpellCardRenderView.IsBleedingEdgeVisible}"/>
+            </Menu>
+            
+            <ProgressBar Grid.Column="1" Width="300" Maximum="{Binding Spells.Count}"
+                         Value="{Binding VerifiedSpellsCount}"
+                         VerticalAlignment="Stretch" Margin="2"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Run Text="{Binding VerifiedSpellsCount}"/>
+                <Run Text="/"/>
+                <Run Text="{Binding Spells.Count}"/>
+            </TextBlock>
+        </Grid>
         
         <Grid Grid.Row="1" ColumnDefinitions="Auto *">
             <Grid Grid.Column="0" RowDefinitions="Auto * Auto" RowSpacing="5"
                   DataContext="{Binding #SpellDataGrid.((database:DndSpell)SelectedItem)}">
                 <Viewbox Grid.Row="0" Stretch="Uniform" Height="400" Width="600">
-                    <views:SpellCardRenderView/>
+                    <views:SpellCardRenderView Name="SpellCardRenderView"/>
                 </Viewbox>
 
+                <!-- ReSharper disable Xaml.PossibleNullReferenceException -->
                 <ScrollViewer Grid.Row="1">
-                    <!-- ReSharper disable Xaml.PossibleNullReferenceException -->
                     <views:SpellCardEditView VerticalAlignment="Top" MaxWidth="600" Margin="5"
                                              DndRuleBooks="{Binding $parent[views:SpellCardMainView].((viewModels:SpellCardMainViewModel)DataContext).RuleBooks}"
                                              DndClasses="{Binding $parent[views:SpellCardMainView].((viewModels:SpellCardMainViewModel)DataContext).Classes}" />
-                    <!-- ReSharper restore Xaml.PossibleNullReferenceException -->
                 </ScrollViewer>
                 
                 <ToggleButton Grid.Row="2" Content="Spell Verified" IsChecked="{Binding IsVerified}"
-                              HorizontalAlignment="Stretch" FontSize="20"/>
+                              HorizontalAlignment="Stretch" FontSize="20" Margin="5" Command="{Binding $parent[views:SpellCardMainView].((viewModels:SpellCardMainViewModel)DataContext).UpdateCountVerifiedCommand}"/>
+                <!-- ReSharper restore Xaml.PossibleNullReferenceException -->
             </Grid>
             
             <DataGrid Grid.Column="1" ItemsSource="{Binding Spells}" IsReadOnly="True"
-                      x:Name="SpellDataGrid" AutoGenerateColumns="False" SelectedIndex="0">
+                      x:Name="SpellDataGrid" AutoGenerateColumns="False" SelectedIndex="0"
+                      helpers:DataGridFilterBehavior.IsEnabled="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                     <DataGridCheckBoxColumn Header="Verified" Binding="{Binding IsVerified}"/>

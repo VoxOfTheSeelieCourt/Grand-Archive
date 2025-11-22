@@ -7,7 +7,7 @@ using Avalonia.Media;
 using GrandArchive.Helpers.ExtensionMethods;
 using GrandArchive.Models.Database;
 
-namespace GrandArchive.Helpers;
+namespace GrandArchive.Helpers.Converter;
 
 public class SpellSchoolToBrushConverter : IValueConverter
 {
@@ -31,10 +31,10 @@ public class SpellSchoolToBrushConverter : IValueConverter
         var flags = spellSchool.GetFlags()
             .Cast<DndSpellSchool>()
             .ToList();
-        
+
         if (flags.Count > 1)
             flags.RemoveAll(x => x == DndSpellSchool.None);
-        
+
         var brushes = flags.Take(AllowMulticolor ? int.MaxValue : 1)
             .Select(item => item switch
             {
@@ -51,7 +51,7 @@ public class SpellSchoolToBrushConverter : IValueConverter
                 _ => throw new ArgumentOutOfRangeException()
             })
             .ToList();
-        
+
         if (brushes.Count < 2)
             return brushes.FirstOrDefault();
         var brush = new LinearGradientBrush()
@@ -59,7 +59,7 @@ public class SpellSchoolToBrushConverter : IValueConverter
             StartPoint = new RelativePoint(0, 0.5, RelativeUnit.Relative),
             EndPoint = new  RelativePoint(1, 0.5, RelativeUnit.Relative)
         };
-        
+
         brush.GradientStops.AddRange(brushes.Select(x => new GradientStop(x.Color, 1d / (brushes.Count * 2) * (brushes.IndexOf(x) * 2 + 1))));
         return brush;
     }

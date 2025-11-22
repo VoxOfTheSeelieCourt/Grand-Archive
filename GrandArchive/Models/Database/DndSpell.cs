@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using GrandArchive.Helpers.Attributes;
+#pragma warning disable CS0657 // Not a valid attribute location for this declaration
 
 namespace GrandArchive.Models.Database;
 
@@ -29,7 +30,7 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] private string _experienceComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasBreathComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasTruenameComponent;
-    [ObservableProperty] [property:RequiredIfAttribute(nameof(HasTruenameComponent), true)] private string _truenameComponent;
+    [ObservableProperty] [property:RequiredIf(nameof(HasTruenameComponent), true)] private string _truenameComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasCorruptionComponent;
     [ObservableProperty] private string _corruptionComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasSacrificeComponent;
@@ -49,7 +50,7 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private bool _hasColdfireComponent;
     [ObservableProperty] private string _coldfireComponent;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(AllComponents))] private string _extraComponent;
-    [ObservableProperty] private string _castingTime;
+    [ObservableProperty] [property:Required] private string _castingTime;
     [ObservableProperty] private DndSpellRange _range;
     [ObservableProperty] private string _customRangeText;
     [ObservableProperty] private string _target;
@@ -63,6 +64,10 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] private bool _isVerified;
 
     [ObservableProperty] [property:Required] private DndRulebook _rulebook;
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+    [ObservableProperty] private DndSpell? _variantOfSpell;
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+    [ObservableProperty] private ICollection<DndSpell> _spellVariants;
     [ObservableProperty] private ICollection<DndClassSpell> _classSpells =  new List<DndClassSpell>();
     [ObservableProperty] private ICollection<DndDomainSpell> _domainSpells =  new List<DndDomainSpell>();
 
