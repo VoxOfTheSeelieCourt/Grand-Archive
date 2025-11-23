@@ -3,13 +3,7 @@
     <Style Selector="DataValidationErrors">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel LastChildFill="True">
-                    <ContentControl DockPanel.Dock="Right"
-                                    ContentTemplate="{TemplateBinding ErrorTemplate}"
-                                    DataContext="{TemplateBinding Owner}"
-                                    Content="{Binding (DataValidationErrors.Errors)}"
-                                    IsVisible="{Binding (DataValidationErrors.HasErrors)}"
-                                    Margin="4,0,0,0"/>
+                <Grid>
                     <ContentPresenter Name="PART_ContentPresenter"
                                       Background="{TemplateBinding Background}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
@@ -17,7 +11,13 @@
                                       ContentTemplate="{TemplateBinding ContentTemplate}"
                                       Content="{TemplateBinding Content}"
                                       Padding="{TemplateBinding Padding}"/>
-                </DockPanel>
+                    <ContentControl HorizontalAlignment="Right"
+                                    ContentTemplate="{TemplateBinding ErrorTemplate}"
+                                    DataContext="{TemplateBinding Owner}"
+                                    Content="{Binding (DataValidationErrors.Errors)}"
+                                    IsVisible="{Binding (DataValidationErrors.HasErrors)}"
+                                    Margin="4,0"/>
+                </Grid>
             </ControlTemplate>
         </Setter>
     </Style>
@@ -30,7 +30,7 @@
                         VerticalAlignment="Center"
                         Background="Transparent">
                     <Ellipse Width="14" Height="14"
-                             Fill="DeepPink"
+                             Fill="{StaticResource SystemErrorTextColor}"
                              StrokeThickness="0"/>
                     <Path Data="M 7,3 L 7,8 M 7,10 L 7,11"
                           Stroke="White"

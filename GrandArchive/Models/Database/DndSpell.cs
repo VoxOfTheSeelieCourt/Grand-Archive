@@ -58,8 +58,8 @@ public partial class DndSpell : DatabaseObject
     #endregion
 
     [ObservableProperty] [property:Required] private string _castingTime;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CustomRangeText))] [property:Required] private DndSpellRange _range;
-    [ObservableProperty] [NotifyDataErrorInfo] [ConditionalRequired(nameof(Range), DndSpellRange.Custom)] private string _customRangeText;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(RangeDisplayText))] [property:Required] private DndSpellRange _range;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(RangeDisplayText))] [NotifyDataErrorInfo] [ConditionalRequired(nameof(Range), DndSpellRange.Custom)] private string _customRangeText;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
