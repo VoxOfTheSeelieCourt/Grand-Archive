@@ -35,6 +35,13 @@ public partial class SpellCardMainViewModel : NavigableViewModel
         Task.Run(LoadSpells);
     }
 
+    /// <inheritdoc/>
+    public override bool OnNavigateFrom()
+    {
+        // TODO: Add user prompt
+        return Spells.All(x => !x.HasChanges);
+    }
+
     private void LoadBaseData()
     {
         using var dbContext = _dbContextFactory.CreateDbContext();

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace GrandArchive.Models.Database;
 
 [Index(nameof(ClassId), nameof(SpellId), IsUnique = true)]
-[DebuggerDisplay("{Spell.Name ?? SpellId.ToString()}: {Domain.Name ?? DomainId.ToString()} {Level}")]
+[DebuggerDisplay("{Spell.Name ?? SpellId.ToString()}: {Class.Name ?? ClassId.ToString()} {Level}")]
 public partial class DndClassSpell : DatabaseObject
 {
     [ObservableProperty] private int _level;

@@ -6,7 +6,6 @@
              xmlns:views="clr-namespace:GrandArchive.Views"
              xmlns:database="clr-namespace:GrandArchive.Models.Database"
              xmlns:helpers="clr-namespace:GrandArchive.Helpers"
-             xmlns:collections="clr-namespace:Avalonia.Collections;assembly=Avalonia.Controls.DataGrid"
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardMainView"
              x:DataType="viewModels:SpellCardMainViewModel"
@@ -19,8 +18,8 @@
         <Grid Grid.Row="0" ColumnDefinitions="* Auto">
             <Menu Grid.Column="0">
                 <MenuItem Header="Spells">
-                    <MenuItem Header="Load Spells" Command="{Binding LoadSpellsCommand}"/>
-                    <MenuItem Header="Save Spells" Command="{Binding SaveSpellsCommand}"/>
+                    <MenuItem Header="Load Spells" Command="{Binding LoadSpellsCommand}" HotKey="Ctrl+L"/>
+                    <MenuItem Header="Save Spells" Command="{Binding SaveSpellsCommand}" HotKey="Ctrl+S"/>
                 </MenuItem>
                 <MenuItem Header="Spellcards">
                     <MenuItem Header="Export Selected Spell Card" Click="ExportSelectedSpellCard"/>

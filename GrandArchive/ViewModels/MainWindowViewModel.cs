@@ -26,7 +26,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly INavigationService _navigationService;
     private readonly IUserInformationMessageService _userInformationMessageService;
 
-    public ViewModelBase ActiveViewModel => _navigationService.ActiveViewModel;
+    public NavigableViewModel ActiveViewModel => _navigationService.ActiveViewModel;
     public ObservableCollection<UserMessageViewModel> UserMessageViewModels => _userInformationMessageService.UserMessageViewModels;
 
     public ObservableCollection<NavigationBarEntry> NavigableViewModels { get; }
@@ -85,9 +85,7 @@ public partial class MainWindowViewModel : ViewModelBase
             || _serviceProvider.GetRequiredService(pageType) is not NavigableViewModel vm)
             return false;
 
-        await _navigationService.NavigateAsync(vm);
-
-        return true;
+        return await _navigationService.NavigateAsync(vm);
     }
 
     private async void OnNavigationChanged(NavigationBarEntry oldValue, NavigationBarEntry newValue)

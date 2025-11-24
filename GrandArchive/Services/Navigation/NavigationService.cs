@@ -26,13 +26,20 @@ public class NavigationService : INavigationService
     public bool CanGoBack => _backHistory.Count > 0;
     public bool CanGoForward => _forwardHistory.Count > 0;
 
-    public void Navigate(NavigableViewModel target)
+    public bool Navigate(NavigableViewModel target)
     {
-        Navigate(target, false, true);
+        return Navigate(target, false, true);
     }
 
-    private void Navigate(NavigableViewModel target, bool moveBack, bool clearForwardHistory)
+    private bool Navigate(NavigableViewModel target, bool moveBack, bool clearForwardHistory)
     {
+        if (ActiveViewModel == target)
+            return true;
+
+        if (ActiveViewModel != null
+            && ActiveViewModel.OnNavigateFrom() != true)
+            return false;
+
         if (clearForwardHistory)
             _forwardHistory.Clear();
 
@@ -42,19 +49,19 @@ public class NavigationService : INavigationService
             else
                 _backHistory.Push(ActiveViewModel);
 
-        ActiveViewModel?.OnNavigateFrom();
-
         ActiveViewModel = target;
 
         ActiveViewModel?.OnNavigateTo();
 
         OnPropertyChanged(nameof(CanGoBack));
         OnPropertyChanged(nameof(CanGoForward));
+
+        return true;
     }
 
-    public async Task NavigateAsync(NavigableViewModel target)
+    public async Task<bool> NavigateAsync(NavigableViewModel target)
     {
-        await Task.Run(() => Navigate(target));
+        return await Task.Run(() => Navigate(target));
     }
 
     private async Task NavigateAsync(NavigableViewModel target, bool moveBack, bool cleanForwardHistory)

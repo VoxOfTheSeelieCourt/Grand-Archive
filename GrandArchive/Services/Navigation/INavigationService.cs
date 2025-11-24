@@ -10,8 +10,8 @@ public interface INavigationService : INotifyPropertyChanged
     public bool CanGoBack { get; }
     public bool CanGoForward { get; }
 
-    public void Navigate(NavigableViewModel target);
-    public Task NavigateAsync(NavigableViewModel target);
+    public bool Navigate(NavigableViewModel target);
+    public Task<bool> NavigateAsync(NavigableViewModel target);
     public void GoBack();
     public bool TryGoBack();
     public Task GoBackAsync();

@@ -7,6 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GrandArchive.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+        Closing="Window_OnClosing"
         Icon="/Assets/avalonia-logo.ico"
         Title="GrandArchive">
 
