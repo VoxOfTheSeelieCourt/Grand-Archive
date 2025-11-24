@@ -308,12 +308,12 @@
                                                 <ItemsControl ItemsSource="{Binding School, Converter={StaticResource SpellSchoolToIconConverter}}">
                                                     <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>
-                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"></StackPanel>
+                                                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center"></StackPanel>
                                                         </ItemsPanelTemplate>
                                                     </ItemsControl.ItemsPanel>
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <PathIcon Data="{Binding}"/>
+                                                            <PathIcon Data="{Binding}" Foreground="{Binding $parent[ItemsControl].((database:DndSpell)DataContext).School, Converter={StaticResource SpellSchoolToBrushConverter}}"/>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
