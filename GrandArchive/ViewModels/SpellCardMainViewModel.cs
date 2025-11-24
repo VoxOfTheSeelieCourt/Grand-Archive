@@ -39,8 +39,8 @@ public partial class SpellCardMainViewModel : NavigableViewModel
     {
         using var dbContext = _dbContextFactory.CreateDbContext();
 
-        RuleBooks = dbContext.DndRulebooks.Include(x => x.DndEdition).ToList();
-        Classes = dbContext.DndClasses.ToList();
+        RuleBooks = dbContext.DndRulebooks.Include(x => x.DndEdition).AsNoTracking().ToList();
+        Classes = dbContext.DndClasses.AsNoTracking().ToList();
     }
 
     [RelayCommand]
@@ -63,6 +63,7 @@ public partial class SpellCardMainViewModel : NavigableViewModel
                 // .Where(x => x.Rulebook.Id == dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.System == "DnD 3.5").GroupBy(y => y.Rulebook.Id).OrderBy(y => y.Count()).First().Key)
                 // .Where(x => !x.IsVerified)
                 .Where(x => x.Rulebook.Id == 81)
+                .AsNoTracking()
                 .ToList());
 
             OnPropertyChanged(nameof(VerifiedSpellsCount));

@@ -1,9 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace GrandArchive.Models.Database;
 
 [Index(nameof(ClassId), nameof(SpellId), IsUnique = true)]
+[DebuggerDisplay("{Spell.Name ?? SpellId.ToString()}: {Domain.Name ?? DomainId.ToString()} {Level}")]
 public partial class DndClassSpell : DatabaseObject
 {
     [ObservableProperty] private int _level;

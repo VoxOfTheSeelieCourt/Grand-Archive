@@ -304,7 +304,7 @@
                                                     </Style>
                                                 </mdxaml:MarkdownScrollViewer.Styles>
                                             </mdxaml:MarkdownScrollViewer>
-                                            <Viewbox Opacity=".3">
+                                            <Viewbox Opacity=".5">
                                                 <ItemsControl ItemsSource="{Binding School, Converter={StaticResource SpellSchoolToIconConverter}}">
                                                     <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>

@@ -18,11 +18,15 @@
     <Grid RowDefinitions="Auto *">
         <Grid Grid.Row="0" ColumnDefinitions="* Auto">
             <Menu Grid.Column="0">
-                <MenuItem Header="Load Spells" Command="{Binding LoadSpellsCommand}"/>
-                <MenuItem Header="Save Spells" Command="{Binding SaveSpellsCommand}"/>
-                <MenuItem Header="Export Selected Spell Card" Click="ExportSelectedSpellCard"/>
-                <MenuItem Header="Export All Spell Cards" Click="ExportAllSpellCards"/>
-                <MenuItem Header="Bleeding Edge" Click="ToggleBleedingEdge" IsChecked="{Binding #SpellCardRenderView.IsBleedingEdgeVisible}"/>
+                <MenuItem Header="Spells">
+                    <MenuItem Header="Load Spells" Command="{Binding LoadSpellsCommand}"/>
+                    <MenuItem Header="Save Spells" Command="{Binding SaveSpellsCommand}"/>
+                </MenuItem>
+                <MenuItem Header="Spellcards">
+                    <MenuItem Header="Export Selected Spell Card" Click="ExportSelectedSpellCard"/>
+                    <MenuItem Header="Export All Spell Cards" Click="ExportAllSpellCards"/>
+                    <MenuItem Header="Bleeding Edge" Click="ToggleBleedingEdge" IsChecked="{Binding #SpellCardRenderView.IsBleedingEdgeVisible}"/>
+                </MenuItem>
             </Menu>
             
             <ProgressBar Grid.Column="1" Width="300" Maximum="{Binding Spells.Count}"
