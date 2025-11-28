@@ -55,7 +55,7 @@
 
     <StackPanel Spacing="5">
         <TextBox Watermark="Name" Text="{Binding Name}"/>
-        <Grid ColumnDefinitions="* 50" ColumnSpacing="10">
+        <Grid ColumnDefinitions="* 50" ColumnSpacing="10" Margin="0,0,7,0">
             <ComboBox Grid.Column="0" HorizontalAlignment="Stretch"
                       SelectedItem="{Binding Rulebook}" ItemsSource="{Binding $parent[views:SpellCardEditView].DndRuleBooks}"
                       DisplayMemberBinding="{Binding Name}"/>

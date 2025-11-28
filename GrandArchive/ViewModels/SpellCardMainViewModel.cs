@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GrandArchive.Helpers.Attributes;
+using GrandArchive.Helpers.ExtensionMethods;
 using GrandArchive.Models.Database;
 using GrandArchive.Services.UserInformationService;
 using GrandArchive.ViewModels.Abstract;
@@ -101,7 +102,7 @@ public partial class SpellCardMainViewModel : NavigableViewModel
 
             await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-            dbContext.DndSpells.UpdateRange(updated);
+            dbContext.UpdateRangeWithNavigations(updated);
 
             await dbContext.SaveChangesAsync();
 
