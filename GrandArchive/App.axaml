@@ -21,6 +21,7 @@
 
         <StyleInclude Source="Assets/Icons.axaml"/>
         <StyleInclude Source="Styles/CustomValidationStyles.axaml"/>
+        <StyleInclude Source="Styles/FlagEnumComboBox.axaml"/>
 
         <Style Selector="DataGridColumnHeader">
             <Setter Property="Template">
@@ -51,5 +52,6 @@
 
         <converter:NullToBoolConverter x:Key="NullToFalseConverter"/>
         <converter:EnumerationConverter x:Key="EnumerationConverter"/>
+        <converter:EnumDescriptorConverter x:Key="EnumDescriptorConverter"/>
     </Application.Resources>
 </Application>

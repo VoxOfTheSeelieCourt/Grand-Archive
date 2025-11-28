@@ -1,0 +1,79 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:GrandArchive.Controls"
+        xmlns:database="clr-namespace:GrandArchive.Models.Database">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <controls:FlagEnumComboBox
+                EnumType="{x:Type database:DndSpellSchool}"/>
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- Add Styles Here -->
+    <Style Selector="controls|FlagEnumComboBox">
+        <Setter Property="Background" Value="{DynamicResource ComboBoxBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                    <Grid>
+                        <Button Name="PART_Button"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Center"
+                                Padding="8,4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Name="PART_DisplayTextBlock"
+                                           Grid.Column="0"
+                                           Text="None"
+                                           VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis" />
+                                
+                                <Path Grid.Column="1"
+                                      Data="M 0,0 L 4,4 L 8,0"
+                                      Stroke="{DynamicResource ComboBoxForeground}"
+                                      StrokeThickness="1"
+                                      VerticalAlignment="Center"
+                                      Margin="8,0,0,0" />
+                            </Grid>
+                        </Button>
+
+                        <Popup Name="PART_Popup"
+                               PlacementTarget="{Binding $parent[Border]}"
+                               IsLightDismissEnabled="True"
+                               MinWidth="{Binding $parent[Border].Bounds.Width}">
+                            <Border Background="{DynamicResource ComboBoxDropDownBackground}"
+                                    BorderBrush="{DynamicResource ComboBoxDropDownBorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="4"
+                                    MaxHeight="300"
+                                    Padding="4">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                            VerticalScrollBarVisibility="Auto">
+                                    <ListBox Name="PART_ListBox"
+                                             Background="Transparent"
+                                             BorderThickness="0" />
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

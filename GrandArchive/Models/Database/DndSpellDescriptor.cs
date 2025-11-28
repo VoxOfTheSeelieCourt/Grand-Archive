@@ -23,7 +23,7 @@ public enum DndSpellDescriptor : long
     Good = 1L << 13,
     Incarnum = 1L << 14,
     [Description("Language-Dependant")]
-    LanguageDependent = 1L << 15,
+    LanguageDependant = 1L << 15,
     Lawful = 1L << 16,
     Light = 1L << 17,
     [Description("Mind-Affecting")]

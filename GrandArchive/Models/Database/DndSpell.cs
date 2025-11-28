@@ -16,8 +16,8 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] [property:Required] private string _name;
     [ObservableProperty] private int? _rulebookPage;
     [ObservableProperty] private DndSpellSchool _school;
-    [ObservableProperty] private DndSpellSubSchool _subSchool;
-    [ObservableProperty] private DndSpellDescriptor _descriptor;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplaySubschool))] private DndSpellSubSchool _subSchool;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplayDescriptor))] private DndSpellDescriptor _descriptor;
 
     #region Components
 

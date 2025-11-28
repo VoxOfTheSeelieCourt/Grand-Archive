@@ -17,7 +17,7 @@
             Name="Hyper-Employment Spell of Testus Maximus"
             School="Abjuration,Enchantment"
             SubSchool="Compulsion"
-            Descriptor="LanguageDependent,MindAffecting"
+            Descriptor="LanguageDependant,MindAffecting"
             HasVerbalComponent="True"
             HasArcaneFocus="True"
             HasCorruptionComponent="True"
@@ -145,12 +145,12 @@
                                         <TextBlock Grid.Row="0" Text="{Binding Name}" TextAlignment="Center"
                                                    FontWeight="Bold" FontSize="35" />
                                         <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <TextBlock FontWeight="Bold" Text="{Binding School}" />
+                                            <TextBlock FontWeight="Bold" Text="{Binding School, Converter={StaticResource EnumDescriptorConverter}}" />
                                             <TextBlock FontWeight="Bold"
-                                                       Text="{Binding SubSchool, StringFormat={}({0})}"
+                                                       Text="{Binding SubSchool, StringFormat={}({0}), Converter={StaticResource EnumDescriptorConverter}}"
                                                        IsVisible="{Binding DisplaySubschool}" />
                                             <TextBlock FontWeight="Bold"
-                                                       Text="{Binding Descriptor, StringFormat={}[{0}]}"
+                                                       Text="{Binding Descriptor, StringFormat={}[{0}], Converter={StaticResource EnumDescriptorConverter}}"
                                                        IsVisible="{Binding DisplayDescriptor}" />
                                         </WrapPanel>
                                     </Grid>
