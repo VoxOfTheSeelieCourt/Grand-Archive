@@ -82,7 +82,7 @@ public class FlagEnumComboBox : TemplatedControl
         if (_listBox == null || EnumType is not { IsEnum: true })
             return;
 
-        var items = new List<FlagEnumItem>();
+        var items = new List<EnumItem>();
         var values = Enum.GetValues(EnumType);
 
         foreach (Enum value in values)
@@ -91,11 +91,10 @@ public class FlagEnumComboBox : TemplatedControl
             if (numericValue == 0 || numericValue % 2 != 0)
                 continue;
 
-            var item = new FlagEnumItem()
+            var item = new EnumItem()
             {
                 Value = value,
-                DisplayName = value.GetDescription(),
-                IsChecked = false
+                DisplayName = value.GetDescription()
             };
 
             items.Add(item);
@@ -120,10 +119,9 @@ public class FlagEnumComboBox : TemplatedControl
 
     private void CheckBox_IsCheckedChanged(object sender, RoutedEventArgs routedEventArgs)
     {
-        if (sender is not CheckBox { Tag: FlagEnumItem item } checkBox)
+        if (sender is not CheckBox { Tag: EnumItem })
             return;
 
-        item.IsChecked = checkBox.IsChecked == true;
         UpdateSelectedValue();
     }
 
@@ -136,7 +134,7 @@ public class FlagEnumComboBox : TemplatedControl
 
         foreach (var control in _listBox.Items.Cast<CheckBox>())
         {
-            if (control.Tag is not FlagEnumItem item)
+            if (control.Tag is not EnumItem item)
                 continue;
 
             var valueLong = Convert.ToInt64(item.Value);
@@ -144,7 +142,6 @@ public class FlagEnumComboBox : TemplatedControl
 
             control.IsCheckedChanged -= CheckBox_IsCheckedChanged;
             control.IsChecked = isChecked;
-            item.IsChecked = isChecked;
             control.IsCheckedChanged += CheckBox_IsCheckedChanged;
         }
     }
@@ -158,7 +155,7 @@ public class FlagEnumComboBox : TemplatedControl
 
         foreach (var control in _listBox.Items.Cast<CheckBox>())
         {
-            if (control.Tag is FlagEnumItem { IsChecked: true } flag)
+            if (control.IsChecked == true && control.Tag is EnumItem flag)
                 result |= Convert.ToInt64(flag.Value);
         }
 

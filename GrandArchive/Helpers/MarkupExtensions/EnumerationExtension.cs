@@ -37,11 +37,11 @@ public class EnumerationExtension : MarkupExtension
     {
         var enumValues = Enum.GetValues(EnumType);
 
-        return (from object enumValue in enumValues
-            select new EnumerationMember
+        return (from Enum enumValue in enumValues
+            select new EnumItem
             {
                 Value = enumValue,
-                Description = GetDescription(enumValue, EnumType)
+                DisplayName = GetDescription(enumValue, EnumType)
             }).ToArray();
     }
 

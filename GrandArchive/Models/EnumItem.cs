@@ -2,9 +2,13 @@
 
 namespace GrandArchive.Models;
 
-public class FlagEnumItem
+public struct EnumItem
 {
     public Enum Value { get; set; }
     public string DisplayName { get; set; }
-    public bool IsChecked { get; set; }
+
+    public override string ToString()
+    {
+        return DisplayName;
+    }
 }

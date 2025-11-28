@@ -65,9 +65,9 @@
                     <DataGridCheckBoxColumn Header="Verified" Binding="{Binding IsVerified}"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                     <DataGridTextColumn Header="Class Levels" Binding="{Binding ClassDisplayTextMultiLine}"/>
-                    <DataGridTextColumn Header="Schools" Binding="{Binding School, Mode=OneTime, Converter={StaticResource EnumDescriptorConverter}}"/>
-                    <DataGridTextColumn Header="Subschools" Binding="{Binding SubSchool, Mode=OneTime, Converter={StaticResource EnumDescriptorConverter}}"/>
-                    <DataGridTextColumn Header="Descriptor" Binding="{Binding Descriptor, Mode=OneTime, Converter={StaticResource EnumDescriptorConverter}}"/>
+                    <DataGridTextColumn Header="Schools" Binding="{Binding School, Mode=OneWay, Converter={StaticResource EnumDescriptorConverter}}"/>
+                    <DataGridTextColumn Header="Subschools" Binding="{Binding SubSchool, Mode=OneWay, Converter={StaticResource EnumDescriptorConverter}}"/>
+                    <DataGridTextColumn Header="Descriptor" Binding="{Binding Descriptor, Mode=OneWay, Converter={StaticResource EnumDescriptorConverter}}"/>
                     <DataGridTextColumn Header="Source" Binding="{Binding Rulebook.Name}"/>
                     <DataGridTextColumn Header="Page" Binding="{Binding RulebookPage}"/>
                     <DataGridTextColumn Header="Casting Time" Binding="{Binding CastingTime}"/>

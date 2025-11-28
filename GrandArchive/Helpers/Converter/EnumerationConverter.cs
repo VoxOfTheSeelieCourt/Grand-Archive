@@ -10,23 +10,23 @@ public class EnumerationConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value == null)
+        if (value == null || value is not Enum e)
             return null;
 
-        var enumType = Nullable.GetUnderlyingType(value.GetType()) ?? value.GetType();
+        var enumType = Nullable.GetUnderlyingType(e.GetType()) ?? e.GetType();
 
         if (enumType.IsEnum == false)
             throw new ArgumentException("Type must be an Enum.");
 
-        return new EnumerationMember
+        return new EnumItem
         {
-            Value = value,
-            Description = EnumerationExtension.GetDescription(value, enumType)
+            Value = e,
+            DisplayName = EnumerationExtension.GetDescription(e, enumType)
         };
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value is EnumerationMember enumerationMember ? enumerationMember.Value : null;
+        return value is EnumItem enumerationMember ? enumerationMember.Value : null;
     }
 }
