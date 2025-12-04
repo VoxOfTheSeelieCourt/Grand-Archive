@@ -5,7 +5,7 @@
              xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
              xmlns:views="clr-namespace:GrandArchive.Views"
              xmlns:database="clr-namespace:GrandArchive.Models.Database"
-             xmlns:helpers="clr-namespace:GrandArchive.Helpers"
+             xmlns:behaviors="clr-namespace:GrandArchive.Helpers.Behaviors"
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardMainView"
              x:DataType="viewModels:SpellCardMainViewModel"
@@ -24,7 +24,8 @@
                 <MenuItem Header="Spellcards">
                     <MenuItem Header="Export Selected Spell Card" Click="ExportSelectedSpellCard"/>
                     <MenuItem Header="Export All Spell Cards" Click="ExportAllSpellCards"/>
-                    <MenuItem Header="Bleeding Edge" Click="ToggleBleedingEdge" IsChecked="{Binding #SpellCardRenderView.IsBleedingEdgeVisible}"/>
+                    <Separator/>
+                    <MenuItem Header="Bleeding Edge" Click="ToggleBleedingEdge" IsChecked="{Binding #SpellCardRenderView.IsBleedingEdgeVisible}" ToggleType="CheckBox"/>
                 </MenuItem>
             </Menu>
             
@@ -52,8 +53,8 @@
                                              DndClasses="{Binding $parent[views:SpellCardMainView].((viewModels:SpellCardMainViewModel)DataContext).Classes}" />
                 </ScrollViewer>
                 
-                <ToggleButton Grid.Row="2" Content="Spell Verified" IsChecked="{Binding IsVerified}"
-                              HorizontalAlignment="Stretch" FontSize="20" Margin="5" Command="{Binding $parent[views:SpellCardMainView].((viewModels:SpellCardMainViewModel)DataContext).UpdateCountVerifiedCommand}"/>
+                <ToggleButton Grid.Row="2" Content="Spell Verified" IsChecked="{Binding IsVerified, Mode=OneWay}"
+                              HorizontalAlignment="Stretch" FontSize="20" Margin="5" Command="{Binding ToggleVerifiedCommand}"/>
                 <!-- ReSharper restore Xaml.PossibleNullReferenceException -->
             </Grid>
             
@@ -86,11 +87,29 @@
                     <DataGridCheckBoxColumn Header="DF" Binding="{Binding HasDivineFocus}"/>
                     <DataGridCheckBoxColumn Header="XP" Binding="{Binding HasExperienceComponent}"/>
                     <DataGridCheckBoxColumn Header="BR" Binding="{Binding HasBreathComponent}"/>
-                    <DataGridCheckBoxColumn Header="TN" Binding="{Binding HasTruenameComponent}"/>
-                    <DataGridCheckBoxColumn Header="CR" Binding="{Binding HasCorruptionComponent}"/>
-                    <DataGridTextColumn Header="Material Components" Binding="{Binding MaterialComponent}"/>
-                    <DataGridTextColumn Header="XP Cost" Binding="{Binding ExperienceComponent}"/>
+                    <DataGridCheckBoxColumn Header="T" Binding="{Binding HasTruenameComponent}"/>
+                    <DataGridCheckBoxColumn Header="Cor" Binding="{Binding HasCorruptionComponent}"/>
+                    <DataGridCheckBoxColumn Header="Sac" Binding="{Binding HasSacrificeComponent}"/>
+                    <DataGridCheckBoxColumn Header="Ab" Binding="{Binding HasAbstinenceComponent}"/>
+                    <DataGridCheckBoxColumn Header="Mind" Binding="{Binding HasMindsetComponent}"/>
+                    <DataGridCheckBoxColumn Header="Drug" Binding="{Binding HasDrugComponent}"/>
+                    <DataGridCheckBoxColumn Header="Loc" Binding="{Binding HasLocationComponent}"/>
+                    <DataGridCheckBoxColumn Header="DM" Binding="{Binding HasDragonmarkComponent}"/>
+                    <DataGridCheckBoxColumn Header="Dis" Binding="{Binding HasDiseaseComponent}"/>
+                    <DataGridCheckBoxColumn Header="CF" Binding="{Binding HasColdfireComponent}"/>
+                    <DataGridTextColumn Header="Material" Binding="{Binding MaterialComponent}"/>
+                    <DataGridTextColumn Header="Focus" Binding="{Binding ArcaneFocus}"/>
+                    <DataGridTextColumn Header="Experience" Binding="{Binding ExperienceComponent}"/>
+                    <DataGridTextColumn Header="Truename" Binding="{Binding TruenameComponent}"/>
                     <DataGridTextColumn Header="Corruption" Binding="{Binding CorruptionComponent}"/>
+                    <DataGridTextColumn Header="Sacrifice" Binding="{Binding SacrificeComponent}"/>
+                    <DataGridTextColumn Header="Abstinence" Binding="{Binding AbstinenceComponent}"/>
+                    <DataGridTextColumn Header="Mindset" Binding="{Binding MindsetComponent}"/>
+                    <DataGridTextColumn Header="Drug" Binding="{Binding DrugComponent}"/>
+                    <DataGridTextColumn Header="Location" Binding="{Binding LocationComponent}"/>
+                    <DataGridTextColumn Header="Dragonmark" Binding="{Binding DragonmarkComponent}"/>
+                    <DataGridTextColumn Header="Disease" Binding="{Binding DiseaseComponent}"/>
+                    <DataGridTextColumn Header="Coldfire" Binding="{Binding ColdfireComponent}"/>
                     <DataGridTextColumn Header="Extra Components" Binding="{Binding ExtraComponent}"/>
                 </DataGrid.Columns>
             </DataGrid>

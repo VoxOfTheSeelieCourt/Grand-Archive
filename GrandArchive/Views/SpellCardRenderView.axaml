@@ -8,6 +8,7 @@
              xmlns:avalonia="clr-namespace:ColorTextBlock.Avalonia;assembly=ColorTextBlock.Avalonia"
              xmlns:views="clr-namespace:GrandArchive.Views"
              xmlns:converter="clr-namespace:GrandArchive.Helpers.Converter"
+             xmlns:behaviors="clr-namespace:GrandArchive.Helpers.Behaviors"
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardRenderView"
              x:DataType="database:DndSpell">
@@ -15,7 +16,7 @@
     <Design.DataContext>
         <database:DndSpell
             Name="Hyper-Employment Spell of Testus Maximus"
-            School="Abjuration,Enchantment"
+            School="Conjuration,Enchantment"
             SubSchool="Compulsion"
             Descriptor="LanguageDependant,MindAffecting"
             HasVerbalComponent="True"
@@ -34,6 +35,7 @@
             Area="1 office"
             Effect="Instant willingness"
             RulebookPage="69"
+            FlavorText="If everything works, you will not be able to see this, although just in case i will make this text extra long so wrapped rendering can be tested by disabling certain components."
             DescriptionShort="What, are you really gonna read the full description? Do you not trust me? Is our company's reputation not enough for you? We are not a black company, unlike Cover Corp! You are such a heartless person."
             Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu dolor ut erat bibendum sagittis ac vel nulla. Nulla ultrices vitae neque vitae consectetur. Nullam a odio quis dui iaculis volutpat a id mauris. Nam nec nunc a tellus mollis condimentum. Integer cursus justo mollis metus commodo dapibus. Proin at pellentesque leo, eget cursus velit. Suspendisse potenti. Morbi placerat felis ut tortor pharetra, ut vestibulum eros laoreet. Ut non gravida tellus. Nulla nulla ante, dignissim et fermentum eu, tristique sed metus. Duis cursus nulla vel tortor malesuada auctor. Aliquam lacinia mi vitae vehicula commodo. Curabitur posuere imperdiet tellus, in malesuada metus finibus mattis. Curabitur id maximus neque, id dignissim nunc. Vivamus id maximus augue.&#x0a;&#x0a;Sed dolor massa, elementum eu viverra et, viverra vel lacus. Integer euismod nulla tellus. Integer mattis, nisi vitae gravida sagittis, lacus metus rhoncus dui, vitae scelerisque mauris arcu non magna. Duis vel egestas risus. Aenean malesuada ultrices vestibulum. Aenean at nisi urna. Proin luctus turpis vel augue convallis, ut tincidunt quam varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam ut faucibus libero, quis egestas risus.&#x0a;&#x0a;Donec et lacus vestibulum, tempor velit a, tincidunt sem. Sed egestas at ante sed rutrum. Vivamus sit amet magna quis felis malesuada tempus nec eu mi. Quisque sed enim egestas, scelerisque magna eget, ornare arcu. Ut nec semper nulla, sit amet mollis sem. In hac habitasse platea dictumst. Praesent ullamcorper eu magna quis placerat.">
             <database:DndSpell.Rulebook>
@@ -60,6 +62,18 @@
 
     <UserControl.Resources>
         <converter:SpellSchoolToBrushConverter x:Key="SpellSchoolToBrushConverter"
+                                             NoneBackground="{StaticResource SpellSchoolNoneBackground}"
+                                             AbjurationBackground="{StaticResource SpellSchoolAbjurationBackground}"
+                                             ConjurationBackground="{StaticResource SpellSchoolConjurationBackground}"
+                                             DivinationBackground="{StaticResource SpellSchoolDivinationBackground}"
+                                             EnchantmentBackground="{StaticResource SpellSchoolEnchantmentBackground}"
+                                             EvocationBackground="{StaticResource SpellSchoolEvocationBackground}"
+                                             IllusionBackground="{StaticResource SpellSchoolIllusionBackground}"
+                                             NecromancyBackground="{StaticResource SpellSchoolNecromancyBackground}"
+                                             TransmutationBackground="{StaticResource SpellSchoolTransmutationBackground}"
+                                             UniversalBackground="{StaticResource SpellSchoolUniversalBackground}" />
+        
+        <converter:SpellSchoolToBrushConverter x:Key="ReversedSpellSchoolToBrushConverter" IsReversed="True"
                                              NoneBackground="{StaticResource SpellSchoolNoneBackground}"
                                              AbjurationBackground="{StaticResource SpellSchoolAbjurationBackground}"
                                              ConjurationBackground="{StaticResource SpellSchoolConjurationBackground}"
@@ -223,8 +237,13 @@
                                 </Border>
 
                                 <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6">
-                                    <Grid>
-                                        <TextBlock Text="{Binding DescriptionShort}" VerticalAlignment="Top" />
+                                    <Grid RowDefinitions="Auto 15 *">
+                                        <TextBlock Grid.Row="0" Text="{Binding DescriptionShort}" VerticalAlignment="Top" />
+                                        <TextBlock Grid.Row="2" Name="FlavorText" Text="{Binding FlavorText}" VerticalAlignment="Stretch" FontStyle="Italic" TextWrapping="Wrap" MaxWidth="660">
+                                            <Interaction.Behaviors>
+                                                <behaviors:AutoHideTextBlockBehavior HideWhenTextNullOrEmpty="True"/>
+                                            </Interaction.Behaviors>
+                                        </TextBlock>
                                     </Grid>
                                 </Border>
 
@@ -287,7 +306,7 @@
             <!-- When in doubt, git blame and check the commit this was introduced in -->
             <Grid Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Border x:Name="CutAreaBack" CornerRadius="30"
-                        Background="{Binding School, Converter={StaticResource SpellSchoolToBrushConverter}}">
+                        Background="{Binding School, Converter={StaticResource ReversedSpellSchoolToBrushConverter}}">
                     <Grid Height="1038" Width="744" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Border x:Name="SafeAreaBack" Height="976" Width="679" Background="Transparent"
                                 CornerRadius="15"
@@ -297,7 +316,7 @@
                                     <Border Grid.Row="0">
                                         <Grid>
                                             <mdxaml:MarkdownScrollViewer Markdown="{Binding Description}"
-                                                                         VerticalAlignment="Top">
+                                                                         VerticalAlignment="Top" Margin="2, 0">
                                                 <mdxaml:MarkdownScrollViewer.Styles>
                                                     <Style Selector="ScrollViewer">
                                                         <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
@@ -313,7 +332,7 @@
                                                     </ItemsControl.ItemsPanel>
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <PathIcon Data="{Binding}" Foreground="{Binding $parent[ItemsControl].((database:DndSpell)DataContext).School, Converter={StaticResource SpellSchoolToBrushConverter}}"/>
+                                                            <PathIcon Data="{Binding}" Foreground="{Binding $parent[ItemsControl].((database:DndSpell)DataContext).School, Converter={StaticResource ReversedSpellSchoolToBrushConverter}}"/>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>

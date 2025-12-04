@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using GrandArchive.Helpers.Attributes;
 #pragma warning disable CS0657 // Not a valid attribute location for this declaration
 
@@ -13,8 +14,8 @@ namespace GrandArchive.Models.Database;
 [DebuggerDisplay("{Name}")]
 public partial class DndSpell : DatabaseObject
 {
-    [ObservableProperty] [property:Required] private string _name;
-    [ObservableProperty] private int? _rulebookPage;
+    [ObservableProperty] [Required] private string _name;
+    [ObservableProperty] [RequireOneOfList("Page", nameof(RulebookPage))] [NotifyDataErrorInfo] private int? _rulebookPage;
     [ObservableProperty] private DndSpellSchool _school;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplaySubschool))] private DndSpellSubSchool _subSchool;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplayDescriptor))] private DndSpellDescriptor _descriptor;
@@ -57,8 +58,8 @@ public partial class DndSpell : DatabaseObject
 
     #endregion
 
-    [ObservableProperty] [property:Required] private string _castingTime;
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(RangeDisplayText), nameof(CustomRangeText))] [property:Required] private DndSpellRange _range;
+    [ObservableProperty] [Required] private string _castingTime;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(RangeDisplayText), nameof(CustomRangeText))] [NotifyDataErrorInfo] [Required] private DndSpellRange _range;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(RangeDisplayText), nameof(Range))] [NotifyDataErrorInfo] [ConditionalRequired(nameof(Range), DndSpellRange.Custom)] private string _customRangeText;
 
     [ObservableProperty]
@@ -79,14 +80,15 @@ public partial class DndSpell : DatabaseObject
     [NotifyPropertyChangedFor(nameof(Target), nameof(Effect))]
     private string _area;
 
-    [ObservableProperty] [property:Required] private string _duration;
-    [ObservableProperty] [property:Required] private string _savingThrow;
-    [ObservableProperty] [property:Required] private string _spellResistance;
-    [ObservableProperty] [property:Required] private string _descriptionShort;
-    [ObservableProperty] private string _description;
-    [ObservableProperty] private bool _isVerified;
+    [ObservableProperty] [Required] private string _duration;
+    [ObservableProperty] [Required] private string _savingThrow;
+    [ObservableProperty] [Required] private string _spellResistance;
+    [ObservableProperty] [Required] private string _descriptionShort;
+    [ObservableProperty] [Required] private string _description;
+    [ObservableProperty] private string _flavorText;
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(ToggleVerifiedCommand))] private bool _isVerified;
 
-    [ObservableProperty] [property:Required] private DndRulebook _rulebook;
+    [ObservableProperty] [Required] private DndRulebook _rulebook;
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     [ObservableProperty] private DndSpell? _variantOfSpell;
 #pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
@@ -112,12 +114,12 @@ public partial class DndSpell : DatabaseObject
             if (HasTruenameComponent) components.Add("T");
             if (HasCorruptionComponent) components.Add("Cor");
             if (HasSacrificeComponent) components.Add("Sac");
-            if (HasAbstinenceComponent) components.Add("AB");
+            if (HasAbstinenceComponent) components.Add("Ab");
             if (HasMindsetComponent) components.Add("Mind");
             if (HasDrugComponent) components.Add("Drug");
             if (HasLocationComponent) components.Add("Loc");
             if (HasDragonmarkComponent) components.Add("DM");
-            if (HasDiseaseComponent) components.Add("DS");
+            if (HasDiseaseComponent) components.Add("Dis");
             if (HasColdfireComponent) components.Add("CF");
             if (!string.IsNullOrEmpty(ExtraComponent)) components.Add("E");
 
@@ -143,6 +145,23 @@ public partial class DndSpell : DatabaseObject
         return output;
     }
 
+    [RelayCommand(CanExecute = nameof(CanToggleVerified))]
+    private void ToggleVerified()
+    {
+        IsVerified = !IsVerified;
+    }
+
+    private bool CanToggleVerified()
+    {
+        return IsVerified || !HasErrors;
+    }
+
+    public DndSpell()
+    {
+        ErrorsChanged += (_, _) => ToggleVerifiedCommand.NotifyCanExecuteChanged();
+        ValidateAllProperties();
+    }
+
     #region Change Tracking
 
     [NotMapped] public bool HasChanges { get; set; }
@@ -155,59 +174,7 @@ public partial class DndSpell : DatabaseObject
             HasChanges = true;
         }
 
-        // update validation rules
-        switch (e.PropertyName)
-        {
-            case nameof(HasMaterialComponent):
-                ValidateProperty(MaterialComponent, nameof(MaterialComponent));
-                break;
-            case nameof(HasArcaneFocus):
-                ValidateProperty(ArcaneFocus, nameof(ArcaneFocus));
-                break;
-            case nameof(HasExperienceComponent):
-                ValidateProperty(ExperienceComponent, nameof(ExperienceComponent));
-                break;
-            case nameof(HasTruenameComponent):
-                ValidateProperty(TruenameComponent, nameof(TruenameComponent));
-                break;
-            case nameof(HasCorruptionComponent):
-                ValidateProperty(CorruptionComponent, nameof(CorruptionComponent));
-                break;
-            case nameof(HasSacrificeComponent):
-                ValidateProperty(SacrificeComponent, nameof(SacrificeComponent));
-                break;
-            case nameof(HasAbstinenceComponent):
-                ValidateProperty(AbstinenceComponent, nameof(AbstinenceComponent));
-                break;
-            case nameof(HasMindsetComponent):
-                ValidateProperty(MindsetComponent, nameof(MindsetComponent));
-                break;
-            case nameof(HasDrugComponent):
-                ValidateProperty(DrugComponent, nameof(DrugComponent));
-                break;
-            case nameof(HasLocationComponent):
-                ValidateProperty(LocationComponent, nameof(LocationComponent));
-                break;
-            case nameof(HasDragonmarkComponent):
-                ValidateProperty(DragonmarkComponent, nameof(DragonmarkComponent));
-                break;
-            case nameof(HasDiseaseComponent):
-                ValidateProperty(DiseaseComponent, nameof(DiseaseComponent));
-                break;
-            case nameof(HasColdfireComponent):
-                ValidateProperty(ColdfireComponent, nameof(ColdfireComponent));
-                break;
-            case nameof(Range):
-                ValidateProperty(CustomRangeText, nameof(CustomRangeText));
-                break;
-            case nameof(Target):
-            case nameof(Effect):
-            case nameof(Area):
-                ValidateProperty(Target, nameof(Target));
-                ValidateProperty(Effect, nameof(Effect));
-                ValidateProperty(Area, nameof(Area));
-                break;
-        }
+        ValidateAllProperties();
 
         base.OnPropertyChanged(e);
     }

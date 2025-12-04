@@ -10,6 +10,9 @@ public class EnumDescriptorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
+        if (value == null)
+            return null;
+
         if (value is not Enum e)
             throw new ArgumentException($"{nameof(value)} must be of type {typeof(Enum).FullName}");
 
@@ -21,7 +24,7 @@ public class EnumDescriptorConverter : IValueConverter
 
         var selected = (from Enum v in values
             let numericValue = System.Convert.ToInt64(v)
-            where numericValue != 0 && numericValue % 2 == 0 && (selectedLong & numericValue) == numericValue
+            where numericValue != 0 && (numericValue == 1 || numericValue % 2 == 0) && (selectedLong & numericValue) == numericValue
             select v.GetDescription()).ToList();
 
         return string.Join(", ", selected);

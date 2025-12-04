@@ -1,15 +1,19 @@
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.LogicalTree;
 using Avalonia.Markup.Xaml;
-using Avalonia.Markup.Xaml.MarkupExtensions;
-using GrandArchive.Helpers;
+using Avalonia.Media;
+using GrandArchive.Helpers.Attributes;
+using GrandArchive.Helpers.Behaviors;
 using GrandArchive.Helpers.ExtensionMethods;
+using GrandArchive.Models;
 using GrandArchive.Models.Database;
 using GrandArchive.Models.DnDTools;
 using GrandArchive.Services.UserInformationService;
@@ -23,6 +27,7 @@ namespace GrandArchive;
 public partial class App : Application
 {
     public static IUserInformationMessageService UserInformationMessageService { get; private set; }
+    public static ObservableCollection<NavigationBarEntry> NavigableViewModels { get; private set; }
 
     public override void Initialize()
     {
@@ -39,6 +44,14 @@ public partial class App : Application
         collection.Configure();
 
         var services = collection.BuildServiceProvider();
+
+        NavigableViewModels = BuildNavigationBarEntries([
+            typeof(SpellCardMainViewModel),
+#if DEBUG
+            typeof(ComponentDiagramViewModel),
+            typeof(DnDDatabaseMigrationViewModel),
+#endif
+        ]);
 
         services.InitDatabase<DndContext>()
             .InitDatabase<DatabaseContext>();
@@ -73,7 +86,7 @@ public partial class App : Application
 
     private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
-        if (sender is not ILogical logical)
+        if (sender is not (ILogical logical and TextBox textBox))
             return;
 
         var header = logical.FindLogicalAncestorOfType<DataGridColumnHeader>();
@@ -84,6 +97,31 @@ public partial class App : Application
 
         var column = dataGrid.Columns.SingleOrDefault(x => x.Header == header.Content);
 
-        DataGridFilterBehavior.SetFilterText(column, (sender as TextBox).Text);
+        DataGridFilterBehavior.SetFilterText(column, textBox.Text);
+    }
+
+    private ObservableCollection<NavigationBarEntry> BuildNavigationBarEntries(List<Type> types)
+    {
+        var output = new ObservableCollection<NavigationBarEntry>();
+        Current!.TryFindResource("DocumentErrorRegular", out var error);
+
+        foreach (var type in types)
+        {
+            var data = type.GetCustomAttribute<NavigableMenuItemAttribute>();
+
+            object i = null;
+            if (data != null)
+                Current!.TryFindResource(data?.IconName, out i);
+
+            var entry = new NavigationBarEntry
+            {
+                Type = type,
+                Name = data?.Name ?? "ATTRIBUTE MISSING",
+                Icon = (StreamGeometry)(i ?? error)
+            };
+            output.Add(entry);
+        }
+
+        return output;
     }
 }

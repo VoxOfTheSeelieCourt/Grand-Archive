@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.VisualTree;
-using GrandArchive.Models.Database;
 
-namespace GrandArchive.Helpers;
+namespace GrandArchive.Helpers.Behaviors;
 
 public static class DataGridFilterBehavior
 {

@@ -12,6 +12,7 @@ namespace GrandArchive.Helpers.Converter;
 public class SpellSchoolToBrushConverter : IValueConverter
 {
     public bool AllowMulticolor { get; set; } = true;
+    public bool IsReversed { get; set; }
     public ISolidColorBrush NoneBackground { get; set; }
     public ISolidColorBrush AbjurationBackground { get; set; }
     public ISolidColorBrush ConjurationBackground { get; set; }
@@ -59,6 +60,9 @@ public class SpellSchoolToBrushConverter : IValueConverter
             StartPoint = new RelativePoint(0, 0.5, RelativeUnit.Relative),
             EndPoint = new  RelativePoint(1, 0.5, RelativeUnit.Relative)
         };
+
+        if (IsReversed)
+            brushes.Reverse();
 
         brush.GradientStops.AddRange(brushes.Select(x => new GradientStop(x.Color, 1d / (brushes.Count * 2) * (brushes.IndexOf(x) * 2 + 1))));
         return brush;

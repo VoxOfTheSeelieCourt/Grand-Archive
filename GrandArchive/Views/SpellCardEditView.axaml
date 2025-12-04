@@ -34,6 +34,7 @@
             Area=""
             Effect="Instant willingness"
             RulebookPage="69"
+            FlavorText="Unlike in the spell render view, this text is actually visible, and it even wraps around"
             DescriptionShort="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit"
             Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse semper nibh vel nisl consequat iaculis. Cras eu dolor ut erat bibendum sagittis ac vel nulla. Nulla ultrices vitae neque vitae consectetur. Nullam a odio quis dui iaculis volutpat a id mauris. Nam nec nunc a tellus mollis condimentum. Integer cursus justo mollis metus commodo dapibus. Proin at pellentesque leo, eget cursus velit. Suspendisse potenti. Morbi placerat felis ut tortor pharetra, ut vestibulum eros laoreet. Ut non gravida tellus. Nulla nulla ante, dignissim et fermentum eu, tristique sed metus. Duis cursus nulla vel tortor malesuada auctor. Aliquam lacinia mi vitae vehicula commodo. Curabitur posuere imperdiet tellus, in malesuada metus finibus mattis. Curabitur id maximus neque, id dignissim nunc. Vivamus id maximus augue.&#x0a;&#x0a;Sed dolor massa, elementum eu viverra et, viverra vel lacus. Integer euismod nulla tellus. Integer mattis, nisi vitae gravida sagittis, lacus metus rhoncus dui, vitae scelerisque mauris arcu non magna. Duis vel egestas risus. Aenean malesuada ultrices vestibulum. Aenean at nisi urna. Proin luctus turpis vel augue convallis, ut tincidunt quam varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam ut faucibus libero, quis egestas risus.&#x0a;&#x0a;Donec et lacus vestibulum, tempor velit a, tincidunt sem. Sed egestas at ante sed rutrum. Vivamus sit amet magna quis felis malesuada tempus nec eu mi. Quisque sed enim egestas, scelerisque magna eget, ornare arcu. Ut nec semper nulla, sit amet mollis sem. In hac habitasse platea dictumst. Praesent ullamcorper eu magna quis placerat. Nunc eget mauris sed ligula mattis luctus. Nam dapibus massa at purus euismod pulvinar.">
             <database:DndSpell.Rulebook>
@@ -124,6 +125,7 @@
         <TextBox Watermark="Target" Text="{Binding Target}"/>
         <TextBox Watermark="Area" Text="{Binding Area}"/>
         <TextBox Watermark="Effect" Text="{Binding Effect}"/>
+        <TextBox Watermark="Flavor" Text="{Binding FlavorText}" TextWrapping="Wrap" AcceptsReturn="True"/>
         <TextBox Watermark="Summary" Text="{Binding DescriptionShort}" TextWrapping="Wrap" AcceptsReturn="True"/>
         <TextBox Watermark="Description" Text="{Binding Description}" TextWrapping="Wrap" AcceptsReturn="True"/>
     </StackPanel>

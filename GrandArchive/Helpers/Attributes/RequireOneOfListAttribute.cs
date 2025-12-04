@@ -25,7 +25,7 @@ public class RequireOneOfListAttribute : ValidationAttribute
         var instance = validationContext.ObjectInstance;
         var instanceType = instance.GetType();
 
-        bool anyHasValue = false;
+        var anyHasValue = false;
 
         foreach (var propertyName in PropertyNames)
         {

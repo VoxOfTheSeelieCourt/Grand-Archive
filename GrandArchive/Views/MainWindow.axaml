@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="clr-namespace:GrandArchive.Models"
+        xmlns:design="clr-namespace:GrandArchive.ViewModels.Design"
+        xmlns:main="clr-namespace:GrandArchive"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GrandArchive.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Closing="Window_OnClosing"
         Icon="/Assets/avalonia-logo.ico"
-        Title="GrandArchive">
+        Title="Grand Archive">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -27,7 +29,7 @@
                         <PathIcon Data="{StaticResource LineHorizontal3Regular}"/>
                     </ToggleButton>
                 
-                    <ListBox ItemsSource="{Binding NavigableViewModels}"
+                    <ListBox ItemsSource="{Binding Source={x:Static main:App.NavigableViewModels}}"
                              SelectedItem="{Binding SelectedNavigationBarEntry}"
                              SelectionChanged="SelectingItemsControl_OnSelectionChanged">
                         <ListBox.Styles>

@@ -29,7 +29,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public NavigableViewModel ActiveViewModel => _navigationService.ActiveViewModel;
     public ObservableCollection<UserMessageViewModel> UserMessageViewModels => _userInformationMessageService.UserMessageViewModels;
 
-    public ObservableCollection<NavigationBarEntry> NavigableViewModels { get; }
+    public ObservableCollection<NavigationBarEntry> NavigableViewModels => App.NavigableViewModels;
 
     public MainWindowViewModel(INavigationService navigationService, IServiceProvider serviceProvider, IUserInformationMessageService userInformationMessageService)
     {
@@ -43,40 +43,7 @@ public partial class MainWindowViewModel : ViewModelBase
                 OnPropertyChanged(nameof(ActiveViewModel));
         };
 
-        NavigableViewModels = BuildNavigationBarEntries([
-            typeof(SpellCardMainViewModel),
-#if DEBUG
-            typeof(ComponentDiagramViewModel),
-            typeof(DnDDatabaseMigrationViewModel),
-#endif
-        ]);
-
         SelectedNavigationBarEntry = NavigableViewModels.First();
-    }
-
-    private ObservableCollection<NavigationBarEntry> BuildNavigationBarEntries(List<Type> types)
-    {
-        var output = new ObservableCollection<NavigationBarEntry>();
-        Application.Current!.TryFindResource("DocumentErrorRegular", out var error);
-
-        foreach (var type in types)
-        {
-            var data = type.GetCustomAttribute<NavigableMenuItemAttribute>();
-
-            object i = null;
-            if (data != null)
-                Application.Current!.TryFindResource(data?.IconName, out i);
-
-            var entry = new NavigationBarEntry
-            {
-                Type = type,
-                Name = data?.Name ?? "ATTRIBUTE MISSING",
-                Icon = (StreamGeometry)(i ?? error)
-            };
-            output.Add(entry);
-        }
-
-        return output;
     }
 
     private async Task<bool> ExecuteNavigateToPageCommand(Type pageType)

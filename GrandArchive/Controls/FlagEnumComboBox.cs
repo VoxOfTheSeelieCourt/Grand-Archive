@@ -88,7 +88,7 @@ public class FlagEnumComboBox : TemplatedControl
         foreach (Enum value in values)
         {
             var numericValue = Convert.ToInt64(value);
-            if (numericValue == 0 || numericValue % 2 != 0)
+            if (numericValue == 0 || (numericValue != 1 && numericValue % 2 != 0))
                 continue;
 
             var item = new EnumItem()
@@ -181,7 +181,7 @@ public class FlagEnumComboBox : TemplatedControl
         foreach (Enum value in values)
         {
             var numericValue = Convert.ToInt64(value);
-            if (numericValue == 0 || numericValue % 2 != 0 || (selectedLong & numericValue) != numericValue)
+            if (numericValue == 0 || (numericValue != 1 && numericValue % 2 != 0) || (selectedLong & numericValue) != numericValue)
                 continue;
 
             selected.Add(value.GetDescription());
