@@ -4,6 +4,7 @@
              xmlns:local="using:GrandArchive"
              xmlns:helpers="clr-namespace:GrandArchive.Helpers"
              xmlns:converter="clr-namespace:GrandArchive.Helpers.Converter"
+             xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -18,6 +19,7 @@
                 <ColorPaletteResources x:Key="Dark" Accent="#ff995bff" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#ff333333" BaseMedium="#ff9a9a9a" BaseMediumHigh="#ffb4b4b4" BaseMediumLow="#ff676767" ChromeAltLow="#ffb4b4b4" ChromeBlackHigh="Black" ChromeBlackLow="#ffb4b4b4" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#ff333333" ChromeDisabledLow="#ff9a9a9a" ChromeGray="Gray" ChromeHigh="Gray" ChromeLow="#ff151515" ChromeMedium="#ff1d1d1d" ChromeMediumLow="#ff2c2c2c" ChromeWhite="White" ListLow="#ff1d1d1d" ListMedium="#ff333333" RegionColor="Black" ErrorText="DeepPink" />
             </FluentTheme.Palettes>
         </FluentTheme>
+        <dialogHostAvalonia:DialogHostStyles/>
 
         <StyleInclude Source="Assets/Icons.axaml"/>
         <StyleInclude Source="Styles/CustomValidationStyles.axaml"/>

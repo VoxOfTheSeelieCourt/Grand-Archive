@@ -343,14 +343,10 @@
                                     </Border>
                                     
                                     <Border Grid.Row="1">
-                                        <StackPanel Orientation="Horizontal">
-                                            <PathIcon Data="{StaticResource Rulebook}" />
-                                            <TextBlock Text="{Binding Rulebook.DndEdition.Name, StringFormat={}[{0}] - }" />
-                                            <TextBlock Text="{Binding Rulebook.Name}" />
-                                            <TextBlock Text="{Binding RulebookPage, StringFormat={} p.{0}}"
-                                                       IsVisible="{Binding RulebookPage, Converter={x:Static ObjectConverters.IsNotNull}}" />
-                                            
-                                        </StackPanel>
+                                        <Grid ColumnDefinitions="Auto *">
+                                            <PathIcon Grid.Column="0" Data="{StaticResource Rulebook}" />
+                                            <TextBlock Grid.Column="1" Text="{Binding DisplaySourceLong}" TextWrapping="Wrap"/>
+                                        </Grid>
                                     </Border>
                                 </Grid>
                             </Grid>

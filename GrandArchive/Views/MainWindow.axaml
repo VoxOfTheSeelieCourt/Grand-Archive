@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="clr-namespace:GrandArchive.Models"
         xmlns:main="clr-namespace:GrandArchive"
+        xmlns:views="clr-namespace:AvaloniaDialogs.Views;assembly=AvaloniaDialogs"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GrandArchive.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -18,7 +19,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Grid>
+    <views:ReactiveDialogHost CloseOnClickAway="True">
         <SplitView IsPaneOpen="{Binding #MenuToggleButton.IsChecked}"
                    DisplayMode="CompactOverlay"
                    CompactPaneLength="50">
@@ -57,5 +58,5 @@
                 </Grid>
             </SplitView.Content>
         </SplitView>
-    </Grid>
+    </views:ReactiveDialogHost>
 </Window>

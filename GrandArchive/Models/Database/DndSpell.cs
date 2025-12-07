@@ -15,7 +15,7 @@ namespace GrandArchive.Models.Database;
 public partial class DndSpell : DatabaseObject
 {
     [ObservableProperty] [Required] private string _name;
-    [ObservableProperty] [RequireOneOfList("Page", nameof(RulebookPage))] [NotifyDataErrorInfo] private int? _rulebookPage;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplaySourceLong))] [RequireOneOfList("Page", nameof(RulebookPage))] [NotifyDataErrorInfo] private int? _rulebookPage;
     [ObservableProperty] private DndSpellSchool _school;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplaySubschool))] private DndSpellSubSchool _subSchool;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplayDescriptor))] private DndSpellDescriptor _descriptor;
@@ -88,7 +88,7 @@ public partial class DndSpell : DatabaseObject
     [ObservableProperty] private string _flavorText;
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(ToggleVerifiedCommand))] private bool _isVerified;
 
-    [ObservableProperty] [Required] private DndRulebook _rulebook;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(DisplaySourceLong))] [Required] private DndRulebook _rulebook;
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     [ObservableProperty] private DndSpell? _variantOfSpell;
 #pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
@@ -132,6 +132,7 @@ public partial class DndSpell : DatabaseObject
     [NotMapped] public string ClassDisplayTextSingleLine => ClassSpells.Count + DomainSpells.Count != 0 ? string.Join(",", GetClassesAndDomains()) : "";
     [NotMapped] public bool DisplaySubschool => SubSchool != DndSpellSubSchool.None;
     [NotMapped] public bool DisplayDescriptor => Descriptor != DndSpellDescriptor.None;
+    [NotMapped] public string DisplaySourceLong => $"{Rulebook?.Name} [{Rulebook?.DndEdition.System.Replace("DnD ", "")}]{(RulebookPage.HasValue ? $" p. {RulebookPage}" : "")}";
 
     private List<string> GetClassesAndDomains()
     {
@@ -170,18 +171,22 @@ public partial class DndSpell : DatabaseObject
     [
         nameof(HasErrors),
         nameof(HasChanges),
-        nameof(UpdatedAt)
+        nameof(UpdatedAt),
+        nameof(RangeDisplayText),
+        nameof(ClassDisplayTextMultiLine),
+        nameof(ClassDisplayTextSingleLine),
+        nameof(DisplaySubschool),
+        nameof(DisplayDescriptor),
+        nameof(DisplaySourceLong),
     ];
 
-    // ReSharper disable once CognitiveComplexity
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         if (!_ignoreChangeTrackingProperties.Contains(e.PropertyName))
         {
             HasChanges = true;
+            ValidateAllProperties();
         }
-
-        ValidateAllProperties();
 
         base.OnPropertyChanged(e);
     }

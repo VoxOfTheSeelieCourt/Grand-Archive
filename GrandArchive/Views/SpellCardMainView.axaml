@@ -7,6 +7,7 @@
              xmlns:database="clr-namespace:GrandArchive.Models.Database"
              xmlns:behaviors="clr-namespace:GrandArchive.Helpers.Behaviors"
              xmlns:collections="clr-namespace:Avalonia.Collections;assembly=Avalonia.Controls.DataGrid"
+             xmlns:converter="clr-namespace:GrandArchive.Helpers.Converter"
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardMainView"
              x:DataType="viewModels:SpellCardMainViewModel"
@@ -14,6 +15,10 @@
     <Design.DataContext>
         <viewModels:SpellCardMainViewModel/>
     </Design.DataContext>
+    
+    <UserControl.Resources>
+        <converter:PercentageConverter x:Key="PercentageConverter"/>
+    </UserControl.Resources>
     
     <Grid RowDefinitions="Auto *">
         <Grid Grid.Row="0" ColumnDefinitions="* Auto">
@@ -36,9 +41,17 @@
             <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Run Text="{Binding VerifiedSpellsCount}"/>
                 <Run Text="/"/>
-                <Run Text="{Binding #SpellDataGrid.((collections:DataGridCollectionView)CollectionView).Count}"/>
-                <Run Text="("/>
+                <!-- <Run Text="{Binding #SpellDataGrid.((collections:DataGridCollectionView)CollectionView).Count}"/> -->
                 <Run Text="{Binding Spells.Count}"/>
+                <Run Text="("/>
+                <Run>
+                    <Run.Text>
+                        <MultiBinding Converter="{StaticResource PercentageConverter}" StringFormat="{}{0}%">
+                            <Binding Path="VerifiedSpellsCount"/>
+                            <Binding Path="Spells.Count"/>
+                        </MultiBinding>
+                    </Run.Text>
+                </Run>
                 <Run Text=")"/>
             </TextBlock>
         </Grid>
@@ -67,6 +80,7 @@
                       behaviors:DataGridFilterBehavior.IsEnabled="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Variant" Binding="{Binding VariantOfSpell.Id}"/>
                     <DataGridCheckBoxColumn Header="Verified" Binding="{Binding IsVerified}"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                     <DataGridTextColumn Header="Class Levels" Binding="{Binding ClassDisplayTextMultiLine}"/>

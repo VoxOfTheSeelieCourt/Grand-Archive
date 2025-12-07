@@ -4,12 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using AvaloniaEdit.Utils;
+using AvaloniaDialogs.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GrandArchive.Helpers.Attributes;
 using GrandArchive.Helpers.ExtensionMethods;
 using GrandArchive.Models.Database;
+using GrandArchive.Services;
 using GrandArchive.Services.UserInformationService;
 using GrandArchive.ViewModels.Abstract;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace GrandArchive.ViewModels;
 [NavigableMenuItem("Spell Cards", "LayerRegular")]
 public partial class SpellCardMainViewModel : NavigableViewModel
 {
+    private readonly IDispatcherService _dispatcherService;
     private readonly IDbContextFactory<DatabaseContext> _dbContextFactory;
     private readonly IUserInformationMessageService _userInformationMessageService;
 
@@ -27,10 +29,11 @@ public partial class SpellCardMainViewModel : NavigableViewModel
     public List<DndRulebook> RuleBooks { get; set; }
     public List<DndClass> Classes { get; set; }
 
-    public int VerifiedSpellsCount => Spells.Count(x => x.IsVerified);
+    public int VerifiedSpellsCount => Spells?.Count(x => x.IsVerified) ?? 0;
 
-    public SpellCardMainViewModel(IDbContextFactory<DatabaseContext> dbContextFactory, IUserInformationMessageService userInformationMessageService)
+    public SpellCardMainViewModel(IDbContextFactory<DatabaseContext> dbContextFactory, IUserInformationMessageService userInformationMessageService, IDispatcherService dispatcherService)
     {
+        _dispatcherService = dispatcherService;
         _dbContextFactory = dbContextFactory;
         _userInformationMessageService = userInformationMessageService;
 
@@ -41,8 +44,42 @@ public partial class SpellCardMainViewModel : NavigableViewModel
     /// <inheritdoc/>
     public override bool OnNavigateFrom()
     {
-        // TODO: Add user prompt
-        return !Spells.Any() || Spells.All(x => !x.HasChanges);
+        return MayOverrideUnsavedChanges().GetAwaiter().GetResult();
+    }
+
+    private async Task<bool> MayOverrideUnsavedChanges()
+    {
+        if (Spells?.Any(x => x.HasChanges) != true)
+            return true;
+
+        var tsk = _dispatcherService.RunOnMainThread(() =>
+        {
+            var dialog = new ThreefoldDialog()
+            {
+                Message = "There are unsaved changes that will be overridden. Do you want to save before you continue?",
+                PositiveText = "Save",
+                NeutralText = "Cancel",
+                NegativeText = "Discard"
+            };
+            return dialog.ShowAsync();
+        });
+        var result = await tsk;
+
+        if (!result.HasValue)
+            return false;
+
+        switch (result.Value)
+        {
+            case ThreefoldDialog.ButtonType.Negative:
+                return true;
+            case ThreefoldDialog.ButtonType.Positive:
+                await SaveSpells();
+                return true;
+            case ThreefoldDialog.ButtonType.Neutral:
+                return false;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     partial void OnSpellsChanged(ObservableCollection<DndSpell> value)
@@ -86,6 +123,9 @@ public partial class SpellCardMainViewModel : NavigableViewModel
     [RelayCommand]
     private async Task LoadSpells()
     {
+        if (!await MayOverrideUnsavedChanges())
+            return;
+
         try
         {
             await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
@@ -94,9 +134,11 @@ public partial class SpellCardMainViewModel : NavigableViewModel
                 .Include(x => x.Rulebook).ThenInclude(x => x.DndEdition)
                 .Include(x => x.ClassSpells).ThenInclude(x => x.Class)
                 .Include(x => x.DomainSpells).ThenInclude(x => x.Domain)
+                .Include(x => x.VariantOfSpell)
+                // .Where(x => x.Rulebook.Id == dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.Id == 8).GroupBy(y => y.Rulebook.Id).OrderByDescending(y => y.Count()).First().Key)
                 // .Where(x => x.Rulebook.Id == dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.System == "DnD 3.5").GroupBy(y => y.Rulebook.Id).OrderBy(y => y.Count()).First().Key)
-                // .Where(x => !x.IsVerified)
                 // .Where(x => x.Rulebook.Id == 81)
+                // .Where(x => !x.IsVerified)
                 .AsNoTracking()
                 .ToList());
 

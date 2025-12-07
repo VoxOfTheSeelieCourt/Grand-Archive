@@ -132,7 +132,7 @@ public partial class SpellCardMainView : UserControl
                 SpellDataGrid.SelectedItem = vm.Spells.FirstOrDefault();
         };
 
-        SpellDataGrid.SelectedItem = vm.Spells.FirstOrDefault();
+        SpellDataGrid.SelectedItem = vm.Spells?.FirstOrDefault();
     }
 
     private void ToggleBleedingEdge(object sender, RoutedEventArgs e)
