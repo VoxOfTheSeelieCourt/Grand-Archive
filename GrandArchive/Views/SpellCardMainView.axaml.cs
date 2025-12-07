@@ -83,8 +83,8 @@ public partial class SpellCardMainView : UserControl
                 view.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 view.Arrange(new Rect(view.DesiredSize));
                 Dispatcher.UIThread.Invoke(() => { }, DispatcherPriority.Render);
-                SaveControl(view.IsBleedingEdgeVisible ? view.BleedingEdgeFront : view.CutAreaFront, Path.Combine(path, spell.Rulebook.Name, "Front", $"{spell.Name}.png".SanitizeFileName()));
-                SaveControl(view.IsBleedingEdgeVisible ? view.BleedingEdgeBack : view.CutAreaBack, Path.Combine(path, spell.Rulebook.Name, "Back", $"{spell.Name}.png".SanitizeFileName()));
+                SaveControl(view.IsBleedingEdgeVisible ? view.BleedingEdgeFront : view.CutAreaFront, Path.Combine(path, spell.Rulebook.Name.SanitizeFileName(), "Front", $"{spell.Name}.png".SanitizeFileName()));
+                SaveControl(view.IsBleedingEdgeVisible ? view.BleedingEdgeBack : view.CutAreaBack, Path.Combine(path, spell.Rulebook.Name.SanitizeFileName(), "Back", $"{spell.Name}.png".SanitizeFileName()));
 
                 Dispatcher.UIThread.Invoke(() => { }, DispatcherPriority.Background);
             }

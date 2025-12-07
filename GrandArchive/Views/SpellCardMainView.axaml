@@ -37,6 +37,9 @@
                 <Run Text="{Binding VerifiedSpellsCount}"/>
                 <Run Text="/"/>
                 <Run Text="{Binding #SpellDataGrid.((collections:DataGridCollectionView)CollectionView).Count}"/>
+                <Run Text="("/>
+                <Run Text="{Binding Spells.Count}"/>
+                <Run Text=")"/>
             </TextBlock>
         </Grid>
         

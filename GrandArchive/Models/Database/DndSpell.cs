@@ -166,10 +166,17 @@ public partial class DndSpell : DatabaseObject
 
     [NotMapped] public bool HasChanges { get; set; }
 
+    private readonly string[] _ignoreChangeTrackingProperties =
+    [
+        nameof(HasErrors),
+        nameof(HasChanges),
+        nameof(UpdatedAt)
+    ];
+
     // ReSharper disable once CognitiveComplexity
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
-        if (e.PropertyName != nameof(HasChanges))
+        if (!_ignoreChangeTrackingProperties.Contains(e.PropertyName))
         {
             HasChanges = true;
         }

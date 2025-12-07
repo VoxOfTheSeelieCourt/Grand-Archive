@@ -93,11 +93,13 @@
                         Margin="2" FontSize="12" VerticalAlignment="Center" Content="🗙"/>
             </Grid>
             
-            <StackPanel Grid.Row="1" IsVisible="{Binding MessageContent, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                <Expander Header="Show Details" HorizontalAlignment="Stretch" Margin="2" FontSize="12">
-                    <TextBlock Text="{Binding MessageContent}"/>
-                </Expander>
-            </StackPanel>
+            <Expander Header="Show Details" HorizontalAlignment="Stretch" Margin="2" FontSize="12" Grid.Row="1"
+                      IsVisible="{Binding MessageContent, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                <Grid RowDefinitions="Auto Auto">
+                    <TextBlock Grid.Row="0" Name="ErrorDetailBlock" Text="{Binding MessageContent}"/>
+                    <Button Grid.Row="1" Click="Button_OnClick" Content="Copy Content" HorizontalAlignment="Stretch"/>
+                </Grid>
+            </Expander>
             
             <ProgressBar Grid.Row="2" Minimum="0" FlowDirection="RightToLeft" Foreground="{Binding $parent[UserControl].Foreground}"
                          Maximum="{Binding DeleteAfter}"

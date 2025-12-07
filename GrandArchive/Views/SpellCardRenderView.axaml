@@ -16,7 +16,7 @@
     <Design.DataContext>
         <database:DndSpell
             Name="Hyper-Employment Spell of Testus Maximus"
-            School="Conjuration,Enchantment"
+            School="Abjuration,Enchantment"
             SubSchool="Compulsion"
             Descriptor="LanguageDependant,MindAffecting"
             HasVerbalComponent="True"
@@ -237,9 +237,11 @@
                                 </Border>
 
                                 <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6">
-                                    <Grid RowDefinitions="Auto 15 *">
+                                    <Grid RowDefinitions="Auto 15 *" RowSpacing="5">
                                         <TextBlock Grid.Row="0" Text="{Binding DescriptionShort}" VerticalAlignment="Top" />
-                                        <TextBlock Grid.Row="2" Name="FlavorText" Text="{Binding FlavorText}" VerticalAlignment="Stretch" FontStyle="Italic" TextWrapping="Wrap" MaxWidth="660">
+                                        <TextBlock Grid.Row="2" Text="{Binding FlavorText}"
+                                                   VerticalAlignment="Stretch" FontStyle="Italic"
+                                                   TextWrapping="Wrap" MaxWidth="660">
                                             <Interaction.Behaviors>
                                                 <behaviors:AutoHideTextBlockBehavior HideWhenTextNullOrEmpty="True"/>
                                             </Interaction.Behaviors>

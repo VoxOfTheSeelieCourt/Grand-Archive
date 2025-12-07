@@ -22,7 +22,7 @@ public partial class SpellCardMainViewModel : NavigableViewModel
     private readonly IDbContextFactory<DatabaseContext> _dbContextFactory;
     private readonly IUserInformationMessageService _userInformationMessageService;
 
-    [ObservableProperty] private ObservableCollection<DndSpell> _spells = new();
+    [ObservableProperty] private ObservableCollection<DndSpell> _spells;
 
     public List<DndRulebook> RuleBooks { get; set; }
     public List<DndClass> Classes { get; set; }
@@ -34,22 +34,6 @@ public partial class SpellCardMainViewModel : NavigableViewModel
         _dbContextFactory = dbContextFactory;
         _userInformationMessageService = userInformationMessageService;
 
-        Spells.CollectionChanged += (sender, args) =>
-        {
-            if (args.NewItems == null)
-                return;
-
-            var items = args.NewItems.Cast<DndSpell>().ToList();
-            foreach (var dndSpell in items)
-            {
-                dndSpell.PropertyChanged += (o, eventArgs) =>
-                {
-                    if (eventArgs.PropertyName == nameof(DndSpell.IsVerified))
-                        UpdateCountVerified();
-                };
-            }
-        };
-
         LoadBaseData();
         Task.Run(LoadSpells);
     }
@@ -58,7 +42,32 @@ public partial class SpellCardMainViewModel : NavigableViewModel
     public override bool OnNavigateFrom()
     {
         // TODO: Add user prompt
-        return Spells.All(x => !x.HasChanges);
+        return !Spells.Any() || Spells.All(x => !x.HasChanges);
+    }
+
+    partial void OnSpellsChanged(ObservableCollection<DndSpell> value)
+    {
+        Spells.CollectionChanged += (sender, args) =>
+        {
+            if (args.NewItems == null)
+                return;
+
+            var items = args.NewItems.Cast<DndSpell>().ToList();
+            AddSpellPropertyChangedHandler(items);
+        };
+        AddSpellPropertyChangedHandler(Spells.ToList());
+    }
+
+    private void AddSpellPropertyChangedHandler(List<DndSpell> spells)
+    {
+        foreach (var dndSpell in spells)
+        {
+            dndSpell.PropertyChanged += (o, eventArgs) =>
+            {
+                if (eventArgs.PropertyName == nameof(DndSpell.IsVerified))
+                    UpdateCountVerified();
+            };
+        }
     }
 
     private void LoadBaseData()
@@ -81,8 +90,7 @@ public partial class SpellCardMainViewModel : NavigableViewModel
         {
             await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-            Spells.Clear();
-            Spells.AddRange(dbContext.DndSpells
+            Spells = new ObservableCollection<DndSpell>(dbContext.DndSpells
                 .Include(x => x.Rulebook).ThenInclude(x => x.DndEdition)
                 .Include(x => x.ClassSpells).ThenInclude(x => x.Class)
                 .Include(x => x.DomainSpells).ThenInclude(x => x.Domain)
