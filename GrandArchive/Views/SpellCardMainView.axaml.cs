@@ -126,7 +126,7 @@ public partial class SpellCardMainView : UserControl
     {
         if (DataContext is not SpellCardMainViewModel vm) return;
 
-        vm.PropertyChanged += (o, args) =>
+        vm.PropertyChanged += (_, args) =>
         {
             if (args.PropertyName == nameof(vm.Spells))
                 SpellDataGrid.SelectedItem = vm.Spells.FirstOrDefault();

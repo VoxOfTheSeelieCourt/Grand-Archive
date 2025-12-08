@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="GrandArchive.App"
              xmlns:local="using:GrandArchive"
-             xmlns:helpers="clr-namespace:GrandArchive.Helpers"
              xmlns:converter="clr-namespace:GrandArchive.Helpers.Converter"
              xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
              RequestedThemeVariant="Default">
@@ -28,6 +27,7 @@
         <Style Selector="DataGridColumnHeader">
             <Setter Property="Template">
                 <ControlTemplate>
+                    <!-- ReSharper disable once Xaml.StyleClassNotFound -->
                     <Border Classes="data-grid-column-header">
                         <StackPanel Margin="4" Spacing="4">
                             <!-- Original header content -->

@@ -84,7 +84,7 @@ public partial class SpellCardMainViewModel : NavigableViewModel
 
     partial void OnSpellsChanged(ObservableCollection<DndSpell> value)
     {
-        Spells.CollectionChanged += (sender, args) =>
+        Spells.CollectionChanged += (_, args) =>
         {
             if (args.NewItems == null)
                 return;
@@ -99,7 +99,7 @@ public partial class SpellCardMainViewModel : NavigableViewModel
     {
         foreach (var dndSpell in spells)
         {
-            dndSpell.PropertyChanged += (o, eventArgs) =>
+            dndSpell.PropertyChanged += (_, eventArgs) =>
             {
                 if (eventArgs.PropertyName == nameof(DndSpell.IsVerified))
                     UpdateCountVerified();

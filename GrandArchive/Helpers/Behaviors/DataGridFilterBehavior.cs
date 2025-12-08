@@ -78,12 +78,10 @@ public static class DataGridFilterBehavior
         // Fallback approach: find first DataGrid in app whose Columns contains column.
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime dlt)
         {
-            foreach (var window in dlt.Windows)
-            {
-                foreach (var grid in window.GetVisualDescendants().OfType<DataGrid>())
-                    if (grid.Columns.Contains(column))
-                        return grid;
-            }
+            return dlt.Windows
+                .SelectMany(window => window.GetVisualDescendants()
+                    .OfType<DataGrid>())
+                .FirstOrDefault(grid => grid.Columns.Contains(column));
         }
         return null;
     }
@@ -99,7 +97,7 @@ public static class DataGridFilterBehavior
                 EnsureView(grid);
         };
 
-        grid.Columns.CollectionChanged += (_, __) => Refresh(grid);
+        grid.Columns.CollectionChanged += (_, _) => Refresh(grid);
 
         EnsureView(grid);
     }
@@ -107,12 +105,12 @@ public static class DataGridFilterBehavior
     private static void Detach(DataGrid grid)
     {
         var view = grid.GetValue(ViewProperty);
-        if (view != null)
-        {
-            // Clear filter to avoid dangling refs
-            view.Filter = null;
-            grid.ClearValue(ViewProperty);
-        }
+        if (view == null)
+            return;
+
+        // Clear filter to avoid dangling refs
+        view.Filter = null;
+        grid.ClearValue(ViewProperty);
     }
 
     private static void EnsureView(DataGrid grid)
@@ -174,7 +172,7 @@ public static class DataGridFilterBehavior
     private static string TryGetBindingPath(DataGridColumn column)
     {
         // Works for DataGridTextColumn and other bound columns
-        if (column is DataGridBoundColumn bound && bound.Binding is CompiledBindingExtension b && !string.IsNullOrWhiteSpace(b.Path.ToString()))
+        if (column is DataGridBoundColumn { Binding: CompiledBindingExtension b } && !string.IsNullOrWhiteSpace(b.Path.ToString()))
             return b.Path.ToString();
 
         return null;
@@ -185,10 +183,15 @@ public static class DataGridFilterBehavior
         var current = instance;
         foreach (var seg in path.Split('.'))
         {
-            if (current is null) return null;
+            if (current is null)
+                return null;
+
             var t = current.GetType();
             var prop = t.GetProperty(seg, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-            if (prop == null) return null;
+
+            if (prop == null)
+                return null;
+
             current = prop.GetValue(current);
         }
         return current;
@@ -197,7 +200,9 @@ public static class DataGridFilterBehavior
     // Helper to enumerate visuals (since we used it above)
     private static IEnumerable<Visual> GetVisualDescendants(this Visual root)
     {
-        if (root is null) yield break;
+        if (root is null)
+            yield break;
+
         var stack = new Stack<Visual>();
         stack.Push(root);
         while (stack.Count > 0)

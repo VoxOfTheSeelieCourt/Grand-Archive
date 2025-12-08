@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:helpers="clr-namespace:GrandArchive.Helpers"
              xmlns:database="clr-namespace:GrandArchive.Models.Database"
              xmlns:mdxaml="https://github.com/whistyun/Markdown.Avalonia"
              xmlns:avalonia="clr-namespace:ColorTextBlock.Avalonia;assembly=ColorTextBlock.Avalonia"

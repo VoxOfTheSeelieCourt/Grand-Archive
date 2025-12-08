@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
-using GrandArchive.Helpers.Attributes;
 using GrandArchive.Models;
 using GrandArchive.Services.Navigation;
 using GrandArchive.Services.UserInformationService;

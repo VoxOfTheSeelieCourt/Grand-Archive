@@ -8,7 +8,6 @@ using Avalonia.Data;
 using Avalonia.Interactivity;
 using GrandArchive.Helpers.ExtensionMethods;
 using GrandArchive.Models;
-using Svg;
 
 namespace GrandArchive.Controls;
 
@@ -38,8 +37,8 @@ public class FlagEnumComboBox : TemplatedControl
 
     static FlagEnumComboBox()
     {
-        EnumTypeProperty.Changed.AddClassHandler<FlagEnumComboBox>((x, e) => x.OnEnumTypeChanged(e));
-        SelectedValueProperty.Changed.AddClassHandler<FlagEnumComboBox>((x, e) => x.OnSelectedValueChanged(e));
+        EnumTypeProperty.Changed.AddClassHandler<FlagEnumComboBox>((x, _) => x.OnEnumTypeChanged());
+        SelectedValueProperty.Changed.AddClassHandler<FlagEnumComboBox>((x, _) => x.OnSelectedValueChanged());
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -52,7 +51,7 @@ public class FlagEnumComboBox : TemplatedControl
 
         if (e.NameScope.Find<Button>("PART_Button") is { } button)
         {
-            button.Click += (x, y) => TogglePopup();
+            button.Click += (_, _) => TogglePopup();
         }
 
         PopulateItems();
@@ -65,13 +64,13 @@ public class FlagEnumComboBox : TemplatedControl
             _popup.IsOpen = !_popup.IsOpen;
     }
 
-    private void OnEnumTypeChanged(AvaloniaPropertyChangedEventArgs e)
+    private void OnEnumTypeChanged()
     {
         PopulateItems();
         UpdateDisplay();
     }
 
-    private void OnSelectedValueChanged(AvaloniaPropertyChangedEventArgs e)
+    private void OnSelectedValueChanged()
     {
         UpdateDisplay();
         UpdateCheckStates();
