@@ -25,20 +25,6 @@
         <Color x:Key="ErrorBackground">#f8d7da</Color>
         <Color x:Key="ErrorForeground">#721c24</Color>
         <!--#endregion-->
-
-        <!--#region Brushes-->
-        <SolidColorBrush x:Key="SuccessBackgroundBrush" Color="{StaticResource SuccessBackground}" />
-        <SolidColorBrush x:Key="SuccessForegroundBrush" Color="{StaticResource SuccessForeground}" />
-
-        <SolidColorBrush x:Key="InformationBackgroundBrush" Color="{StaticResource InformationBackground}" />
-        <SolidColorBrush x:Key="InformationForegroundBrush" Color="{StaticResource InformationForeground}" />
-
-        <SolidColorBrush x:Key="WarningBackgroundBrush" Color="{StaticResource WarningBackground}" />
-        <SolidColorBrush x:Key="WarningForegroundBrush" Color="{StaticResource WarningForeground}" />
-
-        <SolidColorBrush x:Key="ErrorBackgroundBrush" Color="{StaticResource ErrorBackground}" />
-        <SolidColorBrush x:Key="ErrorForegroundBrush" Color="{StaticResource ErrorForeground}" />
-        <!--#endregion-->
     </UserControl.Resources>
 
     <Interaction.Behaviors>
@@ -53,16 +39,16 @@
     <UserControl.Theme>
         <ControlTheme TargetType="UserControl">
             <Style Selector="^[Tag=Error]">
-                <Setter Property="Foreground" Value="{StaticResource ErrorForegroundBrush}"/>
+                <Setter Property="Foreground" Value="{StaticResource ErrorForeground}"/>
             </Style>
             <Style Selector="^[Tag=Warning]">
-                <Setter Property="Foreground" Value="{StaticResource WarningForegroundBrush}"/>
+                <Setter Property="Foreground" Value="{StaticResource WarningForeground}"/>
             </Style>
             <Style Selector="^[Tag=Success]">
-                <Setter Property="Foreground" Value="{StaticResource SuccessForegroundBrush}"/>
+                <Setter Property="Foreground" Value="{StaticResource SuccessForeground}"/>
             </Style>
             <Style Selector="^[Tag=Information]">
-                <Setter Property="Foreground" Value="{StaticResource InformationForegroundBrush}"/>
+                <Setter Property="Foreground" Value="{StaticResource InformationForeground}"/>
             </Style>
         </ControlTheme>
     </UserControl.Theme>
@@ -71,7 +57,7 @@
         <Border.Theme>
             <ControlTheme TargetType="Border">
                 <Style Selector="^[Tag=Error]">
-                    <Setter Property="BorderBrush" Value="{StaticResource ErrorForegroundBrush}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource ErrorForeground}"/>
                 </Style>
                 <Style Selector="^[Tag=Warning]">
                     <Setter Property="BorderBrush" Value="{StaticResource WarningForeground}"/>

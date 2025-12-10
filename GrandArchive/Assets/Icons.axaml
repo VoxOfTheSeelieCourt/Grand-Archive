@@ -36,7 +36,7 @@
             <SolidColorBrush x:Key="SpellSchoolNoneBackground">#000000</SolidColorBrush>
             <SolidColorBrush x:Key="SpellSchoolAbjurationBackground">#6dc4d5</SolidColorBrush>
             <SolidColorBrush x:Key="SpellSchoolConjurationBackground">#593269</SolidColorBrush>
-            <SolidColorBrush x:Key="SpellSchoolDivinationBackground">#d8cc44</SolidColorBrush>
+            <SolidColorBrush x:Key="SpellSchoolDivinationBackground">#d8d844</SolidColorBrush>
             <SolidColorBrush x:Key="SpellSchoolEnchantmentBackground">#ff5dbf</SolidColorBrush>
             <SolidColorBrush x:Key="SpellSchoolEvocationBackground">#357c54</SolidColorBrush>
             <SolidColorBrush x:Key="SpellSchoolIllusionBackground">#393f7d</SolidColorBrush>

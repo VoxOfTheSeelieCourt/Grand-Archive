@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -17,6 +18,10 @@ public static class DataGridFilterBehavior
     public static readonly AttachedProperty<bool> IsEnabledProperty =
         AvaloniaProperty.RegisterAttached<DataGrid, bool>(
             "IsEnabled", typeof(DataGridFilterBehavior));
+
+    public static readonly AttachedProperty<bool> IsRegexEnabledProperty =
+        AvaloniaProperty.RegisterAttached<DataGrid, bool>(
+            "IsRegexEnabled", typeof(DataGridFilterBehavior));
 
     // Per-column filter text (bound by header TextBox)
     public static readonly AttachedProperty<string> FilterTextProperty =
@@ -42,6 +47,9 @@ public static class DataGridFilterBehavior
     // Public setters/getters for XAML
     public static void SetIsEnabled(DataGrid element, bool value) => element.SetValue(IsEnabledProperty, value);
     public static bool GetIsEnabled(DataGrid element) => element.GetValue(IsEnabledProperty);
+
+    public static void SetIsRegexEnabled(DataGrid element, bool value) => element.SetValue(IsRegexEnabledProperty, value);
+    public static bool GetIsRegexEnabled(DataGrid element) => element.GetValue(IsRegexEnabledProperty);
 
     public static void SetFilterText(DataGridColumn element, string value) => element.SetValue(FilterTextProperty, value);
     public static string GetFilterText(DataGridColumn element) => element.GetValue(FilterTextProperty);
@@ -154,7 +162,9 @@ public static class DataGridFilterBehavior
             {
                 // Fallback: ToString() match
                 var s = row.ToString() ?? string.Empty;
-                if (s.IndexOf(needle, comparison) < 0)
+                if (GetIsRegexEnabled(grid) && !Regex.IsMatch(s, needle))
+                    return false;
+                else if (!GetIsRegexEnabled(grid) && s.IndexOf(needle, comparison) < 0)
                     return false;
                 continue;
             }
@@ -162,7 +172,9 @@ public static class DataGridFilterBehavior
             var value = ReadPropertyPath(row, path);
             var text = value?.ToString() ?? string.Empty;
 
-            if (text.IndexOf(needle, comparison) < 0)
+            if (GetIsRegexEnabled(grid) && !Regex.IsMatch(text, needle))
+                return false;
+            else if (!GetIsRegexEnabled(grid) && text.IndexOf(needle, comparison) < 0)
                 return false;
         }
 
