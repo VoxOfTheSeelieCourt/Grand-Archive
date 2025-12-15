@@ -135,16 +135,19 @@ public partial class SpellCardMainViewModel : NavigableViewModel
                 .Include(x => x.ClassSpells).ThenInclude(x => x.Class)
                 .Include(x => x.DomainSpells).ThenInclude(x => x.Domain)
                 .Include(x => x.VariantOfSpell)
-                // .Where(x => x.Rulebook.Id == dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.Id == 8).GroupBy(y => y.Rulebook.Id).OrderBy(y => y.Count()).First().Key)
+                // .Where(x => x.Rulebook.Id == dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.Id == 8).GroupBy(y => y.Rulebook.Id).OrderByDescending(y => y.Count()).First().Key)
                 // .Where(x => x.Rulebook.Id == dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.System == "DnD 3.5").GroupBy(y => y.Rulebook.Id).OrderBy(y => y.Count()).First().Key)
-                // .Where(x => x.Rulebook.Id == 81)
+                // .Where(x => x.Rulebook.Id == 3)
+                .Where(x => x.Rulebook.Id == 81)
+                // .Where(x => x.Rulebook.DndEdition.System == "DnD 3.5")
                 // .Where(x => !x.IsVerified)
+                // .Where(x => x.Description.Contains("spells/"))
                 .AsNoTracking()
                 .ToList());
 
             AutoFormatSpells();
 
-            OnPropertyChanged(nameof(VerifiedSpellsCount));
+            UpdateCountVerified();
         }
         catch (Exception e)
         {

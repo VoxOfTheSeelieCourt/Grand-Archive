@@ -36,7 +36,7 @@
             RulebookPage="69"
             FlavorText="If everything works, you will not be able to see this, although just in case i will make this text extra long so wrapped rendering can be tested by disabling certain components."
             DescriptionShort="What, are you really gonna read the full description? Do you not trust me? Is our company's reputation not enough for you? We are not a black company, unlike Cover Corp! You are such a heartless person."
-            Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu dolor ut erat bibendum sagittis ac vel nulla. Nulla ultrices vitae neque vitae consectetur. Nullam a odio quis dui iaculis volutpat a id mauris. Nam nec nunc a tellus mollis condimentum. Integer cursus justo mollis metus commodo dapibus. Proin at pellentesque leo, eget cursus velit. Suspendisse potenti. Morbi placerat felis ut tortor pharetra, ut vestibulum eros laoreet. Ut non gravida tellus. Nulla nulla ante, dignissim et fermentum eu, tristique sed metus. Duis cursus nulla vel tortor malesuada auctor. Aliquam lacinia mi vitae vehicula commodo. Curabitur posuere imperdiet tellus, in malesuada metus finibus mattis. Curabitur id maximus neque, id dignissim nunc. Vivamus id maximus augue.&#x0a;&#x0a;Sed dolor massa, elementum eu viverra et, viverra vel lacus. Integer euismod nulla tellus. Integer mattis, nisi vitae gravida sagittis, lacus metus rhoncus dui, vitae scelerisque mauris arcu non magna. Duis vel egestas risus. Aenean malesuada ultrices vestibulum. Aenean at nisi urna. Proin luctus turpis vel augue convallis, ut tincidunt quam varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam ut faucibus libero, quis egestas risus.&#x0a;&#x0a;Donec et lacus vestibulum, tempor velit a, tincidunt sem. Sed egestas at ante sed rutrum. Vivamus sit amet magna quis felis malesuada tempus nec eu mi. Quisque sed enim egestas, scelerisque magna eget, ornare arcu. Ut nec semper nulla, sit amet mollis sem. In hac habitasse platea dictumst. Praesent ullamcorper eu magna quis placerat.">
+            Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu dolor ut erat bibendum sagittis ac vel nulla. Nulla ultrices vitae neque vitae consectetur. Nullam a odio quis dui iaculis volutpat a id mauris. Nam nec nunc a tellus mollis condimentum. Integer cursus justo mollis metus commodo dapibus. Proin at pellentesque leo, eget cursus velit. Suspendisse potenti. Morbi placerat felis ut tortor pharetra, ut vestibulum eros laoreet. Ut non gravida tellus. Nulla nulla ante, dignissim et fermentum eu, tristique sed metus. Duis cursus nulla vel tortor malesuada auctor. Aliquam lacinia mi vitae vehicula commodo. Curabitur posuere imperdiet tellus, in malesuada metus finibus mattis. Curabitur id maximus neque, id dignissim nunc. Vivamus id maximus augue.&#x0a;&#x0a;| Table | With | Some | Rows |&#x0a;|:---|:---:|---:|---|&#x0a;| Lorem | ipsum | dolor | sit |&#x0a;| amet | consectetur | adipiscing | elit |&#x0a;| Cras | eu | dolor | ut |&#x0a;| erat | bibendum | sagittis | ac |&#x0a;&#x0a;Sed dolor massa, elementum eu viverra et, viverra vel lacus.&#x0a;* Integer euismod nulla tellus&#x0a;* Integer mattis, nisi vitae gravida sagittis, lacus metus rhoncus dui, vitae scelerisque mauris arcu non magna.&#x0a;* Duis vel egestas risus.&#x0a;&#x0a; Aenean malesuada ultrices vestibulum.">
             <database:DndSpell.Rulebook>
                 <database:DndRulebook Name="Player's Handbook III" Abbreviation="PHB III">
                     <database:DndRulebook.DndEdition>
@@ -102,7 +102,7 @@
             <Setter Property="Background" Value="White" />
             <Setter Property="CornerRadius" Value="10" />
             <Setter Property="Padding" Value="10" />
-            <Setter Property="MinHeight" Value="70" />
+            <Setter Property="MinHeight" Value="60" />
         </Style>
 
         <Style Selector="TextBlock">
@@ -169,7 +169,7 @@
                                     </Grid>
                                 </Border>
 
-                                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" MinHeight="70">
                                     <StackPanel Orientation="Horizontal">
                                         <PathIcon Data="{StaticResource Rulebook}" />
                                         <TextBlock Text="{Binding Rulebook.Abbreviation}" />
@@ -177,45 +177,45 @@
                                                    IsVisible="{Binding RulebookPage, Converter={x:Static ObjectConverters.IsNotNull}}" />
                                     </StackPanel>
                                 </Border>
-                                <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                                <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" MinHeight="70">
                                     <Grid ColumnDefinitions="Auto *" ColumnSpacing="5">
                                         <PathIcon Data="{StaticResource Components}" />
                                         <TextBlock Grid.Column="1" Text="{Binding AllComponents}" />
                                     </Grid>
                                 </Border>
-                                <Border Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2">
+                                <Border Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" MinHeight="70">
                                     <Grid ColumnDefinitions="Auto *" ColumnSpacing="5">
                                         <PathIcon Data="{StaticResource CastingTime}" />
                                         <TextBlock Grid.Column="1" Text="{Binding CastingTime}" />
                                     </Grid>
                                 </Border>
 
-                                <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                                <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" MinHeight="70">
                                     <Grid ColumnDefinitions="Auto *" ColumnSpacing="5">
                                         <PathIcon Data="{StaticResource Range}" />
                                         <TextBlock Grid.Column="1" Text="{Binding RangeDisplayText}" />
                                     </Grid>
                                 </Border>
-                                <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">
+                                <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" MinHeight="70">
                                     <Grid ColumnDefinitions="Auto *" ColumnSpacing="5">
                                         <PathIcon Data="{StaticResource Duration}" />
                                         <TextBlock Grid.Column="1" Text="{Binding Duration}" />
                                     </Grid>
                                 </Border>
-                                <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3">
+                                <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" MinHeight="70">
                                     <Grid ColumnDefinitions="Auto *" ColumnSpacing="5">
                                         <PathIcon Data="{StaticResource SavingThrow}" />
                                         <TextBlock Grid.Column="1" Text="{Binding SavingThrow}" />
                                     </Grid>
                                 </Border>
-                                <Border Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3">
+                                <Border Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" MinHeight="70">
                                     <Grid ColumnDefinitions="Auto *" ColumnSpacing="5">
                                         <PathIcon Data="{StaticResource SpellResistance}" />
                                         <TextBlock Grid.Column="1" Text="{Binding SpellResistance}" />
                                     </Grid>
                                 </Border>
 
-                                <Border Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" Grid.ColumnSpan="3">
+                                <Border Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" Grid.ColumnSpan="3" MinHeight="70">
                                     <Grid RowDefinitions="Auto Auto Auto">
                                         <Grid Grid.Row="0" ColumnDefinitions="Auto *" ColumnSpacing="5"
                                               IsVisible="{Binding Target, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
@@ -250,47 +250,47 @@
 
                                 <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6" Spacing="10">
                                     <Border IsVisible="{Binding HasMaterialComponent}">
-                                        <TextBlock Text="{Binding MaterialComponent, StringFormat={}Material Component: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding MaterialComponent, StringFormat={}**Material Component**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasArcaneFocus}">
-                                        <TextBlock Text="{Binding ArcaneFocus, StringFormat={}Arcane Focus: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding ArcaneFocus, StringFormat={}**Arcane Focus**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasExperienceComponent}">
-                                        <TextBlock Text="{Binding ExperienceComponent, StringFormat={}XP Cost: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding ExperienceComponent, StringFormat={}**XP Cost**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasTruenameComponent}">
-                                        <TextBlock Text="{Binding TruenameComponent, StringFormat={}Truename: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding TruenameComponent, StringFormat={}**Truename**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasCorruptionComponent}">
-                                        <TextBlock Text="{Binding CorruptionComponent, StringFormat={}Corruption: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding CorruptionComponent, StringFormat={}**Corruption**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasSacrificeComponent}">
-                                        <TextBlock Text="{Binding SacrificeComponent, StringFormat={}Mindset: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding SacrificeComponent, StringFormat={}**Mindset**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasAbstinenceComponent}">
-                                        <TextBlock Text="{Binding AbstinenceComponent, StringFormat={}Abstinence: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding AbstinenceComponent, StringFormat={}**Abstinence**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasMindsetComponent}">
-                                        <TextBlock Text="{Binding MindsetComponent, StringFormat={}Mindset: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding MindsetComponent, StringFormat={}**Mindset**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasLocationComponent}">
-                                        <TextBlock Text="{Binding LocationComponent, StringFormat={}Location: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding LocationComponent, StringFormat={}**Location**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasDragonmarkComponent}">
-                                        <TextBlock Text="{Binding DragonmarkComponent, StringFormat={}Dragonmark: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding DragonmarkComponent, StringFormat={}**Dragonmark**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasDiseaseComponent}">
-                                        <TextBlock Text="{Binding DiseaseComponent, StringFormat={}Disease: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding DiseaseComponent, StringFormat={}**Disease**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding HasColdfireComponent}">
-                                        <TextBlock Text="{Binding ColdfireComponent, StringFormat={}Coldfire: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding ColdfireComponent, StringFormat={}**Coldfire**: {0}}" />
                                     </Border>
                                     <Border IsVisible="{Binding ExtraComponent, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                                        <TextBlock Text="{Binding ExtraComponent, StringFormat={}Extra: {0}}" />
+                                        <mdxaml:MarkdownScrollViewer Markdown="{Binding ExtraComponent, StringFormat={}**Extra**: {0}}" />
                                     </Border>
                                 </StackPanel>
 
-                                <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="6">
+                                <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="6" MinHeight="70">
                                     <Grid ColumnDefinitions="Auto *" ColumnSpacing="5">
                                         <TextBlock Grid.Column="1" Text="{Binding ClassDisplayTextSingleLine}" FontWeight="Bold"/>
                                     </Grid>
@@ -316,14 +316,6 @@
                                 <Grid RowDefinitions="* Auto" RowSpacing="10">
                                     <Border Grid.Row="0">
                                         <Grid>
-                                            <mdxaml:MarkdownScrollViewer Markdown="{Binding Description}"
-                                                                         VerticalAlignment="Top" Margin="2, 0">
-                                                <mdxaml:MarkdownScrollViewer.Styles>
-                                                    <Style Selector="ScrollViewer">
-                                                        <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
-                                                    </Style>
-                                                </mdxaml:MarkdownScrollViewer.Styles>
-                                            </mdxaml:MarkdownScrollViewer>
                                             <Viewbox Opacity=".5">
                                                 <ItemsControl ItemsSource="{Binding School, Converter={StaticResource SpellSchoolToIconConverter}}">
                                                     <ItemsControl.ItemsPanel>
@@ -338,10 +330,50 @@
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
                                             </Viewbox>
+                                            <mdxaml:MarkdownScrollViewer Markdown="{Binding Description}"
+                                                                         VerticalAlignment="Top" Margin="2, 0">
+                                                <mdxaml:MarkdownScrollViewer.Styles>
+                                                    <Style Selector="Grid.List">
+                                                        <Setter Property="Margin" Value="0" />
+                                                    </Style>
+        
+                                                    <Style Selector="Border.List avalonia|CTextBlock">
+                                                        <Setter Property="Margin" Value="0"/>
+                                                    </Style>
+        
+                                                    <Style Selector="avalonia|CTextBlock.ListMarker">
+                                                        <Setter Property="TextVerticalAlignment" Value="Top"/>
+                                                        <Setter Property="VerticalAlignment" Value="Top"/>
+                                                        <Setter Property="Margin" Value="0 0 2 0"/>
+                                                    </Style>
+        
+                                                    <Style Selector="Border">
+                                                        <Setter Property="CornerRadius" Value="0"/>
+                                                    </Style>
+        
+                                                    <!-- Markdown Tables -->
+                                                    <Style Selector="Border.Table">
+                                                        <Setter Property="Margin" Value="0"/>
+                                                        <Setter Property="Padding" Value="0"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="Background" Value="Transparent" />
+                                                        <Setter Property="BorderBrush" Value="Transparent" />
+                                                    </Style>
+        
+                                                    <Style Selector=".Table Border">
+                                                        <Setter Property="Margin" Value="0"/>
+                                                        <Setter Property="Padding" Value="0"/>
+                                                        <Setter Property="CornerRadius" Value="0"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="Background" Value="Transparent" />
+                                                        <Setter Property="BorderBrush" Value="Transparent" />
+                                                    </Style>
+                                                </mdxaml:MarkdownScrollViewer.Styles>
+                                            </mdxaml:MarkdownScrollViewer>
                                         </Grid>
                                     </Border>
                                     
-                                    <Border Grid.Row="1">
+                                    <Border Grid.Row="1" MinHeight="70">
                                         <Grid ColumnDefinitions="Auto *">
                                             <PathIcon Grid.Column="0" Data="{StaticResource Rulebook}" />
                                             <TextBlock Grid.Column="1" Text="{Binding DisplaySourceLong}" TextWrapping="Wrap"/>

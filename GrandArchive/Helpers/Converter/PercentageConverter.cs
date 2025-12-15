@@ -12,6 +12,6 @@ public class PercentageConverter : IMultiValueConverter
         if (values is not [int verified, int all])
             return 0;
 
-        return verified * 100 / all;
+        return verified * 100 / (double)all;
     }
 }

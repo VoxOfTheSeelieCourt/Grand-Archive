@@ -11,7 +11,8 @@
              mc:Ignorable="d"
              x:Class="GrandArchive.Views.SpellCardMainView"
              x:DataType="viewModels:SpellCardMainViewModel"
-             Loaded="OnLoaded">
+             Loaded="OnLoaded"
+             KeyDown="InputElement_OnKeyDown">
     <Design.DataContext>
         <viewModels:SpellCardMainViewModel/>
     </Design.DataContext>
@@ -46,7 +47,7 @@
                 <Run Text="("/>
                 <Run>
                     <Run.Text>
-                        <MultiBinding Converter="{StaticResource PercentageConverter}" StringFormat="{}{0}%">
+                        <MultiBinding Converter="{StaticResource PercentageConverter}" StringFormat="{}{0:N2}%">
                             <Binding Path="VerifiedSpellsCount"/>
                             <Binding Path="Spells.Count"/>
                         </MultiBinding>

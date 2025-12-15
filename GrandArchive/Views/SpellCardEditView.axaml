@@ -54,6 +54,13 @@
             </database:DndSpell.ClassSpells>
         </database:DndSpell>
     </Design.DataContext>
+    
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </UserControl.Styles>
 
     <StackPanel Spacing="5">
         <TextBox Watermark="Name" Text="{Binding Name}"/>
@@ -125,8 +132,8 @@
         <TextBox Watermark="Target" Text="{Binding Target}"/>
         <TextBox Watermark="Area" Text="{Binding Area}"/>
         <TextBox Watermark="Effect" Text="{Binding Effect}"/>
-        <TextBox Watermark="Flavor" Text="{Binding FlavorText}" TextWrapping="Wrap" AcceptsReturn="True"/>
-        <TextBox Watermark="Summary" Text="{Binding DescriptionShort}" TextWrapping="Wrap" AcceptsReturn="True"/>
-        <TextBox Watermark="Description" Text="{Binding Description}" TextWrapping="Wrap" AcceptsReturn="True"/>
+        <TextBox Watermark="Flavor" Text="{Binding FlavorText}"/>
+        <TextBox Watermark="Summary" Text="{Binding DescriptionShort}"/>
+        <TextBox Watermark="Description" Text="{Binding Description}"/>
     </StackPanel>
 </UserControl>

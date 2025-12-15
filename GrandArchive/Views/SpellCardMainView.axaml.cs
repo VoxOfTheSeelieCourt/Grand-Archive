@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
@@ -138,5 +139,23 @@ public partial class SpellCardMainView : UserControl
     private void ToggleBleedingEdge(object sender, RoutedEventArgs e)
     {
         SpellCardRenderView.IsBleedingEdgeVisible = !SpellCardRenderView.IsBleedingEdgeVisible;
+    }
+
+    private void InputElement_OnKeyDown(object sender, KeyEventArgs e)
+    {
+        if(SpellDataGrid.SelectedItem == null)
+            return;
+
+        switch (e.Key)
+        {
+            case Key.F3:
+                SpellDataGrid.SelectedIndex++;
+                SpellDataGrid.ScrollIntoView(SpellDataGrid.SelectedItem, null);
+                break;
+            case Key.F2:
+                SpellDataGrid.SelectedIndex--;
+                SpellDataGrid.ScrollIntoView(SpellDataGrid.SelectedItem, null);
+                break;
+        }
     }
 }
