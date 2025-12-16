@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AvaloniaDialogs.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -135,10 +134,9 @@ public partial class SpellCardMainViewModel : NavigableViewModel
                 .Include(x => x.ClassSpells).ThenInclude(x => x.Class)
                 .Include(x => x.DomainSpells).ThenInclude(x => x.Domain)
                 .Include(x => x.VariantOfSpell)
-                // .Where(x => x.Rulebook.Id == dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.Id == 8).GroupBy(y => y.Rulebook.Id).OrderByDescending(y => y.Count()).First().Key)
+                .Where(x => x.Rulebook.Id == dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.Id == 8).GroupBy(y => y.Rulebook.Id).OrderBy(y => y.Count()).First().Key)
                 // .Where(x => x.Rulebook.Id == dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.System == "DnD 3.5").GroupBy(y => y.Rulebook.Id).OrderBy(y => y.Count()).First().Key)
                 // .Where(x => x.Rulebook.Id == 3)
-                .Where(x => x.Rulebook.Id == 81)
                 // .Where(x => x.Rulebook.DndEdition.System == "DnD 3.5")
                 // .Where(x => !x.IsVerified)
                 // .Where(x => x.Description.Contains("spells/"))
@@ -206,7 +204,4 @@ public partial class SpellCardMainViewModel : NavigableViewModel
             _userInformationMessageService.AddDisplayMessage("Encountered an error during saving", InformationType.Error, TimeSpan.FromSeconds(30), e.Message);
         }
     }
-
-    [GeneratedRegex(@"^(?:_|\*)([^_*]+)(?:_|\*)\n*")]
-    private static partial Regex FlavorTextRegex();
 }

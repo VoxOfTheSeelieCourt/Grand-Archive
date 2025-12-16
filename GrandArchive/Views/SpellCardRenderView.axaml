@@ -36,7 +36,7 @@
             RulebookPage="69"
             FlavorText="If everything works, you will not be able to see this, although just in case i will make this text extra long so wrapped rendering can be tested by disabling certain components."
             DescriptionShort="What, are you really gonna read the full description? Do you not trust me? Is our company's reputation not enough for you? We are not a black company, unlike Cover Corp! You are such a heartless person."
-            Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu dolor ut erat bibendum sagittis ac vel nulla. Nulla ultrices vitae neque vitae consectetur. Nullam a odio quis dui iaculis volutpat a id mauris. Nam nec nunc a tellus mollis condimentum. Integer cursus justo mollis metus commodo dapibus. Proin at pellentesque leo, eget cursus velit. Suspendisse potenti. Morbi placerat felis ut tortor pharetra, ut vestibulum eros laoreet. Ut non gravida tellus. Nulla nulla ante, dignissim et fermentum eu, tristique sed metus. Duis cursus nulla vel tortor malesuada auctor. Aliquam lacinia mi vitae vehicula commodo. Curabitur posuere imperdiet tellus, in malesuada metus finibus mattis. Curabitur id maximus neque, id dignissim nunc. Vivamus id maximus augue.&#x0a;&#x0a;| Table | With | Some | Rows |&#x0a;|:---|:---:|---:|---|&#x0a;| Lorem | ipsum | dolor | sit |&#x0a;| amet | consectetur | adipiscing | elit |&#x0a;| Cras | eu | dolor | ut |&#x0a;| erat | bibendum | sagittis | ac |&#x0a;&#x0a;Sed dolor massa, elementum eu viverra et, viverra vel lacus.&#x0a;* Integer euismod nulla tellus&#x0a;* Integer mattis, nisi vitae gravida sagittis, lacus metus rhoncus dui, vitae scelerisque mauris arcu non magna.&#x0a;* Duis vel egestas risus.&#x0a;&#x0a; Aenean malesuada ultrices vestibulum.">
+            Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu dolor ut erat bibendum sagittis ac vel nulla. Nulla ultrices vitae neque vitae consectetur. Nullam a odio quis dui iaculis volutpat a id mauris. Nam nec nunc a tellus mollis condimentum. Integer cursus justo mollis metus commodo dapibus. Proin at pellentesque leo, eget cursus velit. Suspendisse potenti.&#x0a;> Morbi placerat felis ut tortor pharetra, ut vestibulum eros laoreet. Duis cursus nulla vel tortor malesuada auctor. Aliquam lacinia mi vitae vehicula commodo. Curabitur posuere imperdiet tellus, in malesuada metus finibus mattis. Curabitur id maximus neque, id dignissim nunc. Vivamus id maximus augue.&#x0a;&#x0a;| Table | With | Some | Rows |&#x0a;|:---|:---:|---:|---|&#x0a;| Lorem | ipsum | dolor | sit |&#x0a;| amet | consectetur | adipiscing | elit |&#x0a;| Cras | eu | dolor | ut |&#x0a;| erat | bibendum | sagittis | ac |&#x0a;&#x0a;Sed dolor massa, elementum eu viverra et, viverra vel lacus.&#x0a;* Integer euismod nulla tellus&#x0a;* Integer mattis, nisi vitae gravida sagittis, lacus metus rhoncus dui, vitae scelerisque mauris arcu non magna.&#x0a;* Duis vel egestas risus.&#x0a;&#x0a;Aenean malesuada ultrices vestibulum.">
             <database:DndSpell.Rulebook>
                 <database:DndRulebook Name="Player's Handbook III" Abbreviation="PHB III">
                     <database:DndRulebook.DndEdition>
@@ -349,6 +349,15 @@
         
                                                     <Style Selector="Border">
                                                         <Setter Property="CornerRadius" Value="0"/>
+                                                    </Style>
+        
+                                                    <!-- Markdown Blockquotes -->
+                                                    <Style Selector="Border.Blockquote">
+                                                        <Setter Property="Margin" Value="0"/>
+                                                        <Setter Property="Padding" Value="0"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="Background" Value="Transparent" />
+                                                        <Setter Property="BorderBrush" Value="Transparent" />
                                                     </Style>
         
                                                     <!-- Markdown Tables -->

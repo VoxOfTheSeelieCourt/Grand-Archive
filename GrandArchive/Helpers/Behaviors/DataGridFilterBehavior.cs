@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.VisualTree;
+using GrandArchive.Helpers.ExtensionMethods;
 
 namespace GrandArchive.Helpers.Behaviors;
 
@@ -117,7 +118,7 @@ public static class DataGridFilterBehavior
             return;
 
         // Clear filter to avoid dangling refs
-        view.Filter = null;
+        view.Filter = null!;
         grid.ClearValue(ViewProperty);
     }
 
@@ -152,8 +153,8 @@ public static class DataGridFilterBehavior
 
         foreach (var col in grid.Columns)
         {
-            var needle = GetFilterText(col);
-            if (string.IsNullOrWhiteSpace(needle))
+            var pattern = GetFilterText(col);
+            if (string.IsNullOrWhiteSpace(pattern))
                 continue;
 
             // Try to resolve a binding path for bound columns (Text/CheckBox etc.)
@@ -162,9 +163,9 @@ public static class DataGridFilterBehavior
             {
                 // Fallback: ToString() match
                 var s = row.ToString() ?? string.Empty;
-                if (GetIsRegexEnabled(grid) && !Regex.IsMatch(s, needle))
+                if (GetIsRegexEnabled(grid) && !Regex.IsMatch(s, pattern))
                     return false;
-                else if (!GetIsRegexEnabled(grid) && s.IndexOf(needle, comparison) < 0)
+                else if (!GetIsRegexEnabled(grid) && s.IndexOf(pattern, comparison) < 0)
                     return false;
                 continue;
             }
@@ -172,9 +173,9 @@ public static class DataGridFilterBehavior
             var value = ReadPropertyPath(row, path);
             var text = value?.ToString() ?? string.Empty;
 
-            if (GetIsRegexEnabled(grid) && !Regex.IsMatch(text, needle))
+            if (GetIsRegexEnabled(grid) && (!pattern.IsValidRegexPattern() || !Regex.IsMatch(text, pattern)))
                 return false;
-            else if (!GetIsRegexEnabled(grid) && text.IndexOf(needle, comparison) < 0)
+            else if (!GetIsRegexEnabled(grid) && text.IndexOf(pattern, comparison) < 0)
                 return false;
         }
 
