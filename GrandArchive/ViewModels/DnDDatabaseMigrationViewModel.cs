@@ -22,17 +22,17 @@ namespace GrandArchive.ViewModels;
 [NavigableMenuItem("Migration", "UpdateRegular")]
 public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
 {
-    private readonly IDbContextFactory<DndContext> _dndContextFactory;
-    private readonly IDbContextFactory<DatabaseContext> _databaseContextFactory;
+    private readonly DndContext _dndContext;
+    private readonly DatabaseContext _databaseContext;
     private readonly IUserInformationMessageService _userInformationMessageService;
 
     [ObservableProperty] private int _value;
     [ObservableProperty] private int _maximum;
 
-    public DnDDatabaseMigrationViewModel(IDbContextFactory<DndContext> dndContextFactory, IDbContextFactory<DatabaseContext> databaseContextFactory, IUserInformationMessageService userInformationMessageService)
+    public DnDDatabaseMigrationViewModel(DndContext dndContext, DatabaseContext databaseContext, IUserInformationMessageService userInformationMessageService)
     {
-        _dndContextFactory = dndContextFactory;
-        _databaseContextFactory = databaseContextFactory;
+        _dndContext = dndContext;
+        _databaseContext = databaseContext;
         _userInformationMessageService = userInformationMessageService;
 
         FixData();
@@ -41,37 +41,35 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
     // ReSharper disable once CognitiveComplexity
     private void FixData()
     {
-        using var context = _dndContextFactory.CreateDbContext();
-
-        context.DndSpells.First(x => x.Id == 3980).SubSchoolId = null;
-        context.DndSpells.First(x => x.Id == 2987).Range = "Personal (see text)";
-        context.DndSpells.First(x => x.Id == 754 || x.Id == 755 || x.Id == 3220 || x.Id == 2002).Range = "Touch";
-        context.DndSpells.First(x => x.Id == 754).Target = "Animal or magical beast touched";
-        context.DndSpells.First(x => x.Id == 755).Target = "Willing creature touched";
-        context.DndSpells.First(x => x.Id == 2002).Target = "Living creature touched";
-        context.DndSpelldescriptors1.First(x => x.Id == 24).Name = "Mind-Affecting and Chaotic";
-        foreach (var d in context.DndSpellDescriptors.Where(x => x.SpelldescriptorId == 13))
+        _dndContext.DndSpells.First(x => x.Id == 3980).SubSchoolId = null;
+        _dndContext.DndSpells.First(x => x.Id == 2987).Range = "Personal (see text)";
+        _dndContext.DndSpells.First(x => x.Id == 754 || x.Id == 755 || x.Id == 3220 || x.Id == 2002).Range = "Touch";
+        _dndContext.DndSpells.First(x => x.Id == 754).Target = "Animal or magical beast touched";
+        _dndContext.DndSpells.First(x => x.Id == 755).Target = "Willing creature touched";
+        _dndContext.DndSpells.First(x => x.Id == 2002).Target = "Living creature touched";
+        _dndContext.DndSpelldescriptors1.First(x => x.Id == 24).Name = "Mind-Affecting and Chaotic";
+        foreach (var d in _dndContext.DndSpellDescriptors.Where(x => x.SpelldescriptorId == 13))
             d.SpelldescriptorId = 26;
-        foreach (var d in context.DndSpellDescriptors.Where(x => x.SpelldescriptorId == 36))
+        foreach (var d in _dndContext.DndSpellDescriptors.Where(x => x.SpelldescriptorId == 36))
             d.SpelldescriptorId = 25;
-        foreach (var d in context.DndSpellDescriptors.Where(x => x.SpelldescriptorId == 22 ||  x.SpelldescriptorId == 35 ||  x.SpelldescriptorId == 37 ||  x.SpelldescriptorId == 38 ||  x.SpelldescriptorId == 39 ||  x.SpelldescriptorId == 40 ||  x.SpelldescriptorId == 43 ||  x.SpelldescriptorId == 44))
+        foreach (var d in _dndContext.DndSpellDescriptors.Where(x => x.SpelldescriptorId == 22 ||  x.SpelldescriptorId == 35 ||  x.SpelldescriptorId == 37 ||  x.SpelldescriptorId == 38 ||  x.SpelldescriptorId == 39 ||  x.SpelldescriptorId == 40 ||  x.SpelldescriptorId == 43 ||  x.SpelldescriptorId == 44))
             d.SpelldescriptorId = 23;
-        foreach (var s in context.DndSpells.Where(x => x.Range == "Person"))
+        foreach (var s in _dndContext.DndSpells.Where(x => x.Range == "Person"))
             s.Range = "Personal";
-        foreach (var s in context.DndSpells.Where(x => x.Range.StartsWith("Close (")))
+        foreach (var s in _dndContext.DndSpells.Where(x => x.Range.StartsWith("Close (")))
             s.Range = "Close";
-        foreach (var s in context.DndSpells.Where(x => x.Range.StartsWith("Medium")))
+        foreach (var s in _dndContext.DndSpells.Where(x => x.Range.StartsWith("Medium")))
             s.Range = "Medium";
-        foreach (var s in context.DndSpells.Where(x => x.Range.StartsWith("Long (")))
+        foreach (var s in _dndContext.DndSpells.Where(x => x.Range.StartsWith("Long (")))
             s.Range = "Long";
-        foreach (var s in context.DndSpells.Where(x => x.Range.EndsWith("; see text")))
+        foreach (var s in _dndContext.DndSpells.Where(x => x.Range.EndsWith("; see text")))
             s.Range = s.Range.Replace("; see text", " (see text)");
-        foreach (var s in context.DndSpells.Where(x => x.Range.EndsWith(" ft")))
+        foreach (var s in _dndContext.DndSpells.Where(x => x.Range.EndsWith(" ft")))
             s.Range += ".";
 
-        context.SaveChanges();
+        _dndContext.SaveChanges();
 
-        // var a = string.Join("\n", context.DndSpells.Where(x => x.XpComponent == 1).ToList().SelectMany(x =>
+        // var a = string.Join("\n", _dndContext.DndSpells.Where(x => x.XpComponent == 1).ToList().SelectMany(x =>
         // {
         //     var lines = x.Description.Split("\n");
         //     return lines.Where(l => l.Contains("XP")).ToList();
@@ -321,24 +319,21 @@ public partial class DnDDatabaseMigrationViewModel : NavigableViewModel
     {
         try
         {
-            await using var oldModel = await _dndContextFactory.CreateDbContextAsync();
-            await using var newModel = await _databaseContextFactory.CreateDbContextAsync();
-
-            var old = sourceData(oldModel);
+            var old = sourceData(_dndContext);
             Maximum = old.Count;
             Value = 0;
 
             var newData = new List<TTarget>();
             foreach (var source in old)
             {
-                newData.Add(convert(source, newModel));
+                newData.Add(convert(source, _databaseContext));
                 Value++;
             }
 
-            set(newModel).RemoveRange(set(newModel).Where(x => x.MigrationId.HasValue));
-            await set(newModel).AddRangeAsync(newData);
+            set(_databaseContext).RemoveRange(set(_databaseContext).Where(x => x.MigrationId.HasValue));
+            await set(_databaseContext).AddRangeAsync(newData);
 
-            await newModel.SaveChangesAsync();
+            await _databaseContext.SaveChangesAsync();
 
             _userInformationMessageService.AddDisplayMessage($"Added {newData.Count} items", InformationType.Success, TimeSpan.FromSeconds(30));
         }

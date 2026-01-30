@@ -16,6 +16,7 @@ using GrandArchive.Helpers.ExtensionMethods;
 using GrandArchive.Models;
 using GrandArchive.Models.Database;
 using GrandArchive.Models.DnDTools;
+using GrandArchive.Services;
 using GrandArchive.Services.UserInformationService;
 using GrandArchive.ViewModels;
 using GrandArchive.Views;
@@ -51,7 +52,12 @@ public partial class App : Application
             typeof(ComponentDiagramViewModel),
             typeof(DnDDatabaseMigrationViewModel),
 #endif
+            typeof(SettingsViewModel),
         ]);
+
+        // Load initialization
+        var configService = services.GetRequiredService<IConfigurationService>();
+        configService.InitializeConfiguration();
 
         services.InitDatabase<DndContext>()
             .InitDatabase<DatabaseContext>();

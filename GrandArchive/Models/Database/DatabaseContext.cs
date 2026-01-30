@@ -13,19 +13,7 @@ public class DatabaseContext : DbContext
 {
     #region Configuration
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var path = Path.Combine(DataLocationHelper.GetRootFolder(), "Database.sqlite");
-
-        var connectionStringBuilder = new SqliteConnectionStringBuilder
-        {
-            DataSource = path,
-            Mode = SqliteOpenMode.ReadWriteCreate,
-            // Cache = SqliteCacheMode.Shared,
-        };
-
-        optionsBuilder.UseSqlite(connectionStringBuilder.ConnectionString);
-    }
+    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
     #endregion
 

@@ -4,12 +4,15 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Config.Net;
+using GrandArchive.Models.Configuration;
 using GrandArchive.Models.Database;
 using GrandArchive.Models.DnDTools;
 using GrandArchive.Services;
 using GrandArchive.Services.Navigation;
 using GrandArchive.Services.UserInformationService;
 using GrandArchive.ViewModels;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,20 +23,27 @@ public static class ServiceCollectionExtensionMethods
 {
     public static void Configure(this IServiceCollection s)
     {
+        string configPath = SetupConfigPath();
+
+        // Config
+        s.AddSingleton(_ => new ConfigurationBuilder<IGrandArchiveSettings>().UseJsonFile(configPath).Build());
+        
         // Database
-        s.AddDbContextFactory<DndContext>();
-        s.AddDbContextFactory<DatabaseContext>();
+        s.AddDbContext<DndContext>((b, x) => ConfigureDbContext(x, b.GetRequiredService<IGrandArchiveSettings>().DndToolsConnectionString));
+        s.AddDbContext<DatabaseContext>((b, x) => ConfigureDbContext(x, b.GetRequiredService<IGrandArchiveSettings>().DatabaseConnectionString));
 
         // View Models
         s.AddSingleton<MainWindowViewModel>();
         s.AddSingleton<SpellCardMainViewModel>();
         s.AddSingleton<ComponentDiagramViewModel>();
         s.AddSingleton<DnDDatabaseMigrationViewModel>();
+        s.AddSingleton<SettingsViewModel>();
 
         // Services
         s.AddSingleton<INavigationService, NavigationService>();
         s.AddSingleton<IDispatcherService, DispatcherService>();
         s.AddSingleton<IUserInformationMessageService, ViewModelUserInformationMessageService>();
+        s.AddSingleton<IConfigurationService, ConfigurationService>();
 
         // Delegates
         s.AddSingleton<CreateUserMessageViewModel>(provider =>
@@ -50,11 +60,35 @@ public static class ServiceCollectionExtensionMethods
         });
     }
 
+    private static string SetupConfigPath()
+    {
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "config.json");
+        Directory.CreateDirectory(Path.GetDirectoryName(path) ?? throw new NullReferenceException($"Cannot get path from {path}"));
+        if (!File.Exists(path))
+        {
+            using var file = File.CreateText(path);
+            file.WriteLine("{}");
+        }
+
+        return path;
+    }
+
+    private static void ConfigureDbContext(DbContextOptionsBuilder optionsBuilder, string path)
+    {
+        var connectionStringBuilder = new SqliteConnectionStringBuilder
+        {
+            DataSource = path,
+            Mode = SqliteOpenMode.ReadWriteCreate,
+            // Cache = SqliteCacheMode.Shared,
+        };
+
+        optionsBuilder.UseSqlite(connectionStringBuilder.ConnectionString);
+    }
+
     public static IServiceProvider InitDatabase<T>(this IServiceProvider serviceProvider) where T : DbContext
     {
-        var contextFactory = serviceProvider.GetRequiredService<IDbContextFactory<T>>();
+        var context = serviceProvider.GetRequiredService<T>();
 
-        using var context = contextFactory.CreateDbContext();
         Directory.CreateDirectory(Path.GetDirectoryName(context.Database.GetDbConnection().DataSource));
         context.Database.Migrate();
 

@@ -19,8 +19,8 @@ namespace GrandArchive.ViewModels;
 [NavigableMenuItem("Spell Cards", "LayerRegular")]
 public partial class SpellCardMainViewModel : NavigableViewModel
 {
+    private readonly DatabaseContext _dbContext;
     private readonly IDispatcherService _dispatcherService;
-    private readonly IDbContextFactory<DatabaseContext> _dbContextFactory;
     private readonly IUserInformationMessageService _userInformationMessageService;
 
     [ObservableProperty] private ObservableCollection<DndSpell> _spells;
@@ -30,10 +30,10 @@ public partial class SpellCardMainViewModel : NavigableViewModel
 
     public int VerifiedSpellsCount => Spells?.Count(x => x.IsVerified) ?? 0;
 
-    public SpellCardMainViewModel(IDbContextFactory<DatabaseContext> dbContextFactory, IUserInformationMessageService userInformationMessageService, IDispatcherService dispatcherService)
+    public SpellCardMainViewModel(DatabaseContext dbContext, IUserInformationMessageService userInformationMessageService, IDispatcherService dispatcherService)
     {
+        _dbContext = dbContext;
         _dispatcherService = dispatcherService;
-        _dbContextFactory = dbContextFactory;
         _userInformationMessageService = userInformationMessageService;
 
         LoadBaseData();
@@ -108,10 +108,8 @@ public partial class SpellCardMainViewModel : NavigableViewModel
 
     private void LoadBaseData()
     {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-
-        RuleBooks = dbContext.DndRulebooks.Include(x => x.DndEdition).AsNoTracking().ToList();
-        Classes = dbContext.DndClasses.AsNoTracking().ToList();
+        RuleBooks = _dbContext.DndRulebooks.Include(x => x.DndEdition).AsNoTracking().ToList();
+        Classes = _dbContext.DndClasses.AsNoTracking().ToList();
     }
 
     private void UpdateCountVerified()
@@ -127,14 +125,12 @@ public partial class SpellCardMainViewModel : NavigableViewModel
 
         try
         {
-            await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
-
-            Spells = new ObservableCollection<DndSpell>(dbContext.DndSpells
+            Spells = new ObservableCollection<DndSpell>(_dbContext.DndSpells
                 .Include(x => x.Rulebook).ThenInclude(x => x.DndEdition)
                 .Include(x => x.ClassSpells).ThenInclude(x => x.Class)
                 .Include(x => x.DomainSpells).ThenInclude(x => x.Domain)
                 .Include(x => x.VariantOfSpell)
-                .Where(x => x.Rulebook.Id == dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.Id == 8).GroupBy(y => y.Rulebook.Id).OrderBy(y => y.Count()).First().Key)
+                .Where(x => x.Rulebook.Id == _dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.Id == 8).GroupBy(y => y.Rulebook.Id).OrderBy(y => y.Count()).First().Key)
                 // .Where(x => x.Rulebook.Id == dbContext.DndSpells.Where(y => !y.IsVerified && y.Rulebook.DndEdition.System == "DnD 3.5").GroupBy(y => y.Rulebook.Id).OrderBy(y => y.Count()).First().Key)
                 // .Where(x => x.Rulebook.Id == 3)
                 // .Where(x => x.Rulebook.DndEdition.System == "DnD 3.5")
@@ -186,11 +182,9 @@ public partial class SpellCardMainViewModel : NavigableViewModel
                 x.UpdatedAt = DateTime.Now;
             });
 
-            await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
+            _dbContext.UpdateRangeWithNavigations(updated);
 
-            dbContext.UpdateRangeWithNavigations(updated);
-
-            await dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             updated.ForEach(x =>
             {

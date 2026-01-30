@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:GrandArchive.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GrandArchive.Views.SettingsView"
+             x:DataType="viewModels:SettingsViewModel">
+    <WrapPanel Orientation="Vertical" ItemSpacing="5">
+        <HeaderedContentControl Header="Settings">
+            <Grid ColumnDefinitions="Auto * Auto" RowDefinitions="Auto Auto"
+                  ColumnSpacing="5" RowSpacing="5" Margin="5">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Database Path"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="DndTools Path"/>
+                
+                <TextBox Name="txtDatabase" Grid.Row="0" Grid.Column="1" Text="{Binding GrandArchiveSettings.DatabaseConnectionString}"/>
+                <TextBox Name="txtDndTools" Grid.Row="1" Grid.Column="1" Text="{Binding GrandArchiveSettings.DndToolsConnectionString}"/>
+                
+                <Button Name="btnDatabase" Grid.Row="0" Grid.Column="2" Click="BtnDatabase_OnClick">
+                    <PathIcon Data="{StaticResource EditSettingsRegular}"/>
+                </Button>
+                <Button Name="btnDndTools" Grid.Row="1" Grid.Column="2" Click="BtnDndTools_OnClick">
+                    <PathIcon Data="{StaticResource EditSettingsRegular}"/>
+                </Button>
+            </Grid>
+        </HeaderedContentControl>
+    </WrapPanel>
+</UserControl>

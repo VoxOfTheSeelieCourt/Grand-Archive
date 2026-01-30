@@ -123,19 +123,7 @@ public partial class DndContext : DbContext
 
     public virtual DbSet<DndTextfeatprerequisite> DndTextfeatprerequisites { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var path = Path.Combine(DataLocationHelper.GetRootFolder(), "dnd.sqlite");
-
-        var connectionStringBuilder = new SqliteConnectionStringBuilder
-        {
-            DataSource = path,
-            Mode = SqliteOpenMode.ReadWriteCreate,
-            Cache = SqliteCacheMode.Shared,
-        };
-
-        optionsBuilder.UseSqlite(connectionStringBuilder.ConnectionString);
-    }
+    public DndContext(DbContextOptions<DndContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
