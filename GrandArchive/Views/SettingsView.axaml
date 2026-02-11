@@ -13,13 +13,13 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Database Path"/>
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="DndTools Path"/>
                 
-                <TextBox Name="txtDatabase" Grid.Row="0" Grid.Column="1" Text="{Binding GrandArchiveSettings.DatabaseConnectionString}"/>
-                <TextBox Name="txtDndTools" Grid.Row="1" Grid.Column="1" Text="{Binding GrandArchiveSettings.DndToolsConnectionString}"/>
+                <TextBox Name="DatabasePathInput" Grid.Row="0" Grid.Column="1" Text="{Binding GrandArchiveSettings.DatabaseConnectionString}"/>
+                <TextBox Name="DndToolsPathInput" Grid.Row="1" Grid.Column="1" Text="{Binding GrandArchiveSettings.DndToolsConnectionString}"/>
                 
-                <Button Name="btnDatabase" Grid.Row="0" Grid.Column="2" Click="BtnDatabase_OnClick">
+                <Button Name="BrowseDatabasePathInput" Grid.Row="0" Grid.Column="2" Click="BrowseDatabasePathInput_OnClick">
                     <PathIcon Data="{StaticResource EditSettingsRegular}"/>
                 </Button>
-                <Button Name="btnDndTools" Grid.Row="1" Grid.Column="2" Click="BtnDndTools_OnClick">
+                <Button Name="BrowseDndToolsPathInput" Grid.Row="1" Grid.Column="2" Click="BrowseDndToolsPathInput_OnClick">
                     <PathIcon Data="{StaticResource EditSettingsRegular}"/>
                 </Button>
             </Grid>

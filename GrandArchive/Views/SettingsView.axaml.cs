@@ -13,14 +13,14 @@ public partial class SettingsView : UserControl
         InitializeComponent();
     }
 
-    private async void BtnDatabase_OnClick(object sender, RoutedEventArgs e)
+    private async void BrowseDatabasePathInput_OnClick(object sender, RoutedEventArgs e)
     {
-        txtDatabase.Text = await SelectPath() ?? txtDatabase.Text;
+        DatabasePathInput.Text = await SelectPath() ?? DatabasePathInput.Text;
     }
 
-    private async void BtnDndTools_OnClick(object sender, RoutedEventArgs e)
+    private async void BrowseDndToolsPathInput_OnClick(object sender, RoutedEventArgs e)
     {
-        txtDndTools.Text = await SelectPath() ?? txtDndTools.Text;
+        DndToolsPathInput.Text = await SelectPath() ?? DndToolsPathInput.Text;
     }
 
     private async Task<string> SelectPath()
